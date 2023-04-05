@@ -62,7 +62,7 @@
             class="nav-btn"
             type="outline"
             :shape="'circle'"
-            @click="toggleTheme"
+            @click="toggleTheme()"
           >
             <template #icon>
               <icon-moon-fill v-if="theme === 'dark'" />

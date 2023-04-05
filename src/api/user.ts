@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UserState } from '@/store/modules/user/types';
+import { Response } from '@/model/Response';
 
 export interface LoginData {
   username: string;

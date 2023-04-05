@@ -19,7 +19,6 @@
         <a-input
           v-model="userInfo.username"
           :placeholder="$t('login.form.userName.placeholder')"
-          @keyup.enter="handleSubmit"
         >
           <template #prefix>
             <icon-user />
@@ -36,7 +35,6 @@
           v-model="userInfo.password"
           :placeholder="$t('login.form.password.placeholder')"
           allow-clear
-          @keyup.enter="handleSubmit"
         >
           <template #prefix>
             <icon-lock />
@@ -62,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted } from 'vue';
+import { defineComponent, ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { Message } from '@arco-design/web-vue';
 import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
@@ -108,12 +106,7 @@ export default defineComponent({
         }
       }
     };
-    // 演示地址自动登录
-    onMounted(() => {
-      setTimeout(() => {
-        handleSubmit({ errors: undefined, values: userInfo });
-      }, 3000);
-    });
+
     const setRememberPassword = () => {
       //
     };

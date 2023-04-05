@@ -15,7 +15,6 @@
     "lint:eslint": "eslint {src,mock}/**/*.{vue,js,ts} --fix"
   },
   "dependencies": {
-    "@arco-design/web-vue": "^2.37.1",
     "@types/mockjs": "^1.0.6",
     "@vueuse/core": "^9.2.0",
     "axios": "^0.27.2",
@@ -32,6 +31,7 @@
     "vue-router": "4"
   },
   "devDependencies": {
+    "@arco-design/web-vue": "^2.37.3",
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@types/lodash": "^4.14.185",
