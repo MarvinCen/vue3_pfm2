@@ -42,15 +42,16 @@ setupMock({
     Mock.mock(new RegExp('/api/user/login'), (params: MockParams) => {
       const { username, password } = JSON.parse(params.body);
       if (!username) {
-        return failResponseWrap(null, '用户名不能为空', 50000);
+        return failResponseWrap(null, '手机号或邮箱不能为空', 50000);
       }
       if (!password) {
         return failResponseWrap(null, '密码不能为空', 50000);
       }
-      if (username === 'admin' && password === 'admin') {
+      if (username === 'marvin' && password === '123456') {
         window.localStorage.setItem('userRole', 'admin');
         return successResponseWrap({
-          token: '12345',
+          token:
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODA1Njk4MDksInVzZXJuYW1lIjoibWFydmluIn0.FfGBK9ZJ343SUI1N7tnRyRNzG1u4-17CfkqbZ81CO4k',
         });
       }
       if (username === 'user' && password === 'user') {

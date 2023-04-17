@@ -77,8 +77,8 @@ export default defineComponent({
     const { loading, setLoading } = useLoading();
     const userStore = useUserStore();
     const userInfo = reactive({
-      username: 'admin',
-      password: 'admin',
+      username: 'marvin',
+      password: '123456',
     });
     const handleSubmit = async ({
       errors,
