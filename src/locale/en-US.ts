@@ -26,6 +26,11 @@ import locale500 from '@/views/exception/500/locale/en-US';
 import localeUserInfo from '@/views/user/info/locale/en-US';
 import localeUserSetting from '@/views/user/setting/locale/en-US';
 /** simple end */
+
+/** pfm */
+import homepage from '@/views/homepage/locale/en-US';
+import results from '@/views/results/locale/en-US';
+/** pfm end */
 import localeSettings from './en-US/settings';
 
 export default {
@@ -39,6 +44,8 @@ export default {
   'menu.user': 'User Center',
   'navbar.docs': 'Docs',
   'navbar.action.locale': 'Switch to English',
+  'global.column.remark': 'remark',
+  'global.column.operation': 'operation',
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
@@ -60,4 +67,9 @@ export default {
   ...localeUserInfo,
   ...localeUserSetting,
   /** simple end */
+
+  /** pfm */
+  ...homepage,
+  ...results,
+  /** pfm end */
 };

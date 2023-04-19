@@ -1,3 +1,8 @@
+/** pfm */
+import Homepage from '@/router/modules/homepage';
+import Results from '@/router/modules/results';
+/** pfm end */
+
 import Dashboard from './dashboard';
 /** simple */
 import List from './list';
@@ -20,4 +25,9 @@ export default [
   Exception,
   User,
   /** simple end */
+
+  /** pfm */
+  Homepage,
+  Results,
+  /** pfm end */
 ];

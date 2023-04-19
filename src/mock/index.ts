@@ -21,6 +21,10 @@ import '@/views/user/info/mock';
 import '@/views/user/setting/mock';
 /** simple end */
 
+/** pfm */
+import '@/views/results/result-type/mock';
+/** pfm end */
+
 Mock.setup({
   timeout: '600-1000',
 });

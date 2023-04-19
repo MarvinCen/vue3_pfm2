@@ -239,6 +239,7 @@ const generateFormModel = () => {
     status: '',
   };
 };
+
 export default defineComponent({
   setup() {
     const { loading, setLoading } = useLoading(true);

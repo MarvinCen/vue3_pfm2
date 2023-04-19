@@ -1,3 +1,5 @@
+import { AxiosResponse } from 'axios';
+
 export interface AnyObject {
   [key: string]: unknown;
 }
@@ -23,9 +25,9 @@ export interface PostData {
   url: string;
 }
 
-export interface Pagination {
-  current: number;
-  pageSize: number;
+export interface Pager {
+  current?: number;
+  pageSize?: number;
   total?: number;
 }
 
@@ -35,3 +37,32 @@ export interface GeneralChart {
   xAxis: string[];
   data: Array<{ name: string; value: number[] }>;
 }
+
+export interface Response {
+  code?: number | undefined;
+  data?: any | undefined | null;
+  message?: string | undefined;
+}
+
+export interface ReqPagerParams {
+  pager: Pager;
+  conditions: unknown;
+}
+
+export interface YourPayload {
+  tableData: {
+    list: never[];
+  };
+  pager: Pager;
+}
+
+export const BasePaginationSetting = {
+  disabled: false,
+  showTotal: true,
+  showPageSize: true,
+  showJumper: true,
+  showMore: false,
+  defaultCurrent: 1,
+  defaultPageSize: 10,
+  pageSizeOptions: [10, 20, 50, 100, 500, 1000],
+};

@@ -26,6 +26,12 @@ import locale500 from '@/views/exception/500/locale/zh-CN';
 import localeUserInfo from '@/views/user/info/locale/zh-CN';
 import localeUserSetting from '@/views/user/setting/locale/zh-CN';
 /** simple end */
+
+/** pfm */
+import homepage from '@/views/homepage/locale/zh-CN';
+import results from '@/views/results/locale/zh-CN';
+/** pfm end */
+
 import localeSettings from './zh-CN/settings';
 
 export default {
@@ -39,6 +45,10 @@ export default {
   'menu.user': '个人中心',
   'navbar.docs': '文档中心',
   'navbar.action.locale': '切换为中文',
+  'global.column.remark': '备注',
+  'global.column.operation': '操作',
+  'global.operation.button.edit': '编辑',
+  'global.operation.button.delete': '删除',
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
@@ -60,4 +70,9 @@ export default {
   ...localeUserInfo,
   ...localeUserSetting,
   /** simple end */
+
+  /** pfm */
+  ...homepage,
+  ...results,
+  /** pfm end */
 };
