@@ -23,8 +23,9 @@ import '@/views/user/setting/mock';
 
 /** pfm */
 import '@/views/results/result-type/mock';
+import '@/views/results/input/mock';
 /** pfm end */
 
 Mock.setup({
-  timeout: '600-1000',
+  timeout: '0-300',
 });

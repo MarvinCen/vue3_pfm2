@@ -21,6 +21,8 @@ export default {
   'searchTable.operation.create': '新建',
   'searchTable.operation.import': '批量导入',
   'searchTable.operation.download': '下载',
+  'searchTable.operation.batchDelete': '批量删除',
+  'searchTable.operation.batchUpload': '批量导入',
   // columns
   'searchTable.columns.number': '集合编号',
   'searchTable.columns.name': '集合名称',

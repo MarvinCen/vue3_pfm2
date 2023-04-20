@@ -109,7 +109,7 @@ import {
   TableRowSelection,
 } from '@arco-design/web-vue';
 import { TableData } from '@arco-design/web-vue/es/table/interface.d';
-import fetchData from '@/utils/request';
+import fetchPageList from '@/utils/request';
 
 const initFormModel = () => {
   return {
@@ -180,8 +180,9 @@ export default {
     };
 
     const search = () => {
-      fetchData(
+      fetchPageList(
         {
+          enablePagination: true,
           pager: {
             current: pager.current,
             pageSize: pager.pageSize,
@@ -199,8 +200,9 @@ export default {
 
     function pageChange(page: number): number {
       pager.current = page;
-      fetchData(
+      fetchPageList(
         {
+          enablePagination: true,
           pager: {
             current: pager.current,
             pageSize: pager.pageSize,
@@ -227,8 +229,9 @@ export default {
     };
 
     onMounted(() => {
-      fetchData(
+      fetchPageList(
         {
+          enablePagination: true,
           pager: {
             current: BasePaginationSetting.defaultCurrent,
             pageSize: BasePaginationSetting.defaultPageSize,

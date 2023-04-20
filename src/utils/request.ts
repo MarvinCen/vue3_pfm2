@@ -4,7 +4,7 @@ import useLoading from '@/hooks/loading';
 import { AxiosResponse } from 'axios';
 
 const { setLoading } = useLoading(true);
-const fetchData = async (
+const fetchPageList = async (
   reqPagerParams: ReqPagerParams,
   yourPayload: YourPayload,
   apiMethod: (params: ReqPagerParams) => Promise<AxiosResponse>
@@ -20,8 +20,10 @@ const fetchData = async (
     .then((res) => {
       response = res as Response;
       yourPayload.tableData.list = response.data.list;
-      yourPayload.pager.current = response.data.pager.current;
-      yourPayload.pager.total = response.data.pager.total;
+      if (yourPayload.pager) {
+        yourPayload.pager.current = response.data.pager.current;
+        yourPayload.pager.total = response.data.pager.total;
+      }
       setLoading(false);
     })
     .catch(() => {
@@ -30,4 +32,4 @@ const fetchData = async (
     });
 };
 
-export default fetchData;
+export default fetchPageList;

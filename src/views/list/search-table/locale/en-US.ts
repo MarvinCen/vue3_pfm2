@@ -21,6 +21,8 @@ export default {
   'searchTable.operation.create': 'Create',
   'searchTable.operation.import': 'Import',
   'searchTable.operation.download': 'Download',
+  'searchTable.operation.batchDelete': 'batch delete',
+  'searchTable.operation.batchUpload': 'batch upload',
   // columns
   'searchTable.columns.number': 'Set Number',
   'searchTable.columns.name': 'Set Name',

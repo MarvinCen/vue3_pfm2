@@ -11,7 +11,7 @@ export default {
     {
       path: 'inputResult',
       name: 'inputResult',
-      component: () => import('@/views/homepage/index.vue'),
+      component: () => import('@/views/results/input/index.vue'),
       meta: {
         locale: 'menu.results.inputResult',
         requiresAuth: true,

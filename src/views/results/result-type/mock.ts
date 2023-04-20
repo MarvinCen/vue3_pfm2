@@ -1,13 +1,13 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setup-mock';
-import { ResultType } from '@/api/results/results';
-import { ReqPagerParams, Response } from '@/types/global';
+import { ReqPagerParams } from '@/types/global';
+import { ResultType } from '@/types/results';
 
 const { Random } = Mock;
 
-function generateResultTypes(pid: number, level: number) {
+function generateResultTypes(pid: number, level: number, tree: boolean) {
   const arr = [];
-  const count = Random.integer(15, 24);
+  const count = Random.integer(7, 24);
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < count; i++) {
     const data: ResultType = {
@@ -21,8 +21,12 @@ function generateResultTypes(pid: number, level: number) {
       children: [],
       remark: Random.csentence(6, 15),
     };
-    if (level < 3) {
-      data.children = generateResultTypes(data.eid, level + 1);
+    if (tree) {
+      data.key = data.eid;
+      data.title = data.name;
+    }
+    if (level < 2) {
+      data.children = generateResultTypes(data.eid, level + 1, tree);
       data.isLeaf = false;
     }
     arr.push(data);
@@ -33,8 +37,15 @@ function generateResultTypes(pid: number, level: number) {
 setupMock({
   setup() {
     Mock.mock(new RegExp('/results/resultType'), (params: ReqPagerParams) => {
-      const resultTypes = generateResultTypes(Number(Random.id()), 1);
-      const response: Response = {
+      let resultTypes;
+      if (params.enablePagination) {
+        // <a-table>数据
+        resultTypes = generateResultTypes(Number(Random.id()), 1, false);
+      } else {
+        // <a-tree>数据
+        resultTypes = generateResultTypes(Number(Random.id()), 1, true);
+      }
+      return {
         code: 20000,
         data: {
           list: resultTypes,
@@ -46,7 +57,6 @@ setupMock({
         },
         message: '',
       };
-      return response;
     });
   },
 });

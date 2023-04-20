@@ -71,6 +71,52 @@
         </a-col>
       </a-row>
       <a-divider style="margin-top: 0" />
+      <a-row style="margin-bottom: 16px">
+        <a-col :span="16">
+          <a-space>
+            <a-button type="primary">
+              <template #icon>
+                <icon-plus />
+              </template>
+              {{ $t('searchTable.operation.create') }}
+            </a-button>
+            <a-button>
+              <template #icon>
+                <icon-download />
+              </template>
+              {{ $t('searchTable.operation.download') }}
+            </a-button>
+            <a-button>
+              <template #icon>
+                <icon-user />
+              </template>
+              {{ '我负责的' }}
+            </a-button>
+            <a-button>
+              <template #icon>
+                <icon-user-group />
+              </template>
+              {{ '我参与的' }}
+            </a-button>
+          </a-space>
+        </a-col>
+        <a-col :span="8" style="text-align: right">
+          <a-space>
+            <a-button type="primary" status="danger">
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('searchTable.operation.batchDelete') }}
+            </a-button>
+            <a-button>
+              <template #icon>
+                <icon-launch />
+              </template>
+              {{ '去录入成果~' }}
+            </a-button>
+          </a-space>
+        </a-col>
+      </a-row>
       <a-table
         v-model:expandedKeys="expandedKeys"
         row-key="eid"
@@ -78,6 +124,9 @@
         :data="tableData.list"
         :pagination="paginationProp"
         :row-selection="rowSelection"
+        :row-click="rowClick"
+        @page-change="pageChange"
+        @page-size-change="pageSizeChange"
       >
         <template #operation="{}">
           <div style="width: fit-content; margin: 0 auto">
@@ -98,16 +147,17 @@
 <script lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { BasePaginationSetting, ReqPagerParams } from '@/types/global';
-import useLoading from '@/hooks/loading';
+import { BasePaginationSetting } from '@/types/global';
 import { findResultTypeList } from '@/api/results/results';
 import {
   PaginationProps,
   TableColumnData,
   TableRowSelection,
 } from '@arco-design/web-vue';
+import { TableData } from '@arco-design/web-vue/es/table/interface.d';
+import fetchPageList from '@/utils/request';
 
-const generateFormModel = () => {
+const initFormModel = () => {
   return {
     name: '',
     departmentName: '',
@@ -119,8 +169,7 @@ export default {
   setup() {
     const expandedKeys = ref([]);
     const { t } = useI18n();
-    const formModel = ref(generateFormModel());
-    const { setLoading } = useLoading(true);
+    const formModel = ref(initFormModel());
     const pager: PaginationProps = reactive({
       current: 1,
       pageSize: 10,
@@ -173,43 +222,75 @@ export default {
     });
 
     const reset = () => {
-      formModel.value = generateFormModel();
-    };
-
-    const fetchData = async (params: ReqPagerParams) => {
-      setLoading(true);
-      try {
-        const response = await findResultTypeList(params);
-        tableData.list = response.data.list;
-        pager.current = 1;
-        pager.total = response.data.pager.total;
-      } catch (err) {
-        // you can report use errorHandler or other
-      } finally {
-        setLoading(false);
-      }
+      formModel.value = initFormModel();
     };
 
     const search = () => {
-      fetchData({
-        pager: {
-          current: pager.current,
-          pageSize: pager.pageSize,
-          total: pager.total,
+      fetchPageList(
+        {
+          enablePagination: true,
+          pager: {
+            current: pager.current,
+            pageSize: pager.pageSize,
+            total: pager.total,
+          },
+          conditions: formModel.value,
         },
-        conditions: formModel.value,
-      } as unknown as ReqPagerParams);
+        {
+          tableData,
+          pager,
+        },
+        findResultTypeList
+      );
+    };
+
+    function pageChange(page: number): number {
+      pager.current = page;
+      fetchPageList(
+        {
+          enablePagination: true,
+          pager: {
+            current: pager.current,
+            pageSize: pager.pageSize,
+          },
+          conditions: formModel,
+        },
+        {
+          tableData,
+          pager,
+        },
+        findResultTypeList
+      );
+      return page;
+    }
+
+    const pageSizeChange = (pageSize?: number) => {
+      pager.pageSize = pageSize;
+    };
+
+    const rowClick = (record?: TableData, event?: Event) => {
+      // eslint-disable-next-line no-console
+      console.log(record, event);
+      // TODO do something
     };
 
     onMounted(() => {
-      fetchData({
-        pager: {
-          current: BasePaginationSetting.defaultCurrent,
-          pageSize: BasePaginationSetting.defaultPageSize,
-          total: undefined,
+      fetchPageList(
+        {
+          enablePagination: true,
+          pager: {
+            current: BasePaginationSetting.defaultCurrent,
+            pageSize: BasePaginationSetting.defaultPageSize,
+            total: undefined,
+          },
+          conditions: {},
         },
-        conditions: {},
-      });
+        {
+          tableData,
+          pager,
+        },
+        findResultTypeList
+      );
     });
 
     return {
@@ -221,6 +302,9 @@ export default {
       reset,
       search,
       paginationProp: pager,
+      pageChange,
+      pageSizeChange,
+      rowClick,
     };
   },
 };
