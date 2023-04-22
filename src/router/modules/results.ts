@@ -22,7 +22,7 @@ export default {
     {
       path: 'auditResult',
       name: 'auditResult',
-      component: () => import('@/views/homepage/index.vue'),
+      component: () => import('@/views/results/audit/index.vue'),
       meta: {
         locale: 'menu.results.auditResult',
         requiresAuth: true,

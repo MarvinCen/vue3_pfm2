@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { GetParams, ReqPagerParams } from '@/types/global';
-import qs from 'query-string';
+import { ReqPagerParams } from '@/types/global';
+import { ResultType } from '@/types/results';
 
 export function findResultTypeList(params: ReqPagerParams) {
   return axios.get('/results/resultType/', {
@@ -21,4 +21,8 @@ export function findResultDataListBy(resultTableId: number) {
     // @ts-ignore
     resultTableId,
   });
+}
+
+export function createResultType(resultType: ResultType) {
+  return axios.post('results/resultType', resultType);
 }

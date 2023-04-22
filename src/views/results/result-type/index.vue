@@ -71,6 +71,34 @@
         </a-col>
       </a-row>
       <a-divider style="margin-top: 0" />
+      <a-row style="margin-bottom: 16px">
+        <a-col :span="16">
+          <a-space>
+            <a-button type="primary">
+              <template #icon>
+                <icon-plus />
+              </template>
+              {{ $t('searchTable.operation.create') }}
+            </a-button>
+            <a-button>
+              <template #icon>
+                <icon-download />
+              </template>
+              {{ $t('searchTable.operation.download') }}
+            </a-button>
+          </a-space>
+        </a-col>
+        <a-col :span="8" style="text-align: right">
+          <a-space>
+            <a-button type="primary" status="danger">
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('searchTable.operation.batchDelete') }}
+            </a-button>
+          </a-space>
+        </a-col>
+      </a-row>
       <a-table
         v-model:expandedKeys="expandedKeys"
         row-key="eid"

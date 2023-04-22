@@ -1,10 +1,42 @@
 <template>
   <div class="container">
-    <a-card class="general-card" title="成果录入">
+    <a-card class="general-card" title="">
       <div class="layout-demo">
         <a-layout>
           <a-layout>
             <a-layout-sider :resize-directions="['right']">
+              <a-card
+                hoverable
+                :style="{ width: '100%', marginBottom: '20px' }"
+              >
+                <div
+                  :style="{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }"
+                >
+                  <span
+                    :style="{
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: '#1D2129',
+                    }"
+                  >
+                    <a-avatar
+                      :style="{
+                        marginRight: '8px',
+                        backgroundColor: '#165DFF',
+                      }"
+                      :size="28"
+                    >
+                      A
+                    </a-avatar>
+                    <a-typography-text>成果类型</a-typography-text>
+                  </span>
+                  <a-link>More</a-link>
+                </div>
+              </a-card>
               <a-tree
                 :default-selected-keys="['0-0-1']"
                 :data="resultTypeTree.list"
@@ -21,15 +53,24 @@
             </a-layout-sider>
             <a-layout-content>
               <div style="height: 100%; width: 100%; margin-left: 10px">
-                <a-tabs ref="resultTableTab" :justify="true" :animation="true">
+                <a-empty v-if="noResultTypeSelected">
+                  <template #image>
+                    <icon-exclamation-circle-fill />
+                  </template>
+                  请先在左侧选择成果类型~
+                </a-empty>
+                <a-tabs
+                  v-else
+                  ref="resultTableTab"
+                  :justify="true"
+                  :animation="true"
+                >
                   <a-tab-pane
                     v-for="table in resultTables.value"
                     :key="table.eid"
                     :title="table.name"
                   >
-                    <template #title>
-                      <icon-nav /> {{ table.name }}
-                    </template>
+                    <template #title> <icon-nav /> {{ table.name }} </template>
                     <a-row style="margin-bottom: 16px">
                       <a-col :span="16">
                         <a-space>
@@ -99,7 +140,7 @@
 </template>
 
 <script lang="ts">
-import {onMounted, reactive, ref, toRef} from 'vue';
+import { onMounted, reactive, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   PaginationProps,
@@ -250,6 +291,7 @@ export default {
       value: undefined,
     });
     const resultTableTab = ref(null);
+    const noResultTypeSelected = ref(true);
     const resultTypeOnSelected = (
       checkedKeys: Array<string | number>,
       node: any
@@ -259,6 +301,7 @@ export default {
         const resp = res as Response;
         resultTables.value = resp.data.list;
       });
+      noResultTypeSelected.value = false;
       return eid;
     };
 
@@ -280,6 +323,8 @@ export default {
       resultTypeTree,
       resultTables,
       resultTableTab,
+
+      noResultTypeSelected,
     };
   },
 };
@@ -300,5 +345,9 @@ export default {
   max-width: 500px;
   min-height: 500px;
   max-height: 500px;
+}
+
+.layout-demo {
+  margin-top: 20px;
 }
 </style>

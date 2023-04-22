@@ -1,7 +1,8 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setup-mock';
-import { ReqPagerParams } from '@/types/global';
+import { PostData, GetParams, ReqPagerParams } from '@/types/global';
 import { ResultType } from '@/types/results';
+import qs from 'query-string';
 
 const { Random } = Mock;
 
@@ -36,25 +37,38 @@ function generateResultTypes(pid: number, level: number, tree: boolean) {
 
 setupMock({
   setup() {
-    Mock.mock(new RegExp('/results/resultType'), (params: ReqPagerParams) => {
-      let resultTypes;
-      if (params.enablePagination) {
-        // <a-table>数据
-        resultTypes = generateResultTypes(Number(Random.id()), 1, false);
-      } else {
-        // <a-tree>数据
-        resultTypes = generateResultTypes(Number(Random.id()), 1, true);
+    Mock.mock(
+      new RegExp('/results/resultType/'),
+      'get',
+      (options: GetParams) => {
+        const params = qs.parseUrl(options.url).query;
+        let resultTypes;
+        if (params.enablePagination === 'true') {
+          // <a-table>数据
+          resultTypes = generateResultTypes(Number(Random.id()), 1, false);
+        } else {
+          // <a-tree>数据
+          resultTypes = generateResultTypes(Number(Random.id()), 1, true);
+        }
+        return {
+          code: 20000,
+          data: {
+            list: resultTypes,
+            pager: {
+              current: 1,
+              pageSize: 20,
+              total: resultTypes.length,
+            },
+          },
+          message: '',
+        };
       }
+    );
+    Mock.mock(new RegExp('results/resultType'), 'post', (data: PostData) => {
+      console.log(data);
       return {
         code: 20000,
-        data: {
-          list: resultTypes,
-          pager: {
-            current: 1,
-            pageSize: 20,
-            total: resultTypes.length,
-          },
-        },
+        data: {},
         message: '',
       };
     });

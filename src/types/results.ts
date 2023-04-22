@@ -6,6 +6,7 @@ export interface ResultType {
   name: string;
   departmentId: number;
   departmentName: string;
+  customData?: string;
   isLeaf: boolean;
   status: 'enable' | 'disable';
   children: ResultType[];

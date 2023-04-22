@@ -4,7 +4,7 @@
       <icon-apps />
     </a-breadcrumb-item>
     <a-breadcrumb-item v-for="item in items" :key="item">
-      {{ $t(item) }}
+      {{ internationalization ? $t(item) : item }}
     </a-breadcrumb-item>
   </a-breadcrumb>
 </template>
@@ -19,6 +19,10 @@ export default defineComponent({
       default() {
         return [];
       },
+    },
+    internationalization: {
+      type: Boolean,
+      default: true,
     },
   },
 });
