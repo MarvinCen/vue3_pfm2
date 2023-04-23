@@ -1,6 +1,6 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setup-mock';
-import { PostData, GetParams, ReqPagerParams } from '@/types/global';
+import { PostData, GetParams } from '@/types/global';
 import { ResultType } from '@/types/results';
 import qs from 'query-string';
 
@@ -65,6 +65,27 @@ setupMock({
       }
     );
     Mock.mock(new RegExp('results/resultType'), 'post', (data: PostData) => {
+      // eslint-disable-next-line no-console
+      console.log('create resultType: ');
+      // eslint-disable-next-line no-console
+      console.log(data);
+      return {
+        code: 20000,
+        data: {},
+        message: '',
+      };
+    });
+    Mock.mock(new RegExp('results/resultType'), 'put', () => {
+      return {
+        code: 20000,
+        data: {},
+        message: '',
+      };
+    });
+    Mock.mock(new RegExp('results/resultTable'), 'post', (data: PostData) => {
+      // eslint-disable-next-line no-console
+      console.log('create resultTable: ');
+      // eslint-disable-next-line no-console
       console.log(data);
       return {
         code: 20000,

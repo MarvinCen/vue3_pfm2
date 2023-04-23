@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Breadcrumb :items="['成果管理', '成果类型']" />
     <a-card class="general-card" :title="$t('menu.list.searchTable')">
       <a-row>
         <a-col :flex="1">
@@ -292,4 +293,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  padding: 0 20px 20px 20px;
+}
+</style>

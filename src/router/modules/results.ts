@@ -52,5 +52,19 @@ export default {
         roles: ['*'],
       },
     },
+    {
+      path: 'resultTableCreation',
+      name: 'resultTableCreation',
+      component: () =>
+        import(
+          '@/views/results/result-type/component/result-type-creation.vue'
+        ),
+      meta: {
+        locale: '成果类型创建',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+      },
+    },
   ],
 };

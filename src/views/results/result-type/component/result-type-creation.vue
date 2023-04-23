@@ -6,9 +6,9 @@
     />
     <a-card class="general-card" title="新增成果类型">
       <a-steps :current="currentStep" label-placement="vertical">
-        <a-step>Succeeded</a-step>
-        <a-step>Processing</a-step>
-        <a-step>Pending</a-step>
+        <a-step>创建成果类型</a-step>
+        <a-step>创建成果表</a-step>
+        <a-step>完成</a-step>
       </a-steps>
       <a-divider />
       <div v-if="currentStep === 1">
@@ -57,22 +57,46 @@
         </a-form>
       </div>
       <div v-if="currentStep === 2">
-        <div style="margin-bottom: 20px">
-          <a-popconfirm @ok="newResultTableTab">
-            <template #content>
-              给这个表格起个名字叭~
-              <a-form :model="newTableModel">
-                <a-form-item field="name" :rules="newTableInputRules">
-                  <a-input v-model="newTableModel.name" />
-                </a-form-item>
-              </a-form>
-            </template>
-            <a-button type="primary"> 新建表格 </a-button>
-          </a-popconfirm>
-          <a-divider direction="vertical" />
-          <a-button type="primary" @click="newARow">新建一行</a-button>
-        </div>
-        <a-tabs position="left" :editable="true" auto-switch animation>
+        <a-tabs
+          v-model:active-key="currentTabKey"
+          position="left"
+          :editable="true"
+          auto-switch
+          animation
+          justify
+          style="min-height: 320px"
+          @change="resultTableTabSwitched"
+          @tab-click="resultTableTabSwitched"
+          @delete="deleteResultTableTab"
+        >
+          <template #extra>
+            <div style="margin-top: 8px">
+              <a-popconfirm @ok="newResultTableTab">
+                <template #content>
+                  给新创建的表格起个名字叭~
+                  <a-form :model="newTableModel" auto-label-width>
+                    <a-form-item
+                      field="name"
+                      :rules="newTableInputRules"
+                      extra="当需要创建多个成果表时，给表格命名能够很好地区分它们."
+                      :validate-status="nameResultTableStatus"
+                      feedback
+                      :label-col-props="{ span: 0 }"
+                    >
+                      <a-input v-model="newTableModel.name" />
+                    </a-form-item>
+                  </a-form>
+                </template>
+                <div style="margin: 0 36px">
+                  <a-button shape="round">
+                    <template #icon>
+                      <icon-plus-circle-fill />
+                    </template>
+                  </a-button>
+                </div>
+              </a-popconfirm>
+            </div>
+          </template>
           <a-tab-pane
             v-for="tab in resultTableTabs"
             :key="tab.key"
@@ -93,7 +117,7 @@
         <a-result status="success" title="创建成功~">
           <template #extra>
             <a-space>
-              <a-button type="primary">返回列表</a-button>
+              <a-button type="primary" @click="() => {$router.push({ name: 'resultType' })}">返回列表</a-button>
             </a-space>
           </template>
         </a-result>
@@ -115,9 +139,9 @@
             v-if="currentStep !== 3"
             type="primary"
             :loading="loading"
-            @click="onSubmitClick"
+            @click="createResultTypeClick"
           >
-            {{ currentStep === 1 ? '提交并下一步' : '提交并完成' }}
+            {{ currentStep === 1 ? '提交并下一步' : '完成' }}
           </a-button>
         </a-space>
       </div>
@@ -129,72 +153,20 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, onMounted } from 'vue';
+import { ref, getCurrentInstance, onMounted, reactive } from 'vue';
 import useLoading from '@/hooks/loading';
-import { createResultType, findResultTypeList } from '@/api/results/results';
+import { createResultType, findResultTypeList, updateResultType } from '@/api/results/results';
 import ResultTableCreation from '@/views/results/result-type/component/result-table-creation.vue';
 
 export default {
   components: { ResultTableCreation },
   setup() {
-    const currentStep = ref(1);
     const { loading, setLoading } = useLoading();
-
-    const resultTypeTreeSelect = ref([]);
-
-    const resultType = ref({});
-    const formRef = ref();
     const message =
       getCurrentInstance()?.appContext.config.globalProperties.$message;
-    const onSubmitClick = async () => {
-      const res = await formRef.value?.validate();
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-      if (res) {
-        message.warning('保存成果类型失败');
-      } else {
-        createResultType(resultType.value).then(() => {
-          message.success('创建成果类型成功');
-          currentStep.value += 1;
-        });
-      }
-    };
 
-    const prevStep = (currStep) => {
-      currentStep.value = currStep - 1;
-    };
-
-    const newTableModel = ref({
-      name: '',
-    });
-    const resultTableTabs = ref([]);
-    const newTableInputRules = [
-      {
-        validator: (value, cb) => {
-          return new Promise((resolve) => {
-            // eslint-disable-next-line no-restricted-syntax
-            for (const tab of resultTableTabs.value) {
-              if (value === tab.title) {
-                cb('名称重复，请重新输入！');
-              }
-            }
-            resolve();
-          });
-        },
-      },
-    ];
-    const newResultTableTab = () => {
-      resultTableTabs.value.push({
-        key: newTableModel.value.name,
-        title: newTableModel.value.name,
-      });
-    };
-    const newARow = () => {
-      // TODO
-    };
-
+    /** 表单数据准备 */
+    const resultTypeTreeSelect = ref([]);
     onMounted(() => {
       findResultTypeList({
         enablePagination: false,
@@ -204,22 +176,130 @@ export default {
         resultTypeTreeSelect.value = res.data.list;
       });
     });
+    /** 表单数据准备 end */
+
+    /** 步骤条 */
+    const currentStep = ref(1);
+    const stepVersion = reactive({
+      prevStep: 0,
+    });
+    const prevStep = (currStep) => {
+      if (currentStep.value === 2) {
+        stepVersion.prevStep += 1;
+      }
+      currentStep.value = currStep - 1;
+    };
+    /** 步骤条 end */
+
+    /** 成果类型创建与更新 */
+    const resultType = ref({});
+    const formRef = ref();
+    const prevStepToUpdateResultType = () => {
+      updateResultType(resultType.value).then(() => {
+        message.success('更新成果类型成功');
+      });
+    };
+    const createResultTypeClick = async () => {
+      const res = await formRef.value?.validate();
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      if (res) {
+        message.warning('保存成果类型失败');
+      } else {
+        if (stepVersion.prevStep >= 1) {
+          prevStepToUpdateResultType(resultType.value);
+          currentStep.value += 1;
+          return;
+        }
+        createResultType(resultType.value).then(() => {
+          message.success('创建成果类型成功');
+          currentStep.value += 1;
+        });
+      }
+    };
+    /** 成果类型创建 end */
+
+    /** 成果表创建 */
+    const newTableModel = ref({
+      name: '',
+    });
+    const resultTableTabs = ref([]);
+    const currentTabKey = ref('');
+    const nameResultTableStatus = ref('');
+    const newTableInputRules = [
+      {
+        validator: (value, cb) => {
+          value = value.split(' ').join('');
+          newTableModel.value.name = value;
+          // eslint-disable-next-line no-restricted-syntax
+          for (const tab of resultTableTabs.value) {
+            if (!value) {
+              cb('名称不能为空');
+            }
+            if (!value || value === tab.title) {
+              cb('名称重复，请重新输入！');
+              nameResultTableStatus.value = 'error';
+            } else {
+              nameResultTableStatus.value = 'success';
+            }
+          }
+        },
+      },
+    ];
+    const tableRefs = {};
+    const newResultTableTab = () => {
+      if (nameResultTableStatus.value === 'error') {
+        newTableModel.value.name = '';
+        return;
+      }
+
+      resultTableTabs.value.push({
+        key: newTableModel.value.name,
+        title: newTableModel.value.name,
+      });
+      tableRefs[newTableModel.value.name] = ref(null);
+      currentTabKey.value = newTableModel.value.name;
+      newTableModel.value.name = '';
+    };
+    const resultTableTabSwitched = (key) => {
+      currentTabKey.value = key;
+    };
+    const deleteResultTableTab = (key) => {
+      const rtTabs = resultTableTabs.value;
+      if (currentTabKey.value === key && rtTabs.length !== 0) {
+        currentTabKey.value = rtTabs[0].key;
+      }
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < rtTabs.length; i++) {
+        if (rtTabs[i].key === key) {
+          rtTabs.splice(i, 1);
+        }
+      }
+    };
+    /** 成果表创建 end */
 
     return {
       currentStep,
       loading,
       formRef,
-      onSubmitClick,
+      createResultTypeClick,
+      prevStepToUpdateResultType,
       prevStep,
       resultType,
+      nameResultTableStatus,
 
       resultTypeTreeSelect,
 
       newTableModel,
       resultTableTabs,
       newResultTableTab,
+      deleteResultTableTab,
       newTableInputRules,
-      newARow,
+      resultTableTabSwitched,
+      currentTabKey,
+      ...tableRefs,
     };
   },
 };
