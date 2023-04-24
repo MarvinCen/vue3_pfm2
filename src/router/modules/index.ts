@@ -1,6 +1,7 @@
 /** pfm */
 import Homepage from '@/router/modules/homepage';
 import Results from '@/router/modules/results';
+import BasicData from '@/router/modules/basic-data';
 /** pfm end */
 
 import Dashboard from './dashboard';
@@ -29,5 +30,6 @@ export default [
   /** pfm */
   Homepage,
   Results,
+  BasicData,
   /** pfm end */
 ];

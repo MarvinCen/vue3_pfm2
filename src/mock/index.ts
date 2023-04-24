@@ -23,6 +23,7 @@ import '@/views/user/setting/mock';
 
 /** pfm */
 import '@/views/results/mock';
+import '@/views/basic-data/organization/mock';
 /** pfm end */
 
 Mock.setup({

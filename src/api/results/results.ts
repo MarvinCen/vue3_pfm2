@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ReqPagerParams } from '@/types/global';
 import { ResultTable, ResultType } from '@/types/results';
-import { FieldRule } from '@arco-design/web-vue';
 
 export function findResultTypeList(params: ReqPagerParams) {
   return axios.get('/results/resultType/', {

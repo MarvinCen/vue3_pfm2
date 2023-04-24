@@ -30,6 +30,7 @@ import localeUserSetting from '@/views/user/setting/locale/en-US';
 /** pfm */
 import homepage from '@/views/homepage/locale/en-US';
 import results from '@/views/results/locale/en-US';
+import basicData from '@/views/basic-data/locale/en-US';
 /** pfm end */
 import localeSettings from './en-US/settings';
 
@@ -71,5 +72,6 @@ export default {
   /** pfm */
   ...homepage,
   ...results,
+  ...basicData,
   /** pfm end */
 };
