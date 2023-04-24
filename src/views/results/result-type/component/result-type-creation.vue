@@ -117,7 +117,15 @@
         <a-result status="success" title="创建成功~">
           <template #extra>
             <a-space>
-              <a-button type="primary" @click="() => {$router.push({ name: 'resultType' })}">返回列表</a-button>
+              <a-button
+                type="primary"
+                @click="
+                  () => {
+                    $router.push({ name: 'resultType' });
+                  }
+                "
+                >返回列表</a-button
+              >
             </a-space>
           </template>
         </a-result>
@@ -155,7 +163,11 @@
 <script>
 import { ref, getCurrentInstance, onMounted, reactive } from 'vue';
 import useLoading from '@/hooks/loading';
-import { createResultType, findResultTypeList, updateResultType } from '@/api/results/results';
+import {
+  createResultType,
+  findResultTypeList,
+  updateResultType,
+} from '@/api/results/results';
 import ResultTableCreation from '@/views/results/result-type/component/result-table-creation.vue';
 
 export default {

@@ -3,65 +3,81 @@
     <a-layout>
       <a-layout>
         <a-layout-sider :resize-directions="['right']">
-          <a-card hoverable :style="{ width: '100%', marginBottom: '20px' }">
-            <div
-              :style="{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }"
-            >
-              <span
+          <div style="margin-right: 8px">
+            <a-card hoverable :bordered="false" :style="{ width: '100%' }">
+              <div
                 :style="{
                   display: 'flex',
                   alignItems: 'center',
-                  color: '#1D2129',
+                  justifyContent: 'space-between',
                 }"
               >
-                <a-avatar
+                <span
                   :style="{
-                    marginRight: '8px',
-                    backgroundColor: '#165DFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: '#1D2129',
                   }"
-                  :size="28"
                 >
-                  A
-                </a-avatar>
-                <a-typography-text>成果类型</a-typography-text>
-              </span>
-              <a-link>More</a-link>
-            </div>
-          </a-card>
-          <a-scrollbar style="height: 430px; overflow: auto">
-            <a-tree
-              :default-selected-keys="['0-0-1']"
-              :data="resultTypeTree.list"
-              :selected-keys="selectedResultType"
-              :show-line="true"
-              :check-strictly="true"
-              size="small"
-              @select="resultTypeOnSelected"
-            >
-              <template #icon>
-                <IconStar />
-              </template>
-            </a-tree>
-          </a-scrollbar>
+                  <!--                <a-avatar-->
+                  <!--                  :style="{-->
+                  <!--                    marginRight: '8px',-->
+                  <!--                    backgroundColor: '#4b4c4e',-->
+                  <!--                  }"-->
+                  <!--                  :size="28"-->
+                  <!--                >-->
+                  <!--                  <icon-down />-->
+                  <!--                </a-avatar>-->
+                  <strong style="font-size: 18px">成果类型</strong>
+                </span>
+                <a-button type="primary" shape="circle" size="small">
+                  <icon-search />
+                </a-button>
+              </div>
+            </a-card>
+            <a-scrollbar style="height: 430px; overflow: auto">
+              <a-tree
+                v-model:selected-keys="selectedResultType"
+                :data="resultTypeTree.list"
+                :show-line="true"
+                :check-strictly="true"
+                size="small"
+                animation
+                only-check-leaf
+                block-node
+                @select="resultTypeOnSelected"
+              >
+                <!--              <template #icon>-->
+                <!--                <IconStar />-->
+                <!--              </template>-->
+              </a-tree>
+            </a-scrollbar>
+          </div>
         </a-layout-sider>
         <a-layout-content>
           <div style="height: 100%; width: 100%; margin-left: 10px">
-            <a-empty v-if="noResultTypeSelected">
-              <template #image>
-                <icon-exclamation-circle-fill />
-              </template>
-              请先在左侧选择成果类型~
-            </a-empty>
+            <div
+              v-if="noResultTypeSelected"
+              style="display: table; width: 100%; height: 90%"
+            >
+              <div style="display: table-cell; vertical-align: middle">
+                <a-empty>
+                  <template #image>
+                    <icon-exclamation-circle-fill />
+                  </template>
+                  先在左侧选择成果类型~
+                </a-empty>
+              </div>
+            </div>
             <a-tabs
               v-else
               ref="resultTableTab"
               :justify="true"
               :animation="true"
             >
+              <template #extra>
+                <strong>成果表</strong>
+              </template>
               <a-tab-pane
                 v-for="table in resultTables.value"
                 :key="table.eid"
@@ -154,12 +170,14 @@
                 </a-row>
                 <a-table
                   v-model:expandedKeys="expandedKeys"
-                  row-key="eid"
+                  row-key="rowId"
                   :columns="columns"
                   :data="tableData.list"
                   :pagination="paginationProp"
                   :row-selection="rowSelection"
                   :row-click="rowClick"
+                  :scrollbar="false"
+                  :scroll="{ x: '150%', y: '200%' }"
                   @page-change="pageChange"
                   @page-size-change="pageSizeChange"
                 >
@@ -186,16 +204,17 @@
 
 <script lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import {
-  PaginationProps,
-  TableColumnData,
-  TableRowSelection,
-} from '@arco-design/web-vue';
+import { PaginationProps, TableRowSelection } from '@arco-design/web-vue';
 import { BasePaginationSetting, Response } from '@/types/global';
 import fetchPageList from '@/utils/request';
-import { findResultTablesBy, findResultTypeList } from '@/api/results/results';
+import {
+  findResultTableColumns,
+  findResultTableDataById,
+  findResultTablesBy,
+  findResultTypeList,
+} from '@/api/results/results';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
+import { ResultTable } from '@/types/results';
 
 const initFormModel = () => {
   return {
@@ -217,7 +236,6 @@ export default {
   setup(props: Data) {
     const usageTypeRef = ref(props.usageType);
     const expandedKeys = ref([]);
-    const { t } = useI18n();
     const formModel = ref(initFormModel());
     const pager: PaginationProps = reactive({
       current: 1,
@@ -233,41 +251,8 @@ export default {
       checkStrictly: true,
     });
 
-    const columns: TableColumnData[] = [
-      {
-        title: t('results.resultType.column.title.name'),
-        dataIndex: 'name',
-        ellipsis: true,
-        tooltip: true,
-        align: 'center',
-      },
-      {
-        title: t('results.resultType.column.title.departmentName'),
-        dataIndex: 'departmentName',
-        ellipsis: true,
-        tooltip: true,
-        align: 'center',
-      },
-      {
-        title: t('global.column.remark'),
-        dataIndex: 'remark',
-        ellipsis: true,
-        tooltip: true,
-        align: 'center',
-      },
-      {
-        title: t('results.resultType.column.title.status'),
-        dataIndex: 'status',
-        ellipsis: true,
-        tooltip: true,
-        align: 'center',
-      },
-      {
-        title: t('global.column.operation'),
-        slotName: 'operation',
-        align: 'center',
-      },
-    ];
+    const columns = ref<any[]>([]);
+    // TODO 将每个tab选项卡的成果表数据独立出来
     const tableData = reactive({
       list: [],
     });
@@ -276,24 +261,6 @@ export default {
       formModel.value = initFormModel();
     };
 
-    const search = () => {
-      fetchPageList(
-        {
-          enablePagination: true,
-          pager: {
-            current: pager.current,
-            pageSize: pager.pageSize,
-            total: pager.total,
-          },
-          conditions: formModel.value,
-        },
-        {
-          tableData,
-          pager,
-        },
-        findResultTypeList
-      );
-    };
     function pageChange(page: number): number {
       pager.current = page;
       fetchPageList(
@@ -342,16 +309,44 @@ export default {
     });
 
     const selectedResultType = ref([]); // actually only one selected in the array
-    const resultTables = reactive({
-      value: undefined,
+    const resultTables = reactive<{ value: ResultTable[] }>({
+      value: [],
     });
     const resultTableTab = ref(null);
     const noResultTypeSelected = ref(true);
     const resultTypeOnSelected = (checkedKeys: Array<string | number>) => {
       const eid = checkedKeys[0] as number;
-      findResultTablesBy(eid).then((res) => {
-        const resp = res as Response;
+      findResultTablesBy(eid).then((r1) => {
+        const resp = r1 as Response;
         resultTables.value = resp.data.list;
+
+        if (!resultTables.value) {
+          return;
+        }
+        const rt = resultTables.value[0];
+        findResultTableColumns(rt.eid).then((r2) => {
+          const { columns: rtColumns, resultTableId } = (r2 as Response).data;
+          columns.value.splice(0);
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i < rtColumns.length; i++) {
+            const rtCol = rtColumns[i];
+            const convertedCol = {
+              title: rtCol.name,
+              dataIndex: rtCol.name,
+              ellipsis: true,
+              tooltip: true,
+              align: 'center',
+              width: '',
+            };
+            if (i === 0) convertedCol.width = '80px';
+            if (i === rtColumns.length - 1) convertedCol.width = '120px';
+            columns.value.push(convertedCol);
+          }
+          findResultTableDataById(resultTableId).then((r3) => {
+            const { list } = (r3 as Response).data;
+            tableData.list = list;
+          });
+        });
       });
       noResultTypeSelected.value = false;
       return eid;
@@ -365,7 +360,6 @@ export default {
       rowSelection,
       formModel,
       reset,
-      search,
       paginationProp: pager,
       pageChange,
       pageSizeChange,
@@ -383,7 +377,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.container {
+  padding: 0 20px 20px 20px;
+}
+
 .layout-demo :deep(.arco-layout-sider-children),
 .layout-demo :deep(.arco-layout-content) {
   display: flex;
@@ -396,7 +394,7 @@ export default {
   width: 230px;
   min-width: 180px;
   max-width: 500px;
-  min-height: 520px;
-  max-height: 520px;
+  min-height: 550px;
+  max-height: 550px;
 }
 </style>

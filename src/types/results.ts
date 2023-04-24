@@ -18,3 +18,15 @@ export interface ResultTable {
   resultTypeId: number;
   name: string;
 }
+
+export interface ResultTableColumn {
+  eid: number;
+  resultTableId: number;
+  name: string;
+  componentType: string;
+  dataType: string;
+  unique: boolean;
+  nullable: boolean;
+  example: string;
+  designateAs: string;
+}

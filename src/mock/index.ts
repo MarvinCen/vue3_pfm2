@@ -22,8 +22,7 @@ import '@/views/user/setting/mock';
 /** simple end */
 
 /** pfm */
-import '@/views/results/result-type/mock';
-import '@/views/results/input/mock';
+import '@/views/results/mock';
 /** pfm end */
 
 Mock.setup({

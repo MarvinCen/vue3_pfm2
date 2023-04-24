@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ReqPagerParams } from '@/types/global';
-import {ResultTable, ResultType} from '@/types/results';
-import {FieldRule} from "@arco-design/web-vue";
+import { ResultTable, ResultType } from '@/types/results';
+import { FieldRule } from '@arco-design/web-vue';
 
 export function findResultTypeList(params: ReqPagerParams) {
   return axios.get('/results/resultType/', {
@@ -36,6 +36,18 @@ export function createResultTable(resultTables: ResultTable[]) {
   return axios.post('results/resultTable', resultTables);
 }
 
-export function test(record: Record<string, FieldRule | FieldRule[]>) {
+export function findResultTableColumns(resultTableId: number) {
+  return axios.get('results/resultTable/columns', {
+    params: {
+      resultTableId,
+    },
+  });
+}
 
+export function findResultTableDataById(eid: number) {
+  return axios.get('results/cellData/list', {
+    params: {
+      eid,
+    },
+  });
 }
