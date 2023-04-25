@@ -148,7 +148,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { BasePaginationSetting } from '@/types/global';
-import { findResultTypeList } from '@/api/results/results';
+import { findResultTypes } from '@/api/results/results';
 import {
   PaginationProps,
   TableColumnData,
@@ -240,7 +240,7 @@ export default {
           tableData,
           pager,
         },
-        findResultTypeList
+        findResultTypes
       );
     };
 
@@ -259,7 +259,7 @@ export default {
           tableData,
           pager,
         },
-        findResultTypeList
+        findResultTypes
       );
       return page;
     }
@@ -289,7 +289,7 @@ export default {
           tableData,
           pager,
         },
-        findResultTypeList
+        findResultTypes
       );
     });
 

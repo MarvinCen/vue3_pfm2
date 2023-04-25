@@ -165,7 +165,7 @@ import { ref, getCurrentInstance, onMounted, reactive } from 'vue';
 import useLoading from '@/hooks/loading';
 import {
   createResultType,
-  findResultTypeList,
+  findResultTypes,
   updateResultType,
 } from '@/api/results/results';
 import ResultTableCreation from '@/views/results/result-type/component/result-table-creation.vue';
@@ -180,7 +180,7 @@ export default {
     /** 表单数据准备 */
     const resultTypeTreeSelect = ref([]);
     onMounted(() => {
-      findResultTypeList({
+      findResultTypes({
         enablePagination: false,
         conditions: {},
         props: ['eid', 'name'],

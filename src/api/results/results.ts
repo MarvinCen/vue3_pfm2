@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ReqPagerParams } from '@/types/global';
 import { ResultTable, ResultType } from '@/types/results';
 
-export function findResultTypeList(params: ReqPagerParams) {
+export function findResultTypes(params: ReqPagerParams) {
   return axios.get('/results/resultType/', {
     params,
   });

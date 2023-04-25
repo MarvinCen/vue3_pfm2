@@ -211,7 +211,7 @@ import {
   findResultTableColumns,
   findResultTableDataById,
   findResultTablesBy,
-  findResultTypeList,
+  findResultTypes,
 } from '@/api/results/results';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
 import { ResultTable } from '@/types/results';
@@ -276,7 +276,7 @@ export default {
           tableData,
           pager,
         },
-        findResultTypeList
+        findResultTypes
       );
       return page;
     }
@@ -304,7 +304,7 @@ export default {
         {
           tableData: resultTypeTree,
         },
-        findResultTypeList
+        findResultTypes
       );
     });
 
