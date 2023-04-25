@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['成果管理', '成果类型']" />
+    <Breadcrumb
+      :items="['成果管理', '成果类型']"
+      :internationalization="false"
+    />
     <a-card class="general-card" :title="$t('menu.list.searchTable')">
       <a-row>
         <a-col :flex="1">

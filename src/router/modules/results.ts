@@ -53,14 +53,14 @@ export default {
       },
     },
     {
-      path: 'resultTableCreation',
-      name: 'resultTableCreation',
+      path: 'resultTypeCreation',
+      name: 'resultTypeCreation',
       component: () =>
         import(
           '@/views/results/result-type/component/result-type-creation.vue'
         ),
       meta: {
-        locale: '成果类型创建',
+        locale: 'menu.results.resultTypeCreation',
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],

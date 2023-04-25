@@ -4,4 +4,5 @@ export default {
   'menu.results.auditResult': 'audit result',
   'menu.results.myResult': 'my result',
   'menu.results.resultType': 'type of result',
+  'menu.results.resultTypeCreation': 'creation of result type',
 };

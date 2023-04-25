@@ -4,6 +4,7 @@ export default {
   'menu.results.auditResult': '成果审核',
   'menu.results.myResult': '我的成果',
   'menu.results.resultType': '成果类型',
+  'menu.results.resultTypeCreation': '成果类型创建',
   'results.resultType.column.field.name': 'name',
   'results.resultType.column.field.departmentName': 'departmentName',
   'results.resultType.column.field.status': 'status',
