@@ -30,5 +30,16 @@ export default {
         roles: ['*'],
       },
     },
+    {
+      path: 'position',
+      name: 'position',
+      component: () => import('@/views/basic-data/position/index.vue'),
+      meta: {
+        locale: 'menu.basicData.position',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+      },
+    },
   ],
 };

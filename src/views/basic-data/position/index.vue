@@ -26,8 +26,6 @@
         :data="tableData.list"
         :pagination="pager"
         :row-selection="rowSelection"
-        :scrollbar="false"
-        :scroll="{ x: '150%', y: '200%' }"
         @row-click="rowClick"
         @page-change="pageChange"
         @page-size-change="pageSizeChange"
@@ -60,6 +58,7 @@ import { BasePaginationSetting } from '@/types/global';
 import fetchPageList from '@/utils/request';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
 import { findEmployees } from '@/api/basic-data/organization';
+import { findPositions } from '@/api/basic-data/position';
 
 const initFormModel = () => {
   return {
@@ -84,64 +83,36 @@ const rowSelection: TableRowSelection = reactive({
 
 const columns: TableColumnData[] = [
   {
-    title: t('basicData.employee.column.title.name'),
+    title: t('basicData.position.column.title.name'),
     dataIndex: 'name',
     ellipsis: true,
     tooltip: true,
     align: 'center',
   },
   {
-    title: t('basicData.employee.column.title.sex'),
-    dataIndex: 'sex',
+    title: t('basicData.position.column.title.positionLevel'),
+    dataIndex: 'positionLevel',
     ellipsis: true,
     tooltip: true,
     align: 'center',
   },
   {
-    title: t('basicData.employee.column.title.jobNumber'),
-    dataIndex: 'jobNumber',
+    title: t('basicData.position.column.title.professionalTitle'),
+    dataIndex: 'professionalTitle',
     ellipsis: true,
     tooltip: true,
     align: 'center',
   },
   {
-    title: t('basicData.employee.column.title.linkTel'),
-    dataIndex: 'linkTel',
+    title: t('basicData.position.column.title.positionGrade'),
+    dataIndex: 'positionGrade',
     ellipsis: true,
     tooltip: true,
     align: 'center',
   },
   {
-    title: t('basicData.employee.column.title.birthDate'),
-    dataIndex: 'birthDate',
-    ellipsis: true,
-    tooltip: true,
-    align: 'center',
-  },
-  {
-    title: t('basicData.employee.column.title.email'),
-    dataIndex: 'email',
-    ellipsis: true,
-    tooltip: true,
-    align: 'center',
-  },
-  {
-    title: t('basicData.employee.column.title.hireType'),
-    dataIndex: 'hireType',
-    ellipsis: true,
-    tooltip: true,
-    align: 'center',
-  },
-  {
-    title: t('basicData.employee.column.title.postSequenceLevel'),
-    dataIndex: 'postSequenceLevel',
-    ellipsis: true,
-    tooltip: true,
-    align: 'center',
-  },
-  {
-    title: t('basicData.employee.column.title.status'),
-    dataIndex: 'status',
+    title: t('basicData.position.column.title.remark'),
+    dataIndex: 'remark',
     ellipsis: true,
     tooltip: true,
     align: 'center',
@@ -171,7 +142,7 @@ const search = () => {
       tableData,
       pager,
     },
-    findEmployees
+    findPositions
   );
 };
 
@@ -190,7 +161,7 @@ function pageChange(page: number): number {
       tableData,
       pager,
     },
-    findEmployees
+    findPositions
   );
   return page;
 }
@@ -220,7 +191,7 @@ onMounted(() => {
       tableData,
       pager,
     },
-    findEmployees
+    findPositions
   );
 });
 </script>

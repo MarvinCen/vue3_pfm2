@@ -26,3 +26,11 @@ export interface Employee {
   psum?: string;
   postSequenceLevel?: string;
 }
+
+export interface position {
+  name?: string;
+  positionLevel?: string;
+  professionalTitle?: string;
+  positionGrade?: string;
+  remark?: string;
+}

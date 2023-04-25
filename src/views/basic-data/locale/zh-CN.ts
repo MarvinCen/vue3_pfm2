@@ -2,6 +2,7 @@ export default {
   'menu.basicData': '基础数据',
   'menu.basicData.department': '部门管理',
   'menu.basicData.employee': '职员管理',
+  'menu.basicData.position': '岗位职级',
   'basicData.department.column.title.name': '部门名称',
   'basicData.department.column.title.officePhoneNumber': '联系电话',
   'basicData.department.column.title.faxNumber': '传真号',
@@ -17,4 +18,9 @@ export default {
   'basicData.employee.column.title.sex': '性别',
   'basicData.employee.column.title.hireType': '聘用类型',
   'basicData.employee.column.title.postSequenceLevel': '岗位等级',
+  'basicData.position.column.title.name': '岗位名称',
+  'basicData.position.column.title.positionLevel': '岗位级别',
+  'basicData.position.column.title.professionalTitle': '职称',
+  'basicData.position.column.title.positionGrade': '岗位等级',
+  'basicData.position.column.title.remark': '备注',
 };
