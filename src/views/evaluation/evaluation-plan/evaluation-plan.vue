@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.basicData', 'menu.basicData.position']" />
+    <Breadcrumb
+      :items="['menu.evaluation', 'menu.evaluation.evaluationPlan']"
+    />
     <a-card class="general-card">
       <a-row style="margin-bottom: 16px">
         <a-col :span="16">
@@ -10,7 +12,10 @@
         </a-col>
         <a-col :span="8" style="text-align: right">
           <a-space style="margin-top: 20px">
-            <a-button type="primary">
+            <a-button
+              type="primary"
+              @click="$router.push('evaluationPlanDetails')"
+            >
               <template #icon>
                 <icon-plus />
               </template>
@@ -195,7 +200,7 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="less">
+<style scoped>
 .container {
   padding: 0 20px 20px 20px;
 }

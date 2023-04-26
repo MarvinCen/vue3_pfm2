@@ -31,6 +31,7 @@ import localeUserSetting from '@/views/user/setting/locale/zh-CN';
 import homepage from '@/views/homepage/locale/zh-CN';
 import results from '@/views/results/locale/zh-CN';
 import basicData from '@/views/basic-data/locale/zh-CN';
+import evaluation from '@/views/evaluation/locale/zh-CN';
 /** pfm end */
 
 import localeSettings from './zh-CN/settings';
@@ -76,5 +77,6 @@ export default {
   ...homepage,
   ...results,
   ...basicData,
+  ...evaluation,
   /** pfm end */
 };

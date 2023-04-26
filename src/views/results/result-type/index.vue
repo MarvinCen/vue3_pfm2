@@ -78,7 +78,10 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="16">
           <a-space>
-            <a-button type="primary" @click="$router.push('resultTypeCreation')">
+            <a-button
+              type="primary"
+              @click="$router.push('resultTypeCreation')"
+            >
               <template #icon>
                 <icon-plus />
               </template>
