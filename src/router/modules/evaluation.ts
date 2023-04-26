@@ -11,22 +11,9 @@ export default {
     {
       path: 'evaluationPlan',
       name: 'evaluationPlan',
-      component: () =>
-        import('@/views/evaluation/evaluation-plan/index.vue'),
+      component: () => import('@/views/evaluation/evaluation-plan/index.vue'),
       meta: {
         locale: 'menu.evaluation.evaluationPlan',
-        requiresAuth: true,
-        icon: 'icon-dashboard',
-        roles: ['*'],
-      },
-    },
-    {
-      path: 'evaluationProject',
-      name: 'evaluationProject',
-      component: () =>
-        import('@/views/evaluation/evaluation-plan/index.vue'),
-      meta: {
-        locale: 'menu.evaluation.evaluationProject',
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],
@@ -41,6 +28,33 @@ export default {
         ),
       meta: {
         locale: 'menu.evaluation.evaluationPlanCreation',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+    {
+      path: 'evaluationProject',
+      name: 'evaluationProject',
+      component: () =>
+        import('@/views/evaluation/evaluation-project/index.vue'),
+      meta: {
+        locale: 'menu.evaluation.evaluationProject',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+      },
+    },
+    {
+      path: 'evaluationProjectDetails',
+      name: 'evaluationProjectDetails',
+      component: () =>
+        import(
+          '@/views/evaluation/evaluation-project/component/project-details.vue'
+        ),
+      meta: {
+        locale: 'menu.evaluation.evaluationProjectCreation',
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],
