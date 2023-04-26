@@ -10,3 +10,12 @@ export function findEvaluationPlans() {
     },
   });
 }
+
+export function findEmployeeByPlanFilter(positions: string[], professionalTitle: string[]) {
+  return axios.get('/common/organization/employee', {
+    params: {
+      positions,
+      professionalTitle,
+    }
+  })
+}

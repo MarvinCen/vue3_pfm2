@@ -57,21 +57,25 @@
         title="选择考核方案"
         style="margin-top: 20px"
       >
-        <a-select
-          v-model="selectedPlans"
-          multiple
-          allow-clear
-          :scrollbar="true"
-          size="large"
-        >
-          <a-option
-            v-for="plan in allPlans"
-            :key="plan.eid"
-            :value="plan"
-            :label="plan.name"
-          />
-        </a-select>
-        <plan-selection />
+        <a-form :label-col-props="{span: 2, offset: 0}">
+          <a-form-item label="考核方案：">
+            <a-select
+              v-model="selectedPlans"
+              multiple
+              allow-clear
+              :scrollbar="true"
+              size="large"
+            >
+              <a-option
+                v-for="plan in allPlans"
+                :key="plan.eid"
+                :value="plan"
+                :label="plan.name"
+              />
+            </a-select>
+          </a-form-item>
+        </a-form>
+        <plan-selection :plans="selectedPlans" />
       </a-card>
     </a-form>
   </div>
@@ -89,9 +93,10 @@ const project = ref({});
 const allPlans = ref<EvaluationPlan[]>([]);
 onMounted(() => {
   findEvaluationPlans().then((res) => {
+    console.log(666)
     const resp = res as Response;
     allPlans.value = resp.data.list;
-    console.log(allPlans.value);
+    console.log(allPlans.value)
   });
 });
 
