@@ -12,7 +12,7 @@ export default {
       path: 'evaluationPlan',
       name: 'evaluationPlan',
       component: () =>
-        import('@/views/evaluation/evaluation-plan/evaluation-plan.vue'),
+        import('@/views/evaluation/evaluation-plan/index.vue'),
       meta: {
         locale: 'menu.evaluation.evaluationPlan',
         requiresAuth: true,
@@ -24,7 +24,7 @@ export default {
       path: 'evaluationProject',
       name: 'evaluationProject',
       component: () =>
-        import('@/views/evaluation/evaluation-plan/evaluation-plan.vue'),
+        import('@/views/evaluation/evaluation-plan/index.vue'),
       meta: {
         locale: 'menu.evaluation.evaluationProject',
         requiresAuth: true,

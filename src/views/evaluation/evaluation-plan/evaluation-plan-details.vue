@@ -48,8 +48,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import PlanBasicInfo from '@/views/evaluation/component/plan-basic-info.vue';
-import PlanIndicator from '@/views/evaluation/component/plan-indicator.vue';
+import PlanBasicInfo from '@/views/evaluation/evaluation-plan/component/plan-basic-info.vue';
+import PlanIndicator from '@/views/evaluation/evaluation-plan/component/plan-indicator.vue';
 
 export default defineComponent({
   components: { PlanIndicator, PlanBasicInfo },
