@@ -36,6 +36,8 @@ export interface EvaluationPlan {
 export interface EvaluationProject {
   eid?: number;
   organizationId?: number;
+  type?: string;
+  year?: number;
   name?: string;
   startTime?: Date;
   endTime?: Date;
@@ -43,4 +45,5 @@ export interface EvaluationProject {
   pfmCheckedExpireTime?: Date;
   status?: string;
   evaluationPlans?: EvaluationPlan[];
+  evaluationPlanIds?: number[];
 }

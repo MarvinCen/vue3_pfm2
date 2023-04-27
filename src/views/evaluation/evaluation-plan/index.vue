@@ -178,7 +178,6 @@ const rowClick = (record?: TableData, event?: Event) => {
 };
 
 onMounted(() => {
-	console.log(111)
   fetchPageList(
     {
       enablePagination: true,

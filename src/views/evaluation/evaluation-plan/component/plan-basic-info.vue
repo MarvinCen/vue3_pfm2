@@ -95,17 +95,14 @@ export default defineComponent({
 
 		onMounted(() => {
 			findProTitlesGroupByPosition();
-			console.log(proTitles)
     })
 
     const professionalTitlesOptions = computed(() =>{
-			console.log(123)
 			const positions = formData.value.positions;
 			const opts = [];
 			for (let i = 0; i < positions.length; i++) {
         opts.push(proTitles[positions[i]]);
       }
-			console.log(opts);
 			return opts;
     })
 

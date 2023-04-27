@@ -34,8 +34,11 @@
           </div>
         </template>
         <template #description>
-          {{ '开始时间：' + evaluationProject.startTime }}
-          {{ '結束時間：' + evaluationProject.endTime }}
+          <div class="desc">
+            {{ '开始时间：' + evaluationProject.startTime }}
+            <br />
+            {{ '结束时间：' + evaluationProject.endTime }}
+					</div>
           <slot></slot>
         </template>
       </a-card-meta>
@@ -79,4 +82,11 @@ defineProps({
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.desc {
+  color: rgb(var(--gray-6));;
+  font-size: 12px;
+  line-height: 20px;
+  margin-top: 10px;
+}
+</style>

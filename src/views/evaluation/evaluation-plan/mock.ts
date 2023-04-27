@@ -12,7 +12,6 @@ setupMock({
       (options: GetParams) => {
         // @ts-ignore
         const params = qs.parseUrl(options.url).query as unknown as ReqPagerParams;
-        console.log(params)
         const orgId = Number(Mock.Random.id());
         const data: { list: EvaluationPlan[] } = Mock.mock({
           'list|6-8': [

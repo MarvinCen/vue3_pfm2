@@ -47,21 +47,6 @@ export default {
       },
     },
     {
-      path: 'evaluationProjectCreation',
-      name: 'evaluationProjectCreation',
-      component: () =>
-        import(
-          '@/views/evaluation/evaluation-project/component/project-creation.vue'
-        ),
-      meta: {
-        locale: 'menu.evaluation.evaluationProjectCreation',
-        requiresAuth: true,
-        icon: 'icon-dashboard',
-        roles: ['*'],
-        hideInMenu: true,
-      },
-    },
-    {
       path: 'evaluationProjectDetail',
       name: 'evaluationProjectDetail',
       component: () =>

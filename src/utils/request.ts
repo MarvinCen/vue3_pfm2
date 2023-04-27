@@ -15,7 +15,6 @@ const fetchPageList = async (
     data: undefined,
     message: undefined,
   };
-  console.log(apiMethod)
   apiMethod(reqPagerParams)
     .then((res) => {
       response = res as Response;
