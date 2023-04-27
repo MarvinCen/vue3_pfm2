@@ -7,7 +7,7 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="16">
           <a-space style="margin-top: 20px">
-            <a-input-search :style="{ width: '320px' }" search-button />
+            <MultiSearch :columns="columns" @search="search" />
           </a-space>
         </a-col>
         <a-col :span="8" style="text-align: right">
@@ -62,7 +62,8 @@ import {
 import { BasePaginationSetting } from '@/types/global';
 import fetchPageList from '@/utils/request';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
-import { findPositions } from '@/api/basic-data/position';
+import {findEvaluationPlans} from "@/api/evaluation/evaluation-plan";
+import MultiSearch from "@/components/table/multi-search.vue";
 
 const initFormModel = () => {
   return {
@@ -87,35 +88,30 @@ const rowSelection: TableRowSelection = reactive({
 
 const columns: TableColumnData[] = [
   {
-    title: t('basicData.position.column.title.name'),
+    title: t('evaluation.plan.column.title.name'),
     dataIndex: 'name',
     ellipsis: true,
     tooltip: true,
     align: 'center',
+		fixed: 'left',
+    width: 120,
   },
   {
-    title: t('basicData.position.column.title.positionLevel'),
-    dataIndex: 'positionLevel',
+    title: t('evaluation.plan.column.title.positions'),
+    dataIndex: 'positions',
     ellipsis: true,
     tooltip: true,
     align: 'center',
   },
   {
-    title: t('basicData.position.column.title.professionalTitle'),
-    dataIndex: 'professionalTitle',
+    title: t('evaluation.plan.column.title.professionalTitles'),
+    dataIndex: 'professionalTitles',
     ellipsis: true,
     tooltip: true,
     align: 'center',
   },
   {
-    title: t('basicData.position.column.title.positionGrade'),
-    dataIndex: 'positionGrade',
-    ellipsis: true,
-    tooltip: true,
-    align: 'center',
-  },
-  {
-    title: t('basicData.position.column.title.remark'),
+    title: t('evaluation.plan.column.title.remark'),
     dataIndex: 'remark',
     ellipsis: true,
     tooltip: true,
@@ -125,13 +121,14 @@ const columns: TableColumnData[] = [
     title: t('global.column.operation'),
     slotName: 'operation',
     align: 'center',
-    width: 180,
+    width: 240,
+    fixed: 'right',
   },
 ];
 const tableData = reactive({
   list: [],
 });
-const search = () => {
+const search = (formModel: any) => {
   fetchPageList(
     {
       enablePagination: true,
@@ -140,13 +137,13 @@ const search = () => {
         pageSize: pager.pageSize,
         total: pager.total,
       },
-      conditions: formModel.value,
+      conditions: formModel,
     },
     {
       tableData,
       pager,
     },
-    findPositions
+    findEvaluationPlans
   );
 };
 
@@ -165,7 +162,7 @@ function pageChange(page: number): number {
       tableData,
       pager,
     },
-    findPositions
+		findEvaluationPlans
   );
   return page;
 }
@@ -181,6 +178,7 @@ const rowClick = (record?: TableData, event?: Event) => {
 };
 
 onMounted(() => {
+	console.log(111)
   fetchPageList(
     {
       enablePagination: true,
@@ -195,7 +193,7 @@ onMounted(() => {
       tableData,
       pager,
     },
-    findPositions
+		findEvaluationPlans
   );
 });
 </script>

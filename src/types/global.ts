@@ -47,7 +47,7 @@ export interface Response {
 export interface ReqPagerParams {
   enablePagination: boolean;
   pager?: Pager;
-  conditions: any;
+  conditions?: any;
   props?: string[];
 }
 

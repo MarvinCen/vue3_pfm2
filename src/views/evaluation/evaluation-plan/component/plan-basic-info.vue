@@ -9,36 +9,29 @@
         <a-col :span="12">
           <a-form-item field="positions" label="岗位：">
             <a-select
-              :default-value="['Beijing', 'Shanghai']"
               multiple
               allow-clear
               style="width: 300px"
               :scrollbar="true"
             >
-              <a-option>Beijing</a-option>
-              <a-option :tag-props="{ color: 'red' }">Shanghai</a-option>
-              <a-option>Guangzhou</a-option>
-              <a-option disabled>Disabled</a-option>
-              <a-option>Shenzhen</a-option>
-              <a-option>Wuhan</a-option>
+							<a-option
+                v-for="position of Object.keys(proTitles)"
+                :key="position"
+                :value="position"
+              >
+								{{ position }}
+							</a-option>
             </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item field="professionalTitles" label="职称：">
             <a-select
-              :default-value="['Beijing', 'Shanghai']"
               multiple
               allow-clear
               :scrollbar="true"
-            >
-              <a-option>Beijing</a-option>
-              <a-option :tag-props="{ color: 'red' }">Shanghai</a-option>
-              <a-option>Guangzhou</a-option>
-              <a-option disabled>Disabled</a-option>
-              <a-option>Shenzhen</a-option>
-              <a-option>Wuhan</a-option>
-            </a-select>
+              :options="professionalTitlesOptions"
+            />
           </a-form-item>
         </a-col>
       </a-row>
@@ -53,14 +46,18 @@
   </a-card>
   <div class="actions">
     <a-space>
+			<a-button status="normal" @click="$router.push('evaluationPlan')"> 取消 </a-button>
       <a-button type="primary" @click="onNextClick"> 下一步 </a-button>
     </a-space>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import {computed, defineComponent, onMounted, ref, watch} from 'vue';
 import { FormInstance } from '@arco-design/web-vue/es/form';
+import {findPositions} from "@/api/basic-data/position";
+import fetchPageList from "@/utils/request";
+import {Position} from "@/types/basic-data";
 
 export default defineComponent({
   emits: ['changeStep'],
@@ -80,10 +77,45 @@ export default defineComponent({
       }
     };
 
+		const proTitles = ref<any>({});
+		const findProTitlesGroupByPosition = () => {
+			findPositions({
+        enablePagination: false
+      }).then(res => {
+				const positions: Position[] = res.data.list;
+				for (let i = 0; i < positions.length; i++) {
+          const position = positions[i].name as string;
+					if (!proTitles.value[position]) {
+						proTitles.value[position] = [];
+          }
+					proTitles.value[position].push(positions[i].professionalTitle);
+				}
+      })
+    };
+
+		onMounted(() => {
+			findProTitlesGroupByPosition();
+			console.log(proTitles)
+    })
+
+    const professionalTitlesOptions = computed(() =>{
+			console.log(123)
+			const positions = formData.value.positions;
+			const opts = [];
+			for (let i = 0; i < positions.length; i++) {
+        opts.push(proTitles[positions[i]]);
+      }
+			console.log(opts);
+			return opts;
+    })
+
     return {
       formData,
       formRef,
       onNextClick,
+
+			proTitles,
+			professionalTitlesOptions,
     };
   },
 });

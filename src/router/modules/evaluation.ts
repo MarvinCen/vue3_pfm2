@@ -24,7 +24,7 @@ export default {
       name: 'evaluationPlanDetails',
       component: () =>
         import(
-          '@/views/evaluation/evaluation-plan/evaluation-plan-details.vue'
+          '@/views/evaluation/evaluation-plan/evaluation-plan-creation.vue'
         ),
       meta: {
         locale: 'menu.evaluation.evaluationPlanCreation',

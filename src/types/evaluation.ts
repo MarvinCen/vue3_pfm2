@@ -1,6 +1,25 @@
+export interface Result {
+
+}
+
+export interface ResultMatcher {
+
+}
+
 export interface Indicator {
   eid?: number;
+  parentId?: number;
   name?: string;
+  isLeaf?: boolean;
+  code?: string;
+  score?: number;
+  unit?: string;
+  ratio?: number;
+  limitScore?: number;
+  limitItem?: number;
+  children?: Indicator[];
+  resultMatchers?: ResultMatcher[];
+  results?: Result[];
 }
 
 export interface EvaluationPlan {
@@ -9,8 +28,9 @@ export interface EvaluationPlan {
   name?: string;
   positions?: string[];
   professionalTitles?: string[];
-  indicatorRoot: Indicator;
-  customData: string;
+  indicatorRoot?: Indicator;
+  customData?: string;
+  remark?: string;
 }
 
 export interface EvaluationProject {

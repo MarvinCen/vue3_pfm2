@@ -27,7 +27,7 @@ export interface Employee {
   postSequenceLevel?: string;
 }
 
-export interface position {
+export interface Position {
   name?: string;
   positionLevel?: string;
   professionalTitle?: string;

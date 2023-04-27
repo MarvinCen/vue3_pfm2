@@ -15,34 +15,30 @@
       </a-steps>
     </a-card>
 
-    <plan-basic-info v-if="currentStep === 1" @change-step="changeStep" />
-    <plan-indicator
-      v-if="currentStep === 2"
-      @change-step="changeStep"
-      @create-evaluation-plan="doCreateEvaluationPlan"
-    />
-    <a-card v-if="currentStep === 3" style="margin-top: 20px; height: 400px">
-      <div style="margin-top: 40px">
-        <a-result status="success" title="创建成功~">
-          <template #extra>
-            <a-space>
-              <a-button
-                type="primary"
-                @click="
-                  () => {
-                    $router.push({ name: 'evaluationPlan' });
-                  }
-                "
-              >
-                返回列表
-              </a-button>
-            </a-space>
-          </template>
-        </a-result>
-      </div>
-    </a-card>
-
-    <div></div>
+    <keep-alive>
+			<plan-basic-info v-if="currentStep === 1" @change-step="changeStep" />
+			<plan-indicator
+				v-else-if="currentStep === 2"
+				@change-step="changeStep"
+				@create-evaluation-plan="doCreateEvaluationPlan"
+			/>
+			<a-card v-else-if="currentStep === 3" style="margin-top: 20px; height: 400px">
+				<div style="margin-top: 40px">
+					<a-result status="success" title="创建成功~">
+						<template #extra>
+							<a-space>
+								<a-button
+									type="primary"
+									@click="() => {$router.push({ name: 'evaluationPlan' });}"
+								>
+									返回列表
+								</a-button>
+							</a-space>
+						</template>
+					</a-result>
+				</div>
+			</a-card>
+    </keep-alive>
   </div>
 </template>
 

@@ -35,32 +35,5 @@ setupMock({
         };
       }
     );
-    Mock.mock(new RegExp(''), 'get', (options: GetParams) => {
-      const employees: Employee[] = Mock.mock({
-        'list|122-312': [
-          {
-            'eid|+1': 30000,
-            'name': '@cname',
-            'status': '就职',
-            'remark': '@csentence',
-            'jobNumber': '@id',
-            'birthDate': '@datetime',
-            'email': '@email',
-            'linkTel': '',
-            'sex': '@pick(["男", "女"])',
-            'hireType': '@pick(["年薪", "普通"])',
-            'position': '@pick(["教师", "工程师", "研究员"])',
-            'professionalTitle': '@pick(["二级", "四级", "六级"])',
-          }
-        ]
-      });
-      return {
-        code: 20000,
-        data: {
-          list: employees,
-        },
-        message: undefined,
-      }
-    })
   },
 });

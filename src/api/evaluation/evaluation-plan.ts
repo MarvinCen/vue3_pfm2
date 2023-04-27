@@ -1,12 +1,14 @@
 import axios from 'axios';
 import Mock from 'mockjs';
+import {ReqPagerParams} from "@/types/global";
 
 // eslint-disable-next-line import/prefer-default-export
-export function findEvaluationPlans() {
-  const organizationId = Number(Mock.Random.id());
+export function findEvaluationPlans(reqPagerParams: ReqPagerParams) {
+  reqPagerParams.conditions = reqPagerParams.conditions ? reqPagerParams.conditions : {};
+  reqPagerParams.conditions.organizationId = Number(Mock.Random.id());
   return axios.get('/evaluation/evaluationPlans', {
     params: {
-      organizationId,
+      reqPagerParams,
     },
   });
 }
