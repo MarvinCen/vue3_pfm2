@@ -25,7 +25,7 @@
                 <a-button
                   status="success"
                   style="position: absolute; top: 60px; right: 280px"
-                  @click="$router.push('evaluationProjectDetails')"
+                  @click="$router.push('evaluationProjectCreation')"
                 >
                   新建考核項目
                 </a-button>

@@ -42,7 +42,7 @@
     </a-space>
 
     <template #actions>
-      <a-button status="normal">查看详情</a-button>
+      <a-button status="normal" @click="$router.push('evaluationProjectDetail')">查看详情</a-button>
     </template>
   </a-card>
 </template>

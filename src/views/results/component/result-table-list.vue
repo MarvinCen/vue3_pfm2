@@ -140,6 +140,27 @@
                         我参与的
                       </a-button>
                     </a-space>
+                    <a-space v-if="usageTypeRef === 'distribution'">
+                      <a-button type="outline" status="success">
+                        <template #icon>
+													<icon-filter />
+                        </template>
+                        全部
+                      </a-button>
+											<a-button type="outline" status="warning">
+												<template #icon>
+													<icon-filter />
+												</template>
+												已分配
+											</a-button>
+											<a-button type="outline" status="danger">
+												<template #icon>
+													<icon-filter />
+												</template>
+												未分配
+											</a-button>
+											<a-input-search placeholder="" search-button/>
+                    </a-space>
                   </a-col>
                   <a-col :span="8" style="text-align: right">
                     <a-space v-if="usageTypeRef == 'input'">
@@ -165,6 +186,20 @@
                         </template>
                         批量删除
                       </a-button>
+                    </a-space>
+                    <a-space v-if="usageTypeRef === 'distribution'">
+                      <a-button status="success">
+                        <template #icon>
+                          <icon-check-circle-fill />
+                        </template>
+                        确认成果分配结果
+                      </a-button>
+<!--											<a-button status="normal">-->
+<!--												<template #icon>-->
+<!--													<icon-check-circle-fill />-->
+<!--												</template>-->
+<!--												导出Excel-->
+<!--											</a-button>-->
                     </a-space>
                   </a-col>
                 </a-row>
@@ -394,7 +429,7 @@ export default {
   width: 230px;
   min-width: 180px;
   max-width: 500px;
-  min-height: 550px;
-  max-height: 550px;
+  min-height: 597px;
+  max-height: 597px;
 }
 </style>
