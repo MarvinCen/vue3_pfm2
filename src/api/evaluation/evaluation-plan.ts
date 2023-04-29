@@ -14,7 +14,7 @@ export function findEvaluationPlans(reqPagerParams: ReqPagerParams) {
 }
 
 export function findEmployeeByPlanFilter(positions: string[], professionalTitle: string[]) {
-  return axios.get('/common/organization/employee', {
+  return axios.get('/common/organization/employees', {
     params: {
       positions,
       professionalTitle,

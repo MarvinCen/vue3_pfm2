@@ -13,7 +13,7 @@ export function findDepartments(reqPagerParams: ReqPagerParams) {
 }
 
 export function findEmployees(reqPagerParams: ReqPagerParams) {
-  return axios.get('common/organization/employee', {
+  return axios.get('/common/organization/employees', {
     params: {
       reqPagerParams,
     },

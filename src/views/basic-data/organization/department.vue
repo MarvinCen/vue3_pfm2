@@ -5,10 +5,9 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="16">
           <a-space style="margin-top: 20px">
-            <a-input-search
-              :style="{ width: '320px' }"
-              placeholder="请输入部门名称"
-              search-button
+            <multi-search
+              :columns="columns"
+              @search="search"
             />
           </a-space>
         </a-col>
@@ -62,6 +61,7 @@ import { BasePaginationSetting } from '@/types/global';
 import fetchPageList from '@/utils/request';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
 import { findDepartments } from '@/api/basic-data/organization';
+import MultiSearch from "@/components/table/multi-search.vue";
 
 const initFormModel = () => {
   return {
@@ -122,7 +122,7 @@ const columns: TableColumnData[] = [
 const tableData = reactive({
   list: [],
 });
-const search = () => {
+const search = (formModel: any) => {
   fetchPageList(
     {
       enablePagination: true,
@@ -131,7 +131,7 @@ const search = () => {
         pageSize: pager.pageSize,
         total: pager.total,
       },
-      conditions: formModel.value,
+      conditions: formModel,
     },
     {
       tableData,
