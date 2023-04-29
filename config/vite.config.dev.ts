@@ -9,6 +9,8 @@ export default mergeConfig(
       fs: {
         strict: true,
       },
+      host: 'localhost',
+      port: 8000,
     },
     // plugins: [
     //   eslint({

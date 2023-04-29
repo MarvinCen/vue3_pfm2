@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import ArcoVue from '@arco-design/web-vue';
 import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import globalComponents from '@/components';
@@ -11,6 +11,7 @@ import App from './App.vue';
 import '@arco-design/web-vue/dist/arco.css';
 import '@/assets/style/global.less';
 import '@/api/interceptor';
+import axios from "axios";
 
 const app = createApp(App);
 
@@ -24,3 +25,5 @@ app.use(globalComponents);
 app.use(directive);
 
 app.mount('#app');
+axios.defaults.timeout = 3000;
+axios.defaults.baseURL = 'http://127.0.0.1:10001';

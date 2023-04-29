@@ -38,23 +38,34 @@ setupMock({
       return failResponseWrap(null, '未登录', 50008);
     });
 
+
+    // 登出
+    Mock.mock(new RegExp('/api/user/logout'), () => {
+      return successResponseWrap(null);
+    });
+  },
+});
+
+setupMock({
+  mock: true,
+  setup() {
     // 登录
-    Mock.mock(new RegExp('/api/user/login'), (params: MockParams) => {
-      const { username, password } = JSON.parse(params.body);
-      if (!username) {
+    Mock.mock(new RegExp('/common/login/username'), (params: MockParams) => {
+      const { identification, password } = JSON.parse(params.body);
+      if (!identification) {
         return failResponseWrap(null, '手机号或邮箱不能为空', 50000);
       }
       if (!password) {
         return failResponseWrap(null, '密码不能为空', 50000);
       }
-      if (username === 'marvin' && password === '123456') {
+      if (identification === 'admin' && password === '123456') {
         window.localStorage.setItem('userRole', 'admin');
         return successResponseWrap({
           token:
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODA1Njk4MDksInVzZXJuYW1lIjoibWFydmluIn0.FfGBK9ZJ343SUI1N7tnRyRNzG1u4-17CfkqbZ81CO4k',
         });
       }
-      if (username === 'user' && password === 'user') {
+      if (identification === 'user' && password === 'user') {
         window.localStorage.setItem('userRole', 'user');
         return successResponseWrap({
           token: '54321',
@@ -62,9 +73,5 @@ setupMock({
       }
       return failResponseWrap(null, '账号或者密码错误', 50000);
     });
-    // 登出
-    Mock.mock(new RegExp('/api/user/logout'), () => {
-      return successResponseWrap(null);
-    });
-  },
-});
+  }
+})

@@ -11,13 +11,13 @@
       @submit="handleSubmit"
     >
       <a-form-item
-        field="username"
+        field="identification"
         :rules="[{ required: true, message: $t('login.form.userName.errMsg') }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input
-          v-model="userInfo.username"
+          v-model="userInfo.identification"
           :placeholder="$t('login.form.userName.placeholder')"
         >
           <template #prefix>
@@ -77,8 +77,9 @@ export default defineComponent({
     const { loading, setLoading } = useLoading();
     const userStore = useUserStore();
     const userInfo = reactive({
-      username: 'marvin',
+      identification: 'admin',
       password: '123456',
+      loginType: 0,
     });
     const handleSubmit = async ({
       errors,

@@ -9,7 +9,7 @@ export function findResultTypes(params: ReqPagerParams) {
 }
 
 export function findResultTablesBy(resultTypeId: number) {
-  return axios.get('/results/resultTable/', {
+  return axios.get('/results/resultTables', {
     params: {
       resultTypeId,
     },

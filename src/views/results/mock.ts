@@ -169,13 +169,13 @@ setupMock({
         message: '',
       };
     });
-    Mock.mock(new RegExp('/results/resultTable/'), (options: GetParams) => {
+    Mock.mock(new RegExp('/results/resultTables'), (options: GetParams) => {
       const { resultTypeId } = qs.parseUrl(options.url).query;
       const data = Mock.mock({
         'list|2-3': [
           {
             'eid|+1': 10001,
-            'name': czName(),
+            'name': '@cname',
             'resultTypeId': resultTypeId,
           },
         ],

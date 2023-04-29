@@ -1,239 +1,237 @@
 <template>
   <div class="layout-demo">
-    <a-layout>
-      <a-layout>
-        <a-layout-sider :resize-directions="['right']">
-          <div style="margin-right: 8px">
-            <a-card hoverable :bordered="false" :style="{ width: '100%' }">
-              <div
-                :style="{
+		<a-layout>
+			<a-layout-sider :resize-directions="['right']">
+				<div style="margin-right: 8px">
+					<a-card hoverable :bordered="false" :style="{ width: '100%' }">
+						<div
+							:style="{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                 }"
-              >
+						>
                 <span
-                  :style="{
+									:style="{
                     display: 'flex',
                     alignItems: 'center',
                     color: '#1D2129',
                   }"
-                >
+								>
                   <!--                <a-avatar-->
-                  <!--                  :style="{-->
-                  <!--                    marginRight: '8px',-->
-                  <!--                    backgroundColor: '#4b4c4e',-->
-                  <!--                  }"-->
-                  <!--                  :size="28"-->
-                  <!--                >-->
-                  <!--                  <icon-down />-->
-                  <!--                </a-avatar>-->
+									<!--                  :style="{-->
+									<!--                    marginRight: '8px',-->
+									<!--                    backgroundColor: '#4b4c4e',-->
+									<!--                  }"-->
+									<!--                  :size="28"-->
+									<!--                >-->
+									<!--                  <icon-down />-->
+									<!--                </a-avatar>-->
                   <strong style="font-size: 18px">成果类型</strong>
                 </span>
-                <a-button type="primary" shape="circle" size="small">
-                  <icon-search />
-                </a-button>
-              </div>
-            </a-card>
-            <a-scrollbar style="height: 430px; overflow: auto">
-              <a-tree
-                v-model:selected-keys="selectedResultType"
-                :data="resultTypeTree.list"
-                :show-line="true"
-                :check-strictly="true"
-                size="small"
-                animation
-                only-check-leaf
-                block-node
-                @select="resultTypeOnSelected"
-              >
-                <!--              <template #icon>-->
-                <!--                <IconStar />-->
-                <!--              </template>-->
-              </a-tree>
-            </a-scrollbar>
-          </div>
-        </a-layout-sider>
-        <a-layout-content>
-          <div style="height: 100%; width: 100%; margin-left: 10px">
-            <div
-              v-if="noResultTypeSelected"
-              style="display: table; width: 100%; height: 90%"
-            >
-              <div style="display: table-cell; vertical-align: middle">
-                <a-empty>
-                  <template #image>
-                    <icon-exclamation-circle-fill />
-                  </template>
-                  先在左侧选择成果类型~
-                </a-empty>
-              </div>
-            </div>
-            <a-tabs
-              v-else
-              ref="resultTableTab"
-              :justify="true"
-              :animation="true"
-            >
-              <template #extra>
-                <strong>成果表</strong>
-              </template>
-              <a-tab-pane
-                v-for="table in resultTables.value"
-                :key="table.eid"
-                :title="table.name"
-              >
-                <template #title> <icon-nav /> {{ table.name }} </template>
-                <a-row style="margin-bottom: 16px">
-                  <a-col :span="16">
-                    <a-space v-if="usageTypeRef === 'input'">
-                      <a-button type="primary">
-                        <template #icon>
-                          <icon-plus />
-                        </template>
-                        {{ $t('searchTable.operation.create') }}
-                      </a-button>
-                      <a-button status="success">
-                        <template #icon>
-                          <icon-upload />
-                        </template>
-                        {{ $t('searchTable.operation.batchUpload') }}
-                      </a-button>
-                      <a-button>
-                        <template #icon>
-                          <icon-download />
-                        </template>
-                        {{ $t('searchTable.operation.download') }}
-                      </a-button>
-                    </a-space>
-                    <a-space v-if="usageTypeRef === 'audit'">
-                      <a-button type="primary">
-                        <template #icon>
-                          <icon-eye />
-                        </template>
-                        批量审核
-                      </a-button>
-                    </a-space>
-                    <a-space v-if="usageTypeRef === 'checkMine'">
-                      <a-button type="primary">
-                        <template #icon>
-                          <icon-eye />
-                        </template>
-                        新建
-                      </a-button>
-                      <a-button type="primary">
-                        <template #icon>
-                          <icon-down-circle />
-                        </template>
-                        下载
-                      </a-button>
-                      <a-button type="primary">
-                        <template #icon>
-                          <icon-user />
-                        </template>
-                        我负责的
-                      </a-button>
-                      <a-button type="primary">
-                        <template #icon>
-                          <icon-user-group />
-                        </template>
-                        我参与的
-                      </a-button>
-                    </a-space>
-                    <a-space v-if="usageTypeRef === 'distribution'">
-                      <a-button type="outline" status="success">
-                        <template #icon>
-													<icon-filter />
-                        </template>
-                        全部
-                      </a-button>
-											<a-button type="outline" status="warning">
-												<template #icon>
-													<icon-filter />
-												</template>
-												已分配
-											</a-button>
-											<a-button type="outline" status="danger">
-												<template #icon>
-													<icon-filter />
-												</template>
-												未分配
-											</a-button>
-											<a-input-search placeholder="" search-button/>
-                    </a-space>
-                  </a-col>
-                  <a-col :span="8" style="text-align: right">
-                    <a-space v-if="usageTypeRef == 'input'">
-                      <a-button type="primary" status="danger">
-                        <template #icon>
-                          <icon-delete />
-                        </template>
-                        {{ $t('searchTable.operation.batchDelete') }}
-                      </a-button>
-                    </a-space>
-                    <a-space v-if="usageTypeRef == 'audit'">
-                      <a-button status="success">
-                        <template #icon>
-                          <icon-check-circle-fill />
-                        </template>
-                        批量通过
-                      </a-button>
-                    </a-space>
-                    <a-space v-if="usageTypeRef === 'checkMine'">
-                      <a-button status="danger">
-                        <template #icon>
-                          <icon-delete />
-                        </template>
-                        批量删除
-                      </a-button>
-                    </a-space>
-                    <a-space v-if="usageTypeRef === 'distribution'">
-                      <a-button status="success">
-                        <template #icon>
-                          <icon-check-circle-fill />
-                        </template>
-                        确认成果分配结果
-                      </a-button>
-<!--											<a-button status="normal">-->
-<!--												<template #icon>-->
-<!--													<icon-check-circle-fill />-->
-<!--												</template>-->
-<!--												导出Excel-->
-<!--											</a-button>-->
-                    </a-space>
-                  </a-col>
-                </a-row>
-                <a-table
-                  v-model:expandedKeys="expandedKeys"
-                  row-key="rowId"
-                  :columns="columns"
-                  :data="tableData.list"
-                  :pagination="paginationProp"
-                  :row-selection="rowSelection"
-                  :row-click="rowClick"
-                  :scrollbar="false"
-                  :scroll="{ x: '150%', y: '200%' }"
-                  @page-change="pageChange"
-                  @page-size-change="pageSizeChange"
-                >
-                  <template #operation="{}">
-                    <div style="width: fit-content; margin: 0 auto">
-                      <a-button status="success">{{
+							<a-button type="primary" shape="circle" size="small">
+								<icon-search />
+							</a-button>
+						</div>
+					</a-card>
+					<a-scrollbar style="height: 430px; overflow: auto">
+						<a-tree
+							v-model:selected-keys="selectedResultType"
+							:data="resultTypeTree.list"
+							:show-line="true"
+							:check-strictly="true"
+							size="small"
+							animation
+							only-check-leaf
+							block-node
+							@select="resultTypeOnSelected"
+						>
+							<!--              <template #icon>-->
+							<!--                <IconStar />-->
+							<!--              </template>-->
+						</a-tree>
+					</a-scrollbar>
+				</div>
+			</a-layout-sider>
+			<a-layout-content>
+				<div style="height: 100%; width: 100%; margin-left: 10px">
+					<div
+						v-if="noResultTypeSelected"
+						style="display: table; width: 100%; height: 90%"
+					>
+						<div style="display: table-cell; vertical-align: middle">
+							<a-empty>
+								<template #image>
+									<icon-exclamation-circle-fill />
+								</template>
+								先在左侧选择成果类型~
+							</a-empty>
+						</div>
+					</div>
+					<a-tabs
+						v-else
+						ref="resultTableTab"
+						:justify="true"
+						:animation="true"
+					>
+						<template #extra>
+							<strong style="position: absolute; right: 12px">成果表</strong>
+						</template>
+						<a-tab-pane
+							v-for="table in resultTables.value"
+							:key="table.eid"
+							:title="table.name"
+						>
+							<template #title> <icon-nav /> {{ table.name }} </template>
+							<a-row style="margin-bottom: 16px">
+								<a-col :span="16">
+									<a-space v-if="usageTypeRef === 'input'">
+										<a-button type="primary">
+											<template #icon>
+												<icon-plus />
+											</template>
+											{{ $t('searchTable.operation.create') }}
+										</a-button>
+										<a-button status="success">
+											<template #icon>
+												<icon-upload />
+											</template>
+											{{ $t('searchTable.operation.batchUpload') }}
+										</a-button>
+										<a-button>
+											<template #icon>
+												<icon-download />
+											</template>
+											{{ $t('searchTable.operation.download') }}
+										</a-button>
+									</a-space>
+									<a-space v-if="usageTypeRef === 'audit'">
+										<a-button type="primary">
+											<template #icon>
+												<icon-eye />
+											</template>
+											批量审核
+										</a-button>
+									</a-space>
+									<a-space v-if="usageTypeRef === 'checkMine'">
+										<a-button type="primary">
+											<template #icon>
+												<icon-eye />
+											</template>
+											新建
+										</a-button>
+										<a-button type="primary">
+											<template #icon>
+												<icon-down-circle />
+											</template>
+											下载
+										</a-button>
+										<a-button type="primary">
+											<template #icon>
+												<icon-user />
+											</template>
+											我负责的
+										</a-button>
+										<a-button type="primary">
+											<template #icon>
+												<icon-user-group />
+											</template>
+											我参与的
+										</a-button>
+									</a-space>
+									<a-space v-if="usageTypeRef === 'distribution'">
+										<a-button type="outline" status="success">
+											<template #icon>
+												<icon-filter />
+											</template>
+											全部
+										</a-button>
+										<a-button type="outline" status="warning">
+											<template #icon>
+												<icon-filter />
+											</template>
+											已分配
+										</a-button>
+										<a-button type="outline" status="danger">
+											<template #icon>
+												<icon-filter />
+											</template>
+											未分配
+										</a-button>
+										<a-input-search placeholder="" search-button/>
+									</a-space>
+								</a-col>
+								<a-col :span="8" style="text-align: right">
+									<a-space v-if="usageTypeRef == 'input'">
+										<a-button type="primary" status="danger">
+											<template #icon>
+												<icon-delete />
+											</template>
+											{{ $t('searchTable.operation.batchDelete') }}
+										</a-button>
+									</a-space>
+									<a-space v-if="usageTypeRef == 'audit'">
+										<a-button status="success">
+											<template #icon>
+												<icon-check-circle-fill />
+											</template>
+											批量通过
+										</a-button>
+									</a-space>
+									<a-space v-if="usageTypeRef === 'checkMine'">
+										<a-button status="danger">
+											<template #icon>
+												<icon-delete />
+											</template>
+											批量删除
+										</a-button>
+									</a-space>
+									<a-space v-if="usageTypeRef === 'distribution'">
+										<a-button status="success">
+											<template #icon>
+												<icon-check-circle-fill />
+											</template>
+											确认成果分配结果
+										</a-button>
+										<!--											<a-button status="normal">-->
+										<!--												<template #icon>-->
+										<!--													<icon-check-circle-fill />-->
+										<!--												</template>-->
+										<!--												导出Excel-->
+										<!--											</a-button>-->
+									</a-space>
+								</a-col>
+							</a-row>
+							<a-table
+								v-model:expandedKeys="expandedKeys"
+								row-key="rowId"
+								:columns="columns"
+								:data="tableData.list"
+								:pagination="paginationProp"
+								:row-selection="rowSelection"
+								:row-click="rowClick"
+								:scrollbar="false"
+								:scroll="{ x: '150%', y: '200%' }"
+								@page-change="pageChange"
+								@page-size-change="pageSizeChange"
+							>
+								<template #operation="{}">
+									<div style="width: fit-content; margin: 0 auto">
+										<a-button status="success">{{
                         $t('global.operation.button.edit')
-                      }}</a-button>
-                      <a-divider direction="vertical" />
-                      <a-button status="danger">{{
+											}}</a-button>
+										<a-divider direction="vertical" />
+										<a-button status="danger">{{
                         $t('global.operation.button.delete')
-                      }}</a-button>
-                    </div>
-                  </template>
-                </a-table>
-              </a-tab-pane>
-            </a-tabs>
-          </div>
-        </a-layout-content>
-      </a-layout>
-    </a-layout>
+											}}</a-button>
+									</div>
+								</template>
+							</a-table>
+						</a-tab-pane>
+					</a-tabs>
+				</div>
+			</a-layout-content>
+		</a-layout>
   </div>
 </template>
 

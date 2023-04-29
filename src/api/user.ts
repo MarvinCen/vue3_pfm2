@@ -2,15 +2,21 @@ import axios from 'axios';
 import { UserState } from '@/store/modules/user/types';
 
 export interface LoginData {
-  username: string;
+  identification: string;
   password: string;
+  loginType: number;
 }
 
 export interface LoginRes {
   token: string;
 }
 export function login(data: LoginData) {
-  return axios.post<LoginRes>('/api/user/login', data);
+  console.log(data)
+  return axios.post<LoginRes>('/common/login/username', data, {
+    headers: {
+      ContentType: 'application/x-www-form-urlencoded'
+    }
+  });
 }
 
 export function logout() {
