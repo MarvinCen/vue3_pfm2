@@ -221,7 +221,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '工号',
-		componentType: '#emploee',
+		componentType: {
+			type: '#JobNumber'
+		},
 		dataType: 'text',
 		unique: true,
 		nullable: false,
@@ -232,7 +234,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '姓名',
-		componentType: '#emploee',
+		componentType: {
+			type: '#Employee'
+		},
 		dataType: 'text',
 		unique: false,
 		nullable: false,
@@ -243,7 +247,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '承担单位',
-		componentType: 'input',
+		componentType: {
+			type: 'TextInput'
+		},
 		dataType: 'text',
 		unique: false,
 		nullable: false,
@@ -254,7 +260,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '系部科室',
-		componentType: 'input',
+		componentType: {
+			type: 'TextInput'
+		},
 		dataType: 'text',
 		unique: false,
 		nullable: false,
@@ -265,7 +273,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '业绩分类',
-		componentType: 'input',
+		componentType: {
+			type: 'TextInput'
+		},
 		dataType: 'text',
 		unique: false,
 		nullable: false,
@@ -276,7 +286,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '业务ID',
-		componentType: 'input',
+		componentType: {
+			type: 'IntInput'
+		},
 		dataType: 'number',
 		unique: false,
 		nullable: false,
@@ -287,7 +299,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '参与人员',
-		componentType: 'input',
+		componentType: {
+			type: '#Participant'
+		},
 		dataType: 'text',
 		unique: false,
 		nullable: false,
@@ -298,7 +312,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '业绩描述',
-		componentType: 'input',
+		componentType: {
+			type: 'TextInput'
+		},
 		dataType: 'text',
 		unique: false,
 		nullable: false,
@@ -309,7 +325,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '取值数',
-		componentType: 'input',
+		componentType: {
+			type: 'DecInput'
+		},
 		dataType: 'decimal',
 		unique: false,
 		nullable: false,
@@ -320,7 +338,9 @@ const columns: ResultTableColumn[] = [
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
 		name: '业绩时间',
-		componentType: 'datetimepicker',
+		componentType: {
+			type: 'DatePicker'
+		},
 		dataType: 'Datetime',
 		unique: false,
 		nullable: false,

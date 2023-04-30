@@ -64,6 +64,7 @@
 					<a-tabs
 						v-else
 						ref="resultTableTab"
+						v-model:active-key="activeTableId as number"
 						:justify="true"
 						:animation="true"
 						@change="switchTable"
@@ -80,7 +81,10 @@
 							<a-row style="margin-bottom: 16px">
 								<a-col :span="16">
 									<a-space v-if="usageTypeRef === 'input'">
-										<a-button type="primary">
+										<a-button
+												type="primary"
+												@click="toCreateTableData"
+										>
 											<template #icon>
 												<icon-plus />
 											</template>
@@ -210,15 +214,31 @@
 								@page-size-change="pageSizeChange"
 								@select="selectTableData"
 							>
-								<template #operation>
+								<template #operation="{record, rowIndex}">
 									<div style="width: fit-content; margin: 0 auto">
-										<a-button status="success">{{
-                        $t('global.operation.button.edit')
-											}}</a-button>
+										<a-button
+												size="small"
+												status="normal"
+												@click="toCheckTableData(record)"
+										>
+											查看
+										</a-button>
 										<a-divider direction="vertical" />
-										<a-button status="danger">{{
-                        $t('global.operation.button.delete')
-											}}</a-button>
+										<a-button
+												size="small"
+												status="success"
+												@click="toEditTableData(record)"
+                    >
+											{{ $t('global.operation.button.edit') }}
+										</a-button>
+										<a-divider direction="vertical" />
+										<a-button
+												size="small"
+												status="danger"
+												@click="toDeleteTableData()"
+                    >
+											{{ $t('global.operation.button.delete') }}
+										</a-button>
 									</div>
 								</template>
 							</a-table>
@@ -231,19 +251,18 @@
 </template>
 
 <script lang="ts">
-import { onMounted, reactive, ref } from 'vue';
-import {PaginationProps, TableRowSelection, TreeNodeData} from '@arco-design/web-vue';
+import {onMounted, reactive, ref, watch} from 'vue';
+import {PaginationProps, TableColumnData, TableRowSelection, TreeNodeData} from '@arco-design/web-vue';
 import { BasePaginationSetting, Response } from '@/types/global';
 import fetchPageList from '@/utils/request';
 import {
-  findResultTableColumns,
   findResultTableDataById,
-  findResultTablesBy,
   findResultTypes,
 } from '@/api/results/results';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
 import {ResultTable, ResultType} from '@/types/results';
-import {keys} from "lodash";
+import ResultData from "@/views/results/component/result-data.vue";
+import {useRouter} from "vue-router";
 
 const initFormModel = () => {
   return {
@@ -256,7 +275,9 @@ interface Data {
   [key: string]: unknown;
 }
 export default {
-	methods: {keys},
+	components: {
+		ResultData
+	},
   props: {
     usageType: {
       type: String,
@@ -281,7 +302,6 @@ export default {
     });
 
     const columns = ref<any[]>([]);
-    // TODO 将每个tab选项卡的成果表数据独立出来
     const tableData = reactive({
       list: [],
     });
@@ -372,6 +392,7 @@ export default {
 
 			// 获取table的columns
 			const rt = resultTables.value[0];
+			activeTableId.value = rt.eid;
 			columns.value.splice(0);
 			const newColumns = [];
 			let rtColumns = rt.columns;
@@ -399,7 +420,7 @@ export default {
 					ellipsis: true,
 					tooltip: true,
 					align: 'center',
-					width: 240,
+					width: 270,
 					slotName: 'operation',
 					fixed: 'right'
 				});
@@ -417,6 +438,12 @@ export default {
       noResultTypeSelected.value = false;
     };
 
+
+		const activeTableId = ref<number>();
+		const activeTable = ref<ResultTable>();
+		watch(activeTableId, (value) => {
+			activeTable.value = resultTables.value?.filter(rt => rt.eid === value)[0];
+		})
 		const switchTable = (tableId: number) => {
 			findResultTableDataById(tableId, pager).then((r3) => {
 				const { list, pager: page } = (r3 as Response).data;
@@ -432,6 +459,43 @@ export default {
 			setTimeout(() => {
 				console.log(selectedTableDataIds.value)
 			}, 500)
+		}
+
+
+		const router = useRouter();
+		const toCreateTableData = () => {
+			router.push({
+				path: 'resultTableDataEdit',
+				query: {
+					columns: JSON.stringify(activeTable.value?.columns),
+					useForCreation: JSON.stringify(true),
+				}
+			})
+		}
+		const toEditTableData = (record: TableColumnData) => {
+			router.push({
+				path: 'resultTableDataEdit',
+				query: {
+					columns: JSON.stringify(activeTable.value?.columns),
+					useForCreation: JSON.stringify(false),
+					editable: JSON.stringify(true),
+					record: JSON.stringify(record)
+				}
+			})
+		}
+		const toDeleteTableData = () => {
+
+		}
+		const toCheckTableData = (record: TableColumnData) => {
+			router.push({
+				path: 'resultTableDataEdit',
+				query: {
+					columns: JSON.stringify(activeTable.value?.columns),
+					useForCreation: JSON.stringify(false),
+					editable: JSON.stringify(false),
+					record: JSON.stringify(record)
+				}
+			})
 		}
 
     return {
@@ -450,14 +514,22 @@ export default {
       resultTypeOnSelected,
       resultTypeTree,
 			expandedResultTypeIds,
+
       resultTables,
       resultTableTab,
 			switchTable,
+			activeTable,
+			activeTableId,
 
       noResultTypeSelected,
 
 			selectedTableDataIds,
 			selectTableData,
+
+			toCreateTableData,
+			toDeleteTableData,
+			toEditTableData,
+			toCheckTableData,
     };
   },
 };

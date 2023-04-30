@@ -25,11 +25,16 @@ export interface ResultTable {
   columns?: ResultTableColumn[];
 }
 
+export interface ComponentType {
+  type: string;
+  params?: any;
+}
+
 export interface ResultTableColumn {
   eid?: number;
   resultTableId?: number;
   name?: string;
-  componentType?: string;
+  componentType?: ComponentType;
   dataType?: string;
   unique?: boolean;
   nullable?: boolean;

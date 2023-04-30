@@ -67,5 +67,18 @@ export default {
         hideInMenu: true,
       },
     },
+    {
+      path: 'resultTableDataEdit',
+      name: 'resultTableDataEdit',
+      component: () =>
+        import('@/views/results/component/result-data.vue'),
+      meta: {
+        locale: 'menu.results.resultTypeCreation',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
   ],
 };

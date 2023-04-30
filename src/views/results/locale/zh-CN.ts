@@ -5,6 +5,7 @@ export default {
   'menu.results.myResult': '我的成果',
   'menu.results.resultType': '成果类型',
   'menu.results.resultTypeCreation': '成果类型创建',
+  'menu.results.resultTableDataEdit': '成果表数据编辑',
   'results.resultType.column.field.name': 'name',
   'results.resultType.column.field.departmentName': 'departmentName',
   'results.resultType.column.field.status': 'status',
