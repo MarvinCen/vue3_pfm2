@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ReqPagerParams } from '@/types/global';
+import {Pager, ReqPagerParams} from '@/types/global';
 import { ResultTable, ResultType } from '@/types/results';
 
 export function findResultTypes(params: ReqPagerParams) {
@@ -43,10 +43,11 @@ export function findResultTableColumns(resultTableId: number) {
   });
 }
 
-export function findResultTableDataById(eid: number) {
+export function findResultTableDataById(eid: number, pager: Pager) {
   return axios.get('results/cellData/list', {
     params: {
       eid,
+      pager,
     },
   });
 }

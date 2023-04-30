@@ -35,7 +35,7 @@ import {ref} from "vue";
 import {TableColumnData} from "@arco-design/web-vue";
 
 const props =defineProps({
-  columns: {
+  rColumns: {
 		type: Array,
     default: () => ([])
   }

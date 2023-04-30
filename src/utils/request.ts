@@ -1,4 +1,4 @@
-import { ReqPagerParams, Response, YourPayload } from '@/types/global';
+import {Pager, ReqPagerParams, Response, YourPayload} from '@/types/global';
 import { simpleErrorHandler } from '@/utils/error-handler';
 import useLoading from '@/hooks/loading';
 import { AxiosResponse } from 'axios';
@@ -31,5 +31,26 @@ const fetchPageList = async (
       setLoading(false);
     });
 };
+
+export async function searchPageList(
+  apiFunc: (params?: any) => Promise<AxiosResponse>,
+  params?: any,
+  pager?: Pager,
+  conditions?: any) {
+
+  if (!params) params = {};
+  if (typeof params !== 'object') {
+    console.log('unsupported params type. a object required, got' + typeof params);
+  }
+
+  if (pager) {
+    pager.conditions = {
+      ...pager.conditions,
+      ...conditions
+    }
+  }
+
+  const promise = await apiFunc()
+}
 
 export default fetchPageList;

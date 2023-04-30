@@ -18,15 +18,6 @@
                     color: '#1D2129',
                   }"
 								>
-                  <!--                <a-avatar-->
-									<!--                  :style="{-->
-									<!--                    marginRight: '8px',-->
-									<!--                    backgroundColor: '#4b4c4e',-->
-									<!--                  }"-->
-									<!--                  :size="28"-->
-									<!--                >-->
-									<!--                  <icon-down />-->
-									<!--                </a-avatar>-->
                   <strong style="font-size: 18px">成果类型</strong>
                 </span>
 							<a-button type="primary" shape="circle" size="small">
@@ -37,9 +28,11 @@
 					<a-scrollbar style="height: 430px; overflow: auto">
 						<a-tree
 							v-model:selected-keys="selectedResultType"
+							v-model:expanded-keys="expandedResultTypeIds"
 							:data="resultTypeTree.list"
 							:show-line="true"
 							:check-strictly="true"
+							:field-names="{ key: 'eid', title: 'name' }"
 							size="small"
 							animation
 							only-check-leaf
@@ -54,7 +47,7 @@
 				</div>
 			</a-layout-sider>
 			<a-layout-content>
-				<div style="height: 100%; width: 100%; margin-left: 10px">
+				<div style="height: 100%; width: 100%; padding-left: 10px">
 					<div
 						v-if="noResultTypeSelected"
 						style="display: table; width: 100%; height: 90%"
@@ -73,9 +66,10 @@
 						ref="resultTableTab"
 						:justify="true"
 						:animation="true"
+						@change="switchTable"
 					>
 						<template #extra>
-							<strong style="position: absolute; right: 12px">成果表</strong>
+							<strong>成果表</strong>
 						</template>
 						<a-tab-pane
 							v-for="table in resultTables.value"
@@ -203,8 +197,8 @@
 								</a-col>
 							</a-row>
 							<a-table
-								v-model:expandedKeys="expandedKeys"
-								row-key="rowId"
+								v-model:selected-keys="selectedTableDataIds"
+								row-key="eid"
 								:columns="columns"
 								:data="tableData.list"
 								:pagination="paginationProp"
@@ -214,8 +208,9 @@
 								:scroll="{ x: '150%', y: '200%' }"
 								@page-change="pageChange"
 								@page-size-change="pageSizeChange"
+								@select="selectTableData"
 							>
-								<template #operation="{}">
+								<template #operation>
 									<div style="width: fit-content; margin: 0 auto">
 										<a-button status="success">{{
                         $t('global.operation.button.edit')
@@ -237,7 +232,7 @@
 
 <script lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { PaginationProps, TableRowSelection } from '@arco-design/web-vue';
+import {PaginationProps, TableRowSelection, TreeNodeData} from '@arco-design/web-vue';
 import { BasePaginationSetting, Response } from '@/types/global';
 import fetchPageList from '@/utils/request';
 import {
@@ -247,7 +242,8 @@ import {
   findResultTypes,
 } from '@/api/results/results';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
-import { ResultTable } from '@/types/results';
+import {ResultTable, ResultType} from '@/types/results';
+import {keys} from "lodash";
 
 const initFormModel = () => {
   return {
@@ -260,6 +256,7 @@ interface Data {
   [key: string]: unknown;
 }
 export default {
+	methods: {keys},
   props: {
     usageType: {
       type: String,
@@ -268,7 +265,6 @@ export default {
   },
   setup(props: Data) {
     const usageTypeRef = ref(props.usageType);
-    const expandedKeys = ref([]);
     const formModel = ref(initFormModel());
     const pager: PaginationProps = reactive({
       current: 1,
@@ -281,7 +277,7 @@ export default {
     const rowSelection: TableRowSelection = reactive({
       type: 'checkbox',
       showCheckedAll: true,
-      checkStrictly: true,
+			onlyCurrent: false,
     });
 
     const columns = ref<any[]>([]);
@@ -342,54 +338,106 @@ export default {
     });
 
     const selectedResultType = ref([]); // actually only one selected in the array
-    const resultTables = reactive<{ value: ResultTable[] }>({
+    const resultTables = reactive<{ value?: ResultTable[] }>({
       value: [],
     });
     const resultTableTab = ref(null);
     const noResultTypeSelected = ref(true);
-    const resultTypeOnSelected = (checkedKeys: Array<string | number>) => {
-      const eid = checkedKeys[0] as number;
-      findResultTablesBy(eid).then((r1) => {
-        const resp = r1 as Response;
-        resultTables.value = resp.data.list;
+		const expandedResultTypeIds = ref<number[]>([]);
+		interface Data {
+			selected?: boolean | undefined;
+			selectedNodes: TreeNodeData[];
+			node?: TreeNodeData | undefined;
+			e?: Event | undefined;
+		}
+    const resultTypeOnSelected = (checkedKeys: Array<string | number>, data: Data) => {
+			// 如果点击非叶子节点，只执行展开/收起动作
+			const resultType = data.node as ResultType;
+			if (!resultType.isLeaf) {
+				const idx = expandedResultTypeIds.value.findIndex((val) => {
+					return val === resultType.eid;
+				});
+				if (idx < 0)
+					expandedResultTypeIds.value.push(resultType.eid as number);
+				else
+					expandedResultTypeIds.value.splice(idx, 1);
+				return;
+			}
 
-        if (!resultTables.value) {
-          return;
-        }
-        const rt = resultTables.value[0];
-        findResultTableColumns(rt.eid).then((r2) => {
-          const { columns: rtColumns, resultTableId } = (r2 as Response).data;
-          columns.value.splice(0);
-          // eslint-disable-next-line no-plusplus
-          for (let i = 0; i < rtColumns.length; i++) {
-            const rtCol = rtColumns[i];
-            const convertedCol = {
-              title: rtCol.name,
-              dataIndex: rtCol.name,
-              ellipsis: true,
-              tooltip: true,
-              align: 'center',
-              width: '',
-            };
-            if (i === 0) convertedCol.width = '80px';
-            if (i === rtColumns.length - 1) convertedCol.width = '120px';
-            columns.value.push(convertedCol);
-          }
-          findResultTableDataById(resultTableId).then((r3) => {
-            const { list } = (r3 as Response).data;
-            tableData.list = list;
-          });
-        });
-      });
+			// 如果点击叶子节点，查询成果表及成果表数据
+			resultTables.value = resultType.resultTables;
+			if (!resultTables.value) {
+				return;
+			}
+
+			// 获取table的columns
+			const rt = resultTables.value[0];
+			columns.value.splice(0);
+			const newColumns = [];
+			let rtColumns = rt.columns;
+			if (!rtColumns || rtColumns.length === 0) {
+				columns.value = [];
+				rtColumns = [];
+			}
+			for (let i = 0; i < rtColumns.length; i++) {
+				const rtCol = rtColumns[i];
+				const convertedCol = {
+					title: rtCol.name,
+					dataIndex: rtCol.name,
+					ellipsis: true,
+					tooltip: true,
+					align: 'center',
+					width: '',
+				};
+				if (i === 0) convertedCol.width = '80px';
+				if (i === rtColumns.length - 1) convertedCol.width = '120px';
+				newColumns.push(convertedCol);
+			}
+			if (newColumns.length > 0) {
+				newColumns.push({
+					title: '操作',
+					ellipsis: true,
+					tooltip: true,
+					align: 'center',
+					width: 240,
+					slotName: 'operation',
+					fixed: 'right'
+				});
+			}
+			columns.value = newColumns;
+
+			// 查询数据
+			findResultTableDataById(rt.eid as number, pager).then((r3) => {
+				const { list, pager: page } = (r3 as Response).data;
+				pager.total = page.total;
+				pager.current = page.current;
+				tableData.list = list;
+			});
+
       noResultTypeSelected.value = false;
-      return eid;
     };
+
+		const switchTable = (tableId: number) => {
+			findResultTableDataById(tableId, pager).then((r3) => {
+				const { list, pager: page } = (r3 as Response).data;
+				pager.total = page.total;
+				pager.current = page.current;
+				tableData.list = list;
+			});
+		}
+
+
+		const selectedTableDataIds = ref([]);
+		const selectTableData = () => {
+			setTimeout(() => {
+				console.log(selectedTableDataIds.value)
+			}, 500)
+		}
 
     return {
       usageTypeRef,
       columns,
       tableData,
-      expandedKeys,
       rowSelection,
       formModel,
       reset,
@@ -401,10 +449,15 @@ export default {
       selectedResultType,
       resultTypeOnSelected,
       resultTypeTree,
+			expandedResultTypeIds,
       resultTables,
       resultTableTab,
+			switchTable,
 
       noResultTypeSelected,
+
+			selectedTableDataIds,
+			selectTableData,
     };
   },
 };

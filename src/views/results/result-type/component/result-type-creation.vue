@@ -10,153 +10,169 @@
         <a-step>创建成果表</a-step>
         <a-step>完成</a-step>
       </a-steps>
-      <a-divider />
-      <div v-if="currentStep === 1">
-        <a-form ref="formRef" layout="vertical" :model="resultType">
-          <a-space direction="vertical" :size="16">
-            <a-card class="general-card">
-              <template #title>
-                {{ '基本信息' }}
-              </template>
-              <a-row :gutter="80">
-                <a-col :span="8">
-                  <a-form-item label="名称" field="resultType.name">
-                    <a-input placeholder="请输入名称" />
-                  </a-form-item>
-                </a-col>
-                <a-col :span="8">
-                  <a-form-item label="父级成果类型" field="resultType.parentId">
-                    <a-tree-select
-                      :data="resultTypeTreeSelect"
-                      placeholder="请选择父级成果类型（如果有）"
-                    />
-                  </a-form-item>
-                </a-col>
-                <a-col :span="8">
-                  <a-form-item label="状态" field="resultType.status">
-                    <a-select placeholder="请选择状态">
-                      <a-option value="enable">启用</a-option>
-                      <a-option value="disable">禁用</a-option>
-                    </a-select>
-                  </a-form-item>
-                </a-col>
-              </a-row>
-              <a-form-item label="备注" field="resultType.remark">
-                <a-textarea placeholder="请输入备注" />
-              </a-form-item>
-            </a-card>
-            <a-card class="general-card" :bordered="false">
-              <template #title>
-                {{ '自定义数据' }}
-              </template>
-              <a-form-item field="resultType.customData">
-                <a-textarea />
-              </a-form-item>
-            </a-card>
-          </a-space>
-        </a-form>
-      </div>
-      <div v-if="currentStep === 2">
-        <a-tabs
-          v-model:active-key="currentTabKey"
-          position="left"
-          :editable="true"
-          auto-switch
-          animation
-          justify
-          style="min-height: 320px"
-          @change="resultTableTabSwitched"
-          @tab-click="resultTableTabSwitched"
-          @delete="deleteResultTableTab"
-        >
-          <template #extra>
-            <div style="margin-top: 8px">
-              <a-popconfirm @ok="newResultTableTab">
-                <template #content>
-                  给新创建的表格起个名字叭~
-                  <a-form :model="newTableModel" auto-label-width>
-                    <a-form-item
-                      field="name"
-                      :rules="newTableInputRules"
-                      extra="当需要创建多个成果表时，给表格命名能够很好地区分它们."
-                      :validate-status="nameResultTableStatus"
-                      feedback
-                      :label-col-props="{ span: 0 }"
-                    >
-                      <a-input v-model="newTableModel.name" />
-                    </a-form-item>
-                  </a-form>
-                </template>
-                <div style="margin: 0 36px">
-                  <a-button shape="round">
-                    <template #icon>
-                      <icon-plus-circle-fill />
-                    </template>
-                  </a-button>
-                </div>
-              </a-popconfirm>
-            </div>
-          </template>
-          <a-tab-pane
-            v-for="tab in resultTableTabs"
-            :key="tab.key"
-            :title="tab.title"
-          >
-            <template #title>
-              {{
-                tab.title.length > 4
-                  ? tab.title.substring(0, 4) + '...'
-                  : tab.title
-              }}
-            </template>
-            <result-table-creation :ref="tab.title" />
-          </a-tab-pane>
-        </a-tabs>
-      </div>
-      <div v-if="currentStep === 3">
-        <a-result status="success" title="创建成功~">
-          <template #extra>
-            <a-space>
-              <a-button
-                type="primary"
-                @click="
-                  () => {
-                    $router.push({ name: 'resultType' });
-                  }
-                "
-                >返回列表</a-button
-              >
-            </a-space>
-          </template>
-        </a-result>
-      </div>
-      <div class="actions">
-        <a-space>
-          <a-button v-if="currentStep === 1">
-            {{ $t('groupForm.reset') }}
-          </a-button>
-          <a-button
-            v-if="currentStep === 2"
-            type="primary"
-            status="success"
-            @click="prevStep(currentStep)"
-          >
-            上一步
-          </a-button>
-          <a-button
-            v-if="currentStep !== 3"
-            type="primary"
-            :loading="loading"
-            @click="createResultTypeClick"
-          >
-            {{ currentStep === 1 ? '提交并下一步' : '完成' }}
-          </a-button>
-        </a-space>
-      </div>
       <!--      <div style="line-height: 140px; text-align: center; color: #c9cdd4">-->
       <!--        Step 2 Content-->
       <!--      </div>-->
     </a-card>
+		<div v-if="currentStep === 1" style="margin-top: 20px">
+			<a-form ref="formRef" layout="vertical" :model="resultType">
+				<a-card class="general-card">
+					<template #title>
+						{{ '基本信息' }}
+					</template>
+					<a-row :gutter="80">
+						<a-col :span="7">
+							<a-form-item label="名称" field="resultType.name">
+								<a-input placeholder="请输入名称" />
+							</a-form-item>
+						</a-col>
+						<a-col :span="7">
+							<a-form-item label="状态" field="resultType.status">
+								<a-select placeholder="请选择状态">
+									<a-option value="enable">启用</a-option>
+									<a-option value="disable">禁用</a-option>
+								</a-select>
+							</a-form-item>
+						</a-col>
+					</a-row>
+					<a-row :gutter="80">
+						<a-col :span="7">
+							<a-form-item label="父级成果类型" field="resultType.parentId">
+								<a-tree-select
+									:data="resultTypeTreeSelect"
+									placeholder="请选择父级成果类型（如果有）"
+									allow-clear
+								/>
+							</a-form-item>
+						</a-col>
+						<a-col :span="7">
+							<a-form-item label="所属部门" field="resultType.departmentId">
+								<a-select placeholder="请选择所属部门">
+									<a-option value="enable">启用</a-option>
+									<a-option value="disable">禁用</a-option>
+								</a-select>
+							</a-form-item>
+						</a-col>
+						<a-col :span="7">
+							<a-form-item label="录入方式" field="resultType.inputWay">
+								<a-select placeholder="请选择录入方式">
+									<a-option value="enable">部门录入</a-option>
+									<a-option value="disable">个人录入</a-option>
+								</a-select>
+							</a-form-item>
+						</a-col>
+					</a-row>
+					<a-form-item label="备注" field="resultType.remark">
+						<a-textarea placeholder="请输入备注" />
+					</a-form-item>
+				</a-card>
+				<a-card class="general-card" :bordered="false" style="margin: 20px 0 40px">
+					<template #title>
+						{{ '自定义数据' }}
+					</template>
+					<a-form-item field="resultType.customData">
+						<a-textarea />
+					</a-form-item>
+				</a-card>
+			</a-form>
+		</div>
+		<a-card v-if="currentStep === 2" :bordered="false" style="margin-top: 20px">
+			<a-tabs
+				v-model:active-key="currentTabKey"
+				position="left"
+				:editable="true"
+				auto-switch
+				animation
+				justify
+				style="min-height: 320px"
+				@change="resultTableTabSwitched"
+				@tab-click="resultTableTabSwitched"
+				@delete="deleteResultTableTab"
+			>
+				<template #extra>
+					<div style="margin-top: 8px">
+						<a-popconfirm @ok="newResultTableTab">
+							<template #content>
+								给新创建的表格起个名字叭~
+								<a-form :model="newTableModel" auto-label-width>
+									<a-form-item
+										field="name"
+										:rules="newTableInputRules"
+										extra="当需要创建多个成果表时，给表格命名能够很好地区分它们."
+										:validate-status="nameResultTableStatus"
+										feedback
+										:label-col-props="{ span: 0 }"
+									>
+										<a-input v-model="newTableModel.name" />
+									</a-form-item>
+								</a-form>
+							</template>
+							<div style="margin: 0 36px">
+								<a-button shape="round">
+									<template #icon>
+										<icon-plus-circle-fill />
+									</template>
+								</a-button>
+							</div>
+						</a-popconfirm>
+					</div>
+				</template>
+				<a-tab-pane
+					v-for="tab in resultTableTabs"
+					:key="tab.key"
+					:title="tab.title"
+				>
+					<template #title>
+						{{
+              tab.title.length > 4
+                  ? tab.title.substring(0, 4) + '...'
+                  : tab.title
+						}}
+					</template>
+					<result-table-creation :ref="tab.title" />
+				</a-tab-pane>
+			</a-tabs>
+		</a-card>
+		<a-card v-if="currentStep === 3" :bordered="false" style="margin-top: 20px">
+			<a-result status="success" title="创建成功~">
+				<template #extra>
+					<a-space>
+						<a-button
+							type="primary"
+							@click="
+                  () => {
+                    $router.push({ name: 'resultType' });
+                  }
+                "
+						>返回列表</a-button
+						>
+					</a-space>
+				</template>
+			</a-result>
+		</a-card>
+		<div class="actions">
+			<a-space>
+				<a-button v-if="currentStep === 1">
+					{{ $t('groupForm.reset') }}
+				</a-button>
+				<a-button
+					v-if="currentStep === 2"
+					type="primary"
+					status="success"
+					@click="prevStep(currentStep)"
+				>
+					上一步
+				</a-button>
+				<a-button
+					v-if="currentStep !== 3"
+					type="primary"
+					:loading="loading"
+					@click="createResultTypeClick"
+				>
+					{{ currentStep === 1 ? '提交并下一步' : '完成' }}
+				</a-button>
+			</a-space>
+		</div>
   </div>
 </template>
 

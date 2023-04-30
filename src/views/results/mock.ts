@@ -1,44 +1,15 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setup-mock';
-import { PostData, GetParams } from '@/types/global';
+import {PostData, GetParams, Pager} from '@/types/global';
 import { ResultTableColumn, ResultType } from '@/types/results';
 import qs from 'query-string';
-import { rand } from '@vueuse/core';
+import data from './database'
 
 const { Random } = Mock;
 const random = Mock.Random;
 const czName = () => {
   return Random.cname();
 };
-
-function generateResultTypes(pid: number, level: number, tree: boolean) {
-  const arr = [];
-  const count = Random.integer(7, 24);
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < count; i++) {
-    const data: ResultType = {
-      eid: Number(Random.id()),
-      name: Random.cword(3, 7),
-      parentId: pid,
-      departmentId: Number(Random.id()),
-      departmentName: Random.cname(),
-      status: 'enable',
-      isLeaf: true,
-      children: [],
-      remark: Random.csentence(6, 15),
-    };
-    if (tree) {
-      data.key = data.eid;
-      data.title = data.name;
-    }
-    if (level < 2) {
-      data.children = generateResultTypes(data.eid, level + 1, tree);
-      data.isLeaf = false;
-    }
-    arr.push(data);
-  }
-  return arr;
-}
 
 interface TableRes {
   columns?: ResultTableColumn[];
@@ -107,11 +78,11 @@ function resultTableData(): any[] {
       const col = table.columns[j];
       data.rowId = rowIdOffset + i;
       if (col.dataType === '文本') {
-        data[col.name] = random.csentence(3, 10);
+        data[col.name as string] = random.csentence(3, 10);
       } else if (col.dataType === '二值') {
-        data[col.name] = random.pick(['是', '否']);
+        data[col.name as string] = random.pick(['是', '否']);
       } else {
-        data[col.name] = random.float(0, 10);
+        data[col.name as string] = random.float(0, 10);
       }
     }
     res.push(data);
@@ -126,14 +97,7 @@ setupMock({
       'get',
       (options: GetParams) => {
         const params = qs.parseUrl(options.url).query;
-        let resultTypes;
-        if (params.enablePagination === 'true') {
-          // <a-table>数据
-          resultTypes = generateResultTypes(Number(Random.id()), 1, false);
-        } else {
-          // <a-tree>数据
-          resultTypes = generateResultTypes(Number(Random.id()), 1, true);
-        }
+        let resultTypes = data.resultTypes;
         return {
           code: 20000,
           data: {
@@ -198,7 +162,7 @@ setupMock({
           code: 20000,
           data: {
             resultTableId,
-            columns: table.columns,
+            rColumns: table.columns,
           },
           message: undefined,
         };
@@ -208,13 +172,19 @@ setupMock({
       new RegExp('results/cellData/list'),
       'get',
       (options: GetParams) => {
-        const { eid } = qs.parseUrl(options.url).query;
-        table.list = resultTableData();
+        const params = qs.parseUrl(options.url).query;
+        const pager = JSON.parse(params.pager as string);
+        const eid = Number(params.eid);
         return {
           code: 20000,
           data: {
             eid,
-            list: table.list,
+            list: data.resultTableData,
+            pager: {
+              current: pager.current,
+              pageSize: pager.pageSize,
+              total: data.resultTableData.length,
+            }
           },
           message: undefined,
         };
