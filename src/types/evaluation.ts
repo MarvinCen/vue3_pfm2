@@ -42,11 +42,26 @@ export interface EvaluationProject extends BaseEntity {
   type?: string;
   year?: number;
   name?: string;
-  startTime?: Date;
-  endTime?: Date;
-  resultCheckedExpireTime?: Date;
-  pfmCheckedExpireTime?: Date;
+  startTime?: Date | string;
+  endTime?: Date | string;
+  resultCheckedExpireTime?: Date | string;
+  pfmCheckedExpireTime?: Date | string;
   status?: string;
   evaluationPlans?: EvaluationPlan[];
   evaluationPlanIds?: number[];
+}
+
+export const projectStatus = {
+  allStatus: [
+    '数据录入', // 点击创建时
+    '成果分配', // 开放分配时
+    '绩效公示', // 开放公示时
+    '绩效分配', // 开放分配时
+    '已结束', // 点击结束时
+  ],
+  input: '数据录入',
+  resultDistribution: '成果分配',
+  pfmAnnouncement: '绩效公示',
+  pfmDistribution: '绩效分配',
+  finished: '已结束'
 }

@@ -1,5 +1,12 @@
 <template>
 	<div class="container">
+		<Breadcrumb
+				:items="[
+        'menu.evaluation',
+        'menu.evaluation.evaluationPlan',
+        'menu.evaluation.evaluationPlanEdit',
+      ]"
+		/>
 		<plan-basic-info
 				:usage="usage"
 				:plan="plan"
@@ -11,7 +18,7 @@
 				@create-indicator="doCreateIndicator"
 		/>
   </div>
-	<div v-if="usage === 'creation'" class="actions">
+	<div class="actions">
 		<a-space>
 			<a-button status="normal" @click="$router.push('evaluationPlan')"> 取消 </a-button>
 			<a-button type="primary" @click="updatePlan"> 保存 </a-button>

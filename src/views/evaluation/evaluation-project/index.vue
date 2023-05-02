@@ -1,9 +1,12 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.list', 'menu.list.cardList']" />
+    <Breadcrumb
+				:items="['考核项目', '考核项目列表']"
+				:internationalization="false"
+		/>
     <a-row :gutter="20" align="stretch">
       <a-col :span="24">
-        <a-card class="general-card" :title="$t('menu.list.cardList')">
+        <a-card class="general-card" title="考核项目列表">
           <a-row justify="space-between">
             <a-col :span="24">
               <a-tabs :default-active-tab="1" type="rounded">
@@ -53,6 +56,13 @@
 			<a-form :model="newProject">
 				<a-row :gutter="25">
 					<a-col :span="12">
+						<a-form-item field="name" label="项目名称">
+							<a-input v-model="newProject.name" placeholder="请输入项目名称" />
+						</a-form-item>
+					</a-col>
+				</a-row>
+				<a-row :gutter="25">
+					<a-col :span="12">
 						<a-form-item field="type" label="项目类型">
 							<a-select v-model="newProject.type" placeholder="请输入项目类型">
 								<a-option>年度考核</a-option>
@@ -62,31 +72,59 @@
 					</a-col>
 					<a-col :span="12" v-if="newProject.type === '年度考核'">
 						<a-form-item field="year" label="年份">
-							<a-input-number v-model="newProject.year" placeholder="请输入年份" />
+							<a-year-picker
+									v-model="newProject.year"
+									placeholder="请选择年份"
+									style="width: 100%"
+							/>
 						</a-form-item>
 					</a-col>
 				</a-row>
 				<a-row :gutter="25">
 					<a-col :span="12">
 						<a-form-item field="startTime" label="开始时间">
-							<a-input v-model="newProject.startTime" placeholder="请输入开始时间" />
+							<a-date-picker
+									show-time
+									format="YYYY-MM-DD HH:mm:ss"
+									v-model="newProject.startTime"
+									placeholder="请输入开始时间"
+									style="width: 100%"
+							/>
 						</a-form-item>
 					</a-col>
 					<a-col :span="12">
 						<a-form-item field="endTime" label="结束时间">
-							<a-input v-model="newProject.endTime" placeholder="请输入结束时间" />
+							<a-date-picker
+									show-time
+									format="YYYY-MM-DD HH:mm:ss"
+									v-model="newProject.endTime"
+									placeholder="请输入结束时间"
+									style="width: 100%"
+							/>
 						</a-form-item>
 					</a-col>
 				</a-row>
 				<a-row :gutter="25">
 					<a-col :span="12">
 						<a-form-item field="resultCheckedExpireTime" label="成果分配截止时间">
-							<a-input v-model="newProject.resultCheckedExpireTime" placeholder="请输入成果分配截止时间" />
+							<a-date-picker
+									show-time
+									format="YYYY-MM-DD HH:mm:ss"
+									v-model="newProject.resultCheckedExpireTime"
+									placeholder="请输入成果分配截止时间"
+									style="width: 100%"
+							/>
 						</a-form-item>
 					</a-col>
 					<a-col :span="12">
 						<a-form-item field="pfmCheckedExpireTime" label="绩效确认截止时间">
-							<a-input v-model="newProject.pfmCheckedExpireTime" placeholder="请输入绩效确认截止时间" />
+							<a-date-picker
+									show-time
+									format="YYYY-MM-DD HH:mm:ss"
+									v-model="newProject.pfmCheckedExpireTime"
+									placeholder="请输入绩效确认截止时间"
+									style="width: 100%"
+							/>
 						</a-form-item>
 					</a-col>
 				</a-row>
@@ -113,32 +151,38 @@
 <script setup lang="ts">
 import ProjectCard from '@/views/evaluation/evaluation-project/component/project-card.vue';
 import {computed, onMounted, ref} from 'vue';
-import { findEvaluationProjects } from '@/api/evaluation/evaluation-project';
+import {createEvaluationProject, findEvaluationProjects} from '@/api/evaluation/evaluation-project';
 import {EvaluationPlan, EvaluationProject} from "@/types/evaluation";
 import {findEvaluationPlans} from "@/api/evaluation/evaluation-plan";
+import {projectStatus} from "@/types/evaluation";
 
 const evaluationProjects = ref([]);
 const plans = ref<EvaluationPlan[]>([]);
+const loading = ref(false);
+const refreshProjects = () => {
+	loading.value = true;
+	findEvaluationProjects().then((res) => {
+		evaluationProjects.value = res.data.list;
+	}).finally(() => { loading.value = false });
+}
 onMounted(() => {
-  findEvaluationProjects().then((res) => {
-    evaluationProjects.value = res.data.list;
-  });
+	refreshProjects();
 	findEvaluationPlans({
 		enablePagination: false,
 		conditions: {},
 		props: ['eid', 'name'],
 	}).then((res) => {
 		plans.value = res.data.list;
-	});
+	})
 });
 const finishedProjects = computed(() => {
 	return evaluationProjects.value.filter((item: EvaluationProject) => {
-    return item.status === '考核结束';
+    return item.status === projectStatus.finished;
   });
 })
 const unFinishedProjects = computed(() => {
 	return evaluationProjects.value.filter((item: EvaluationProject) => {
-		return item.status !== '考核结束';
+		return item.status !== projectStatus.finished;
 	});
 })
 
@@ -150,7 +194,11 @@ const unFinishedProjects = computed(() => {
 const newProject = ref<EvaluationProject>({});
 const modalVisible = ref(false);
 const handleSubmit = () => {
-	modalVisible.value = false;
+	newProject.value.status = projectStatus.input;
+	createEvaluationProject(newProject.value).then(() => {
+		refreshProjects();
+		modalVisible.value = false;
+	})
 }
 
 </script>

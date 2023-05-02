@@ -15,7 +15,7 @@
             </a-typography-text>
             <span style="vertical-align: baseline">
               <a-tag
-                v-if="evaluationProject.status !== '考核结束'"
+                v-if="evaluationProject.status !== '已结束'"
                 size="small"
                 color="green"
               >
@@ -45,12 +45,30 @@
     </a-space>
 
     <template #actions>
-      <a-button status="normal" @click="$router.push('evaluationProjectDetail')">查看详情</a-button>
+      <a-space>
+				<a-button
+          size="mini"
+					status="normal"
+					@click="$router.push('evaluationProjectDetail')"
+				>
+					查看详情
+				</a-button>
+				<a-button
+					size="mini"
+          type="outline"
+					status="normal"
+					@click="$router.push('evaluationProjectDetail')"
+				>
+					过程控制
+				</a-button>
+      </a-space>
     </template>
   </a-card>
 </template>
 
 <script setup>
+import {projectStatus} from "@/types/evaluation";
+
 defineProps({
   loading: {
     type: Boolean,
@@ -69,14 +87,7 @@ defineProps({
       };
     },
     validator(value) {
-      return [
-        '数据录入',
-        '工作量计算',
-        '成果分配',
-        '绩效计算',
-        '绩效分配',
-        '考核结束',
-      ].includes(value.status);
+      return projectStatus.allStatus.includes(value.status);
     },
   },
 });

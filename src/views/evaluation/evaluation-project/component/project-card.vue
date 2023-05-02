@@ -22,7 +22,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import CardWrap from '@/views/evaluation/evaluation-project/component/card-wrap.vue';
 
 defineProps({
@@ -33,9 +32,13 @@ defineProps({
       return [];
     },
   },
+  loading: {
+		required: true,
+    type: Boolean,
+    default: false,
+  }
 });
 
-const loading = ref(false);
 </script>
 
 <style scoped></style>

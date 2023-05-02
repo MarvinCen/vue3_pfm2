@@ -7,7 +7,7 @@
         'menu.evaluation.evaluationPlanCreation',
       ]"
     />
-    <a-card class="card">
+    <a-card class="card" style="margin-bottom: 20px">
       <a-steps :current="currentStep" label-placement="vertical">
         <a-step>填写基本信息</a-step>
         <a-step>创建考核指标</a-step>

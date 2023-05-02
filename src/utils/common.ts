@@ -1,3 +1,6 @@
+import { BaseEntity } from "@/types/global";
+import moment from "moment";
+
 interface FieldNames {
 	id: string;
 	parentId: string;
@@ -43,5 +46,11 @@ export default {
 		}
 
 		return res;
+	},
+
+	setEntityDatetime(entity: BaseEntity) {
+		const date = moment(new Date());
+		entity.createDatetime = date.format('YYYY-MM-DD HH:mm:ss')
+		entity.updateDatetime = date.format('YYYY-MM-DD HH:mm:ss')
 	}
 }

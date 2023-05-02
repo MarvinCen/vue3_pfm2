@@ -1,5 +1,9 @@
 <template>
-  <a-card class="general-card" style="margin-top: 20px">
+  <a-card
+			class="general-card"
+			style="margin-top: 20px"
+			:title="usage === 'creation'? '' : '考核指标'"
+	>
     <div style="padding: 20px 0 10px 0">
 			<a-row :gutter="[24, 50]">
 				<a-col :span="10">

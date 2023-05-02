@@ -1,14 +1,6 @@
 <template>
-	<Breadcrumb
-		:items="[
-        'menu.evaluation',
-        'menu.evaluation.evaluationPlan',
-        'menu.evaluation.evaluationPlanEdit',
-      ]"
-	/>
   <a-card
     class="general-card"
-    style="margin-top: 20px"
     title="表单"
   >
     <a-form
