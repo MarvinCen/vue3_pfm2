@@ -25,7 +25,7 @@
       search-button
       :placeholder="inputSearchPlaceholder()"
       @input="onInput"
-      @search="search"
+      @search="search()"
     />
 	</div>
 </template>
@@ -35,7 +35,7 @@ import {ref} from "vue";
 import {TableColumnData} from "@arco-design/web-vue";
 
 const props =defineProps({
-  rColumns: {
+  columns: {
 		type: Array,
     default: () => ([])
   }

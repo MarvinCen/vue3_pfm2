@@ -62,4 +62,5 @@ const employees = data.list;
 export default {
 	departments,
   employees,
+	organizationId,
 };

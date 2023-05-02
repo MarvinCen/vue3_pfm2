@@ -20,8 +20,8 @@ export default {
       },
     },
     {
-      path: 'evaluationPlanDetails',
-      name: 'evaluationPlanDetails',
+      path: 'evaluationPlanCreation',
+      name: 'evaluationPlanCreation',
       component: () =>
         import(
           '@/views/evaluation/evaluation-plan/evaluation-plan-creation.vue'
@@ -50,11 +50,22 @@ export default {
       path: 'evaluationProjectDetail',
       name: 'evaluationProjectDetail',
       component: () =>
-        import(
-          '@/views/evaluation/evaluation-project/component/project-detail.vue'
-          ),
+        import('@/views/evaluation/evaluation-project/component/project-detail.vue'),
       meta: {
         locale: 'menu.evaluation.evaluationProjectCreation',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+    {
+      path: 'evaluationPlanEdit',
+      name: 'evaluationPlanEdit',
+      component: () =>
+        import('@/views/evaluation/evaluation-plan/evaluation-plan-edit.vue'),
+      meta: {
+        locale: 'menu.evaluation.evaluationPlanEdit',
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],

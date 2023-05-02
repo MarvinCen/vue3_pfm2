@@ -28,6 +28,7 @@ export interface Employee {
 }
 
 export interface Position {
+  eid?: number;
   name?: string;
   positionLevel?: string;
   professionalTitle?: string;

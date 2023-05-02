@@ -1,3 +1,5 @@
+import {BaseEntity} from "@/types/global";
+
 export interface Result {
 
 }
@@ -6,9 +8,10 @@ export interface ResultMatcher {
 
 }
 
-export interface Indicator {
+export interface Indicator extends BaseEntity {
   eid?: number;
   parentId?: number;
+  evaluationPlanId?: number;
   name?: string;
   isLeaf?: boolean;
   code?: string;
@@ -22,7 +25,7 @@ export interface Indicator {
   results?: Result[];
 }
 
-export interface EvaluationPlan {
+export interface EvaluationPlan extends BaseEntity {
   eid?: number;
   organizationId?: number;
   name?: string;
@@ -33,7 +36,7 @@ export interface EvaluationPlan {
   remark?: string;
 }
 
-export interface EvaluationProject {
+export interface EvaluationProject extends BaseEntity {
   eid?: number;
   organizationId?: number;
   type?: string;

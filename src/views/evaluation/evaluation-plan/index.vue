@@ -14,7 +14,7 @@
           <a-space style="margin-top: 20px">
             <a-button
               type="primary"
-              @click="$router.push('evaluationPlanDetails')"
+              @click="$router.push('evaluationPlanCreation')"
             >
               <template #icon>
                 <icon-plus />
@@ -25,25 +25,34 @@
         </a-col>
       </a-row>
       <a-table
-        v-model:expandedKeys="expandedKeys"
+        v-model:selected-keys="selectedPlanIds"
         row-key="eid"
         :columns="columns"
         :data="tableData.list"
         :pagination="pager"
         :row-selection="rowSelection"
-        @row-click="rowClick"
         @page-change="pageChange"
         @page-size-change="pageSizeChange"
       >
-        <template #operation="{}">
+        <template #operation="{record}">
           <div style="width: fit-content; margin: 0 auto">
-            <a-button status="success">{{
-              $t('global.operation.button.edit')
-            }}</a-button>
+            <a-button
+              status="success"
+							@click="toCheckOrEdit(record, 'edit')"
+						>
+              {{ $t('global.operation.button.edit') }}
+            </a-button>
             <a-divider direction="vertical" />
-            <a-button status="danger">{{
-              $t('global.operation.button.delete')
-            }}</a-button>
+						<a-popconfirm
+              position="left"
+							content="你确定要删除吗？请确保与之关联的考核项目都已结束~"
+              @ok="deletePlan(record)">
+							<a-button
+								status="danger"
+							>
+								{{ $t('global.operation.button.delete') }}
+							</a-button>
+            </a-popconfirm>
           </div>
         </template>
       </a-table>
@@ -55,15 +64,18 @@
 import { onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-  PaginationProps,
-  TableColumnData,
-  TableRowSelection,
+	Message,
+	PaginationProps,
+	TableColumnData,
+	TableRowSelection,
 } from '@arco-design/web-vue';
-import { BasePaginationSetting } from '@/types/global';
+import { BasePaginationSetting, Response } from '@/types/global';
 import fetchPageList from '@/utils/request';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
-import {findEvaluationPlans} from "@/api/evaluation/evaluation-plan";
+import {deleteEvaluationPlan, findEvaluationPlans} from "@/api/evaluation/evaluation-plan";
 import MultiSearch from "@/components/table/multi-search.vue";
+import {EvaluationPlan} from "@/types/evaluation";
+import {useRouter} from "vue-router";
 
 const initFormModel = () => {
   return {
@@ -71,7 +83,6 @@ const initFormModel = () => {
   };
 };
 
-const expandedKeys = ref([]);
 const { t } = useI18n();
 const formModel = ref(initFormModel());
 const pager: PaginationProps = reactive({
@@ -121,7 +132,7 @@ const columns: TableColumnData[] = [
     title: t('global.column.operation'),
     slotName: 'operation',
     align: 'center',
-    width: 240,
+    width: 180,
     fixed: 'right',
   },
 ];
@@ -171,11 +182,33 @@ const pageSizeChange = (pageSize?: number) => {
   pager.pageSize = pageSize;
 };
 
-const rowClick = (record?: TableData, event?: Event) => {
-  // eslint-disable-next-line no-console
-  console.log(record, event);
-  // TODO do something
-};
+
+const selectedPlanIds = ref<number[]>([]);
+
+const deletePlan = (record: EvaluationPlan) => {
+	const eid = record.eid;
+  deleteEvaluationPlan(eid as number).then((res) => {
+		if ((res as Response).code === 20000) {
+			Message.success('删除成功');
+			search({});
+    }
+		else Message.warning((res as Response).message as string)
+  })
+
+}
+
+
+const router = useRouter();
+const toCheckOrEdit = (plan: EvaluationPlan, opt: string) => {
+	const query = {
+		plan: JSON.stringify(plan),
+    editable: JSON.stringify(opt !== 'check')
+  }
+	router.push({
+		path: 'evaluationPlanEdit',
+		query,
+	})
+}
 
 onMounted(() => {
   fetchPageList(

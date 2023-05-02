@@ -25,6 +25,18 @@ export interface PostData {
   url: string;
 }
 
+export interface PutParams {
+  body: string;
+  type: string;
+  url: string;
+}
+
+export interface DeleteParams {
+  body: string;
+  type: string;
+  url: string;
+}
+
 export interface Pager {
   current?: number;
   pageSize?: number;
@@ -69,3 +81,11 @@ export const BasePaginationSetting = {
   defaultPageSize: 10,
   pageSizeOptions: [5, 10, 20, 50, 100, 500, 1000],
 };
+
+export interface BaseEntity {
+  eid?: number;
+  createDatetime?: string | Date;
+  updateDatetime?: string | Date;
+  code?: string;
+  remark?: string;
+}
