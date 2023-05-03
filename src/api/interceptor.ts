@@ -24,13 +24,13 @@ axios.interceptors.response.use(
     const res = response.data;
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
-      if (res.code >= 30000 && res.code < 40000) {
+      if (res.code >= 30000 && res.code < 40000) { // Mistake
         Message.warning({
           content: res.message || 'Warning',
           duration: 5 * 1000,
         });
       }
-      else {
+      else { // Error
         Message.error({
           content: res.message || 'Error',
           duration: 5 * 1000,

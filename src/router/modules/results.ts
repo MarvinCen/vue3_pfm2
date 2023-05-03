@@ -71,7 +71,7 @@ export default {
       path: 'resultTableDataEdit',
       name: 'resultTableDataEdit',
       component: () =>
-        import('@/views/results/component/result-data.vue'),
+        import('@/views/results/component/result-data-edit.vue'),
       meta: {
         locale: 'menu.results.resultTypeCreation',
         requiresAuth: true,

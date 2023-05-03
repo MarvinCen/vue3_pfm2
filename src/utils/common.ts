@@ -48,9 +48,7 @@ export default {
 		return res;
 	},
 
-	setEntityDatetime(entity: BaseEntity) {
-		const date = moment(new Date());
-		entity.createDatetime = date.format('YYYY-MM-DD HH:mm:ss')
-		entity.updateDatetime = date.format('YYYY-MM-DD HH:mm:ss')
+	formatDirectors(directors: any[]) {
+
 	}
 }

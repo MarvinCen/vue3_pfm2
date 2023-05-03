@@ -1,7 +1,7 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setup-mock';
 import {PostData, GetParams, Pager} from '@/types/global';
-import { ResultTableColumn, ResultType } from '@/types/results';
+import {Metadata, RColumn, ResultType} from '@/types/results';
 import qs from 'query-string';
 import data from './database'
 
@@ -12,7 +12,7 @@ const czName = () => {
 };
 
 interface TableRes {
-  columns?: ResultTableColumn[];
+  columns?: RColumn[];
   list?: any[];
 }
 const table: TableRes = {
@@ -28,7 +28,7 @@ function columns() {
       const idx = eid - 20000;
       const position = random.integer(1, 6);
       if (idx + 1 === position) {
-        return '负责人';
+        return '负责人姓名';
       }
       const position2 = position + random.integer(2, 4);
       if (idx + 1 === position2) {
@@ -39,7 +39,7 @@ function columns() {
   });
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < 12; i++) {
-    const column: ResultTableColumn = Mock.mock({
+    const column: RColumn = Mock.mock({
       // @ts-ignore
       'eid|+1': 20000,
       'resultTableId': Number(random.id()),
@@ -179,7 +179,7 @@ setupMock({
           code: 20000,
           data: {
             eid,
-            list: data.resultTableData,
+            list: data.resultTableData.reverse(),
             pager: {
               current: pager.current,
               pageSize: pager.pageSize,
@@ -188,6 +188,26 @@ setupMock({
           },
           message: undefined,
         };
+      }
+    );
+    Mock.mock(
+      new RegExp('results/cellData'),
+      'post',
+      (options: PostData) => {
+        const body = JSON.parse(options.body);
+        const resultData = body.resultData;
+        const metadata = resultData.metadata as Metadata;
+        metadata.eid = random.increment();
+
+        data.metadata.push(metadata);
+        resultData.metadata = metadata.eid;
+        data.resultTableData.push(resultData);
+
+        return {
+          code: 20000,
+          data: {},
+          message: '',
+        }
       }
     );
   },

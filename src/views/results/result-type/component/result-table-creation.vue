@@ -66,7 +66,7 @@
     <template #designateAs="{ record }">
       <a-select v-model="record.designateAs" default-value="无">
         <a-option>无</a-option>
-        <a-option>负责人</a-option>
+        <a-option>负责人姓名</a-option>
         <a-option>参与人</a-option>
       </a-select>
     </template>

@@ -51,3 +51,9 @@ export function findResultTableDataById(eid: number, pager: Pager) {
     },
   });
 }
+
+export function createResultData(resultData: any) {
+  return axios.post('results/cellData', {
+    resultData
+  });
+}

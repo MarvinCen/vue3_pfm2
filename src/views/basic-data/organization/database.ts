@@ -1,5 +1,5 @@
 import Mock from "mockjs";
-import {Department} from "@/types/basic-data";
+import {Department, Employee} from "@/types/basic-data";
 
 const random = Mock.Random;
 
@@ -39,6 +39,7 @@ departments.forEach(department => {
 	department.remark = department.name;
 })
 
+const employees: Employee[] = [];
 const data = Mock.mock({
 	'list|100-300': [
 		{
@@ -57,7 +58,13 @@ const data = Mock.mock({
 		},
 	],
 });
-const employees = data.list;
+employees.push({
+	eid: 9999,
+	name: '管理员',
+	remark: '管理员'
+})
+employees.push(...data.list);
+
 
 export default {
 	departments,

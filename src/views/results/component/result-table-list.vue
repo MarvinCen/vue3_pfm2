@@ -214,19 +214,47 @@
 								@page-size-change="pageSizeChange"
 								@select="selectTableData"
 							>
+								<template #status="{ record }">
+									<a-tag
+											v-if="record.metadata.status === '通过'"
+											color="green"
+											size="small"
+									>
+										{{ record.metadata.status }}
+									</a-tag>
+									<a-tag
+											v-else-if="record.metadata.status === '驳回'"
+											color="red"
+											size="small"
+									>
+										{{ record.metadata.status }}
+									</a-tag>
+									<a-tag
+											v-else-if="record.metadata.status === '草稿'"
+											color="default"
+											size="small"
+									>
+										{{ record.metadata.status }}
+									</a-tag>
+									<a-tag
+											v-else-if="record.metadata.status === '待审核'"
+											color="blue"
+											size="small"
+									>
+										{{ record.metadata.status }}
+									</a-tag>
+									<a-tag
+											v-else
+											color="#f53f3f"
+									>
+										错误
+									</a-tag>
+								</template>
 								<template #operation="{record, rowIndex}">
 									<div style="width: fit-content; margin: 0 auto">
 										<a-button
 												size="small"
 												status="normal"
-												@click="toCheckTableData(record)"
-										>
-											查看
-										</a-button>
-										<a-divider direction="vertical" />
-										<a-button
-												size="small"
-												status="success"
 												@click="toEditTableData(record)"
                     >
 											{{ $t('global.operation.button.edit') }}
@@ -261,7 +289,7 @@ import {
 } from '@/api/results/results';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
 import {ResultTable, ResultType} from '@/types/results';
-import ResultData from "@/views/results/component/result-data.vue";
+import ResultData from "@/views/results/component/result-data-edit.vue";
 import {useRouter} from "vue-router";
 
 const initFormModel = () => {
@@ -416,11 +444,21 @@ export default {
 			}
 			if (newColumns.length > 0) {
 				newColumns.push({
+					title: '状态',
+					dataIndex: 'status',
+					ellipsis: true,
+					tooltip: true,
+					align: 'center',
+					width: 80,
+					slotName: 'status',
+					fixed: 'right'
+				});
+				newColumns.push({
 					title: '操作',
 					ellipsis: true,
 					tooltip: true,
 					align: 'center',
-					width: 270,
+					width: 180,
 					slotName: 'operation',
 					fixed: 'right'
 				});

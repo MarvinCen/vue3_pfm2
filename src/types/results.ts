@@ -1,6 +1,7 @@
 import {Department} from "@/types/basic-data";
+import {BaseEntity} from "@/types/global";
 
-export interface ResultType {
+export interface ResultType extends BaseEntity {
   key?: number;
   title?: string;
   eid?: number;
@@ -17,12 +18,12 @@ export interface ResultType {
   remark?: string;
 }
 
-export interface ResultTable {
+export interface ResultTable extends BaseEntity {
   eid?: number;
   resultTypeId?: number;
   name?: string;
   inputWay?: string;
-  columns?: ResultTableColumn[];
+  columns?: RColumn[];
 }
 
 export interface ComponentType {
@@ -30,7 +31,7 @@ export interface ComponentType {
   params?: any;
 }
 
-export interface ResultTableColumn {
+export interface RColumn {
   eid?: number;
   resultTableId?: number;
   name?: string;
@@ -39,5 +40,33 @@ export interface ResultTableColumn {
   unique?: boolean;
   nullable?: boolean;
   example?: string;
-  designateAs?: string;
+  designateAs?: '负责人姓名' | '参与人' | '工号' | undefined;
 }
+export const designateAsOptions = {
+  directorName: '负责人姓名',
+  participant: '参与人',
+  jobNumber: '工号',
+  all: [
+    '负责人姓名',
+    '参与人',
+    '工号'
+  ],
+}
+
+export interface Metadata {
+  eid?: number;
+  createDatetime?: Date | string;
+  updateDatetime?: Date | string;
+  importerId?: number;
+  importerName?: string;
+  directorId?: number;
+  directorName?: string;
+  directorJobNumber?: string;
+  participantIds?: number[];
+  participantNames?: string[];
+  participants?: string;
+  status?: '草稿' | '待审核' | '驳回' | '通过';
+  pfmResultsIds?: number[];
+}
+
+

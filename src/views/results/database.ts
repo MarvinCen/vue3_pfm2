@@ -1,7 +1,8 @@
-import {ResultTable, ResultTableColumn, ResultType} from "@/types/results";
+import {ResultTable, RColumn, ResultType, Metadata} from "@/types/results";
 import Mock from "mockjs";
 import orgData from '@/views/basic-data/organization/database';
 import {TreeFieldNames} from "@arco-design/web-vue";
+import moment from "moment";
 const random = Mock.Random;
 const departments = orgData.departments;
 
@@ -216,7 +217,7 @@ const tables: ResultTable[] = [
 	}
 })(rootResultTypes)
 
-const columns: ResultTableColumn[] = [
+const columns: RColumn[] = [
 	{
 		eid: random.increment(),
 		resultTableId: tables.filter(t => t.name === '专著（科研网）')[0].eid,
@@ -241,7 +242,7 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '',
-		designateAs: '负责人',
+		designateAs: '负责人姓名',
 	},
 	{
 		eid: random.increment(),
@@ -254,7 +255,6 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '',
 	},
 	{
 		eid: random.increment(),
@@ -267,7 +267,6 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '',
 	},
 	{
 		eid: random.increment(),
@@ -280,7 +279,6 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '',
 	},
 	{
 		eid: random.increment(),
@@ -293,7 +291,6 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '',
 	},
 	{
 		eid: random.increment(),
@@ -306,7 +303,7 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '参与人员',
+		designateAs: '参与人',
 	},
 	{
 		eid: random.increment(),
@@ -319,7 +316,6 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '',
 	},
 	{
 		eid: random.increment(),
@@ -332,7 +328,6 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '',
 	},
 	{
 		eid: random.increment(),
@@ -345,10 +340,11 @@ const columns: ResultTableColumn[] = [
 		unique: false,
 		nullable: false,
 		example: '土木工程学院',
-		designateAs: '',
 	},
 ]
 tables.filter(t => t.name === '专著（科研网）')[0].columns = columns;
+
+
 
 const desc = [
 	"专著ID：9667</br>专著名称：山地村镇建设用地适宜性评价理论及应用</br>出版单位：科学出版社</br>出版时间：2021-04-01</br>著作类型：专著</br>总字数（万）：33</br>创建时间：2021-06-16",
@@ -447,9 +443,31 @@ const tableData: any[] = [
 ]
 tableData.forEach(data => { data.eid = random.increment()})
 
+
+const metadata: Metadata[] = (
+	function () {
+		const res: Metadata[] = [];
+		for (let i = 0; i < tableData.length; i++) {
+			const metadata: Metadata = {
+				eid: random.increment(),
+				createDatetime: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'),
+				updateDatetime: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'),
+				importerId: 9999,
+				importerName: '管理员',
+				status: '通过'
+			}
+			res.push(metadata);
+			tableData[i].metadataId = metadata.eid;
+			tableData[i].metadata = metadata;
+		}
+		return res;
+	}
+)();
+
 export default  {
 	resultTypes: rootResultTypes,
 	resultTables: tables,
 	rColumns: columns,
 	resultTableData: tableData,
+	metadata,
 }

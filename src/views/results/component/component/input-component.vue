@@ -2,25 +2,28 @@
   <div>
     <a-input
       v-if="_cp.type === 'TextInput'"
-			v-model:model-value="val as string"
+			v-model="modelValue as string"
+			@change="onChange"
     />
 		<a-input-number
       v-else-if="_cp.type === 'IntInput'"
-			v-model:model-value="val as number"
+			v-model="modelValue as number"
       mode="button"
-      :precision="1"
+      :precision="0"
       :step="1"
+			@change="onChange"
     />
 		<a-input-number
 			v-else-if="_cp.type === 'DecInput'"
-			v-model:model-value="val as number"
+			v-model="modelValue as number"
 			mode="button"
 			:precision="0.01"
 			:step="0.01"
+			@change="onChange"
 		/>
 		<a-input-number
 			v-else-if="_cp.type === 'MoneyInput'"
-			v-model:model-value="val as number"
+			v-model="modelValue as number"
 			mode="button"
 			:precision="0.01"
 			:step="0.01"
@@ -32,12 +35,14 @@
       :parser="(value) => {
         return value.replace(/,/g, '');
 			}"
+			@change="onChange"
 		/>
 		<a-radio-group
 				v-else-if="[
 				'StrRadio',
 				].includes(_cp.type as string)"
-				v-model:model-value="val as string"
+				v-model="modelValue as string"
+				@change="onChange"
 		>
 			<a-radio
 					v-for="(item, index) in _cp.params.options"
@@ -50,7 +55,8 @@
 				'IntRadio',
 				'DecRadio',
 				].includes(_cp.type as string)"
-				v-model:model-value="val as number"
+				v-model="modelValue as number"
+				@change="onChange"
 		>
 			<a-radio
 					v-for="(item, index) in _cp.params.options"
@@ -65,7 +71,8 @@
 				'StrCheckbox',
 				'Checkbox',
 				].includes(_cp.type as string)"
-				v-model:model-value="val as (number | string)[]"
+				v-model="modelValue as (number | string)[]"
+				@change="onChange"
 		>
 			<a-checkbox
           v-for="(item, index) in _cp.params.options"
@@ -80,8 +87,9 @@
 				'StrSelector',
 				'Selector'
 				].includes(_cp.type as string)"
-				v-model:model-value="val as string| number| Record<string, any>| (string | number | Record<string, any>)[]"
+				v-model="modelValue as string| number| Record<string, any>| (string | number | Record<string, any>)[]"
 				:multiple="_cp.params.multiple"
+				@change="onChange"
 		>
 			<a-option
 					v-for="(item, index) in _cp.params.options"
@@ -91,24 +99,28 @@
 		</a-select>
 		<a-date-picker
 				v-else-if="_cp.type === 'DatePicker'"
-				v-model:picker-value="val"
+				v-model="modelValue"
+				@change="onChange"
 		/>
 		<a-date-picker
 				v-else-if="_cp.type === 'DatetimePicker'"
 				show-time
 				format="YYYY-MM-DD HH:mm:ss"
-				v-model:picker-value="val"
+				v-model="modelValue"
+				@change="onChange"
 		/>
 		<a-range-picker
 				v-else-if="_cp.type === 'DateRangePicker'"
 				format="YYYY-MM-DD"
-				v-model:picker-value="val as (string | number | Date)[] | undefined"
+				v-model="modelValue as (string | number | Date)[] | undefined"
+				@change="onChange"
 		/>
 		<a-range-picker
 				v-else-if="_cp.type === 'DatetimeRangePicker'"
 				show-time
 				format="YYYY-MM-DD"
-				v-model:picker-value="val as (string | number | Date)[] | undefined"
+				v-model="modelValue as (string | number | Date)[] | undefined"
+				@change="onChange"
 		/>
 
   </div>
@@ -145,11 +157,14 @@ const props = defineProps({
 const _cp = props.component as ComponentType;
 let val: any = props.modelValue;
 if (!val) val = '';
-const emit = defineEmits(['dataChange'])
-watch(val, (value) => {
-	emit('dataChange', value);
-})
-console.log(_cp)
+const emit = defineEmits(['update:modelValue', 'dataChange'])
+// watch(val, (value) => {
+// 	emit('dataChange', value);
+// })
+
+const onChange = (value: any) => {
+	emit('update:modelValue', value);
+}
 </script>
 
 <style scoped lang="less">

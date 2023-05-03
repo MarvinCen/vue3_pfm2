@@ -37,7 +37,9 @@
             <NavBar />
           </div>
           <a-layout-content>
-            <router-view />
+            <keep-alive :include="['inputResult']">
+							<router-view />
+            </keep-alive>
           </a-layout-content>
           <Footer v-if="footer" />
         </a-layout>
