@@ -279,18 +279,18 @@
 </template>
 
 <script lang="ts">
-import {onMounted, reactive, ref, watch} from 'vue';
+import {onActivated, onMounted, reactive, ref, watch} from 'vue';
 import {PaginationProps, TableColumnData, TableRowSelection, TreeNodeData} from '@arco-design/web-vue';
 import { BasePaginationSetting, Response } from '@/types/global';
-import fetchPageList from '@/utils/request';
 import {
-  findResultTableDataById,
-  findResultTypes,
+	findResultTableDataById,
+	findResultTypes2,
 } from '@/api/results/results';
 import { TableData } from '@arco-design/web-vue/es/table/interface';
 import {ResultTable, ResultType} from '@/types/results';
 import ResultData from "@/views/results/component/result-data-edit.vue";
 import {useRouter} from "vue-router";
+import util from '@/utils/common'
 
 const initFormModel = () => {
   return {
@@ -340,21 +340,7 @@ export default {
 
     function pageChange(page: number): number {
       pager.current = page;
-      fetchPageList(
-        {
-          enablePagination: true,
-          pager: {
-            current: pager.current,
-            pageSize: pager.pageSize,
-          },
-          conditions: formModel,
-        },
-        {
-          tableData,
-          pager,
-        },
-        findResultTypes
-      );
+      // TODO
       return page;
     }
 
@@ -368,22 +354,24 @@ export default {
       // TODO do something
     };
 
-    const resultTypeTree = reactive({
+    const resultTypeTree = reactive<{list: ResultType[]}>({
       list: [],
     });
     onMounted(() => {
-      fetchPageList(
-        {
-          enablePagination: false,
-          conditions: {}, // 利用数据规则
-          props: ['eid', 'name'],
-        },
-        {
-          tableData: resultTypeTree,
-        },
-        findResultTypes
-      );
+      findResultTypes2({ withs: ['resultTables'] }).then(res => {
+				const rTypes = res.data.list;
+				console.log(rTypes)
+				resultTypeTree.list = util.treeify(rTypes);
+			})
     });
+		onActivated(() => {
+			findResultTypes2({ withs: ['resultTables'] }).then(res => {
+				const rTypes = res.data.list;
+				console.log(rTypes)
+				resultTypeTree.list = util.treeify(rTypes);
+			})
+
+    })
 
     const selectedResultType = ref([]); // actually only one selected in the array
     const resultTables = reactive<{ value?: ResultTable[] }>({

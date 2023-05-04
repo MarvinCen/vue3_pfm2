@@ -37,9 +37,12 @@
             <NavBar />
           </div>
           <a-layout-content>
-            <keep-alive :include="['inputResult']">
-							<router-view />
-            </keep-alive>
+						<router-view v-slot="{ Component }">
+							<keep-alive>
+								<component :is="Component"  v-if="$route.meta.keepAlive"/>
+							</keep-alive>
+							<component :is="Component"  v-if="!$route.meta.keepAlive"/>
+            </router-view>
           </a-layout-content>
           <Footer v-if="footer" />
         </a-layout>

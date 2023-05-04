@@ -39,7 +39,7 @@ const rootResultTypes: ResultType[] = [
 		remark: '公共服务',
 	},
 ]
-rootResultTypes[0].children = [
+const rt0Children: ResultType[] = [
 	{
 		eid: random.increment(),
 		parentId: rootResultTypes[0].eid,
@@ -74,7 +74,7 @@ rootResultTypes[0].children = [
 		remark: '本科生课程',
 	},
 ]
-rootResultTypes[1].children = [
+const rt1Children: ResultType[] = [
 	{
 		eid: random.increment(),
 		parentId: rootResultTypes[1].eid,
@@ -109,7 +109,7 @@ rootResultTypes[1].children = [
 		remark: '专著',
 	},
 ]
-rootResultTypes[2].children = [
+const rt2Children: ResultType[] = [
 	{
 		eid: random.increment(),
 		parentId: rootResultTypes[2].eid,
@@ -144,65 +144,75 @@ rootResultTypes[2].children = [
 		remark: 'D3类公共服务',
 	},
 ]
+// rootResultTypes[0].children = rt0Children
+// rootResultTypes[1].children = rt1Children
+// rootResultTypes[2].children = rt2Children
+
+const resultTypeList: ResultType[] = [
+	...rootResultTypes,
+	...rt0Children,
+	...rt1Children,
+	...rt2Children,
+]
 
 const tables: ResultTable[] = [
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[0].children.filter(r => r.name === '本科生课程')[0].eid,
+		resultTypeId: rt0Children.filter(r => r.name === '本科生课程')[0].eid,
 		name: '本科生课程',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[0].children.filter(r => r.name === '教学会议报告')[0].eid,
+		resultTypeId: rt0Children.filter(r => r.name === '教学会议报告')[0].eid,
 		name: '教学会议报告',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[0].children.filter(r => r.name === '学科竞赛指导')[0].eid,
+		resultTypeId: rt0Children.filter(r => r.name === '学科竞赛指导')[0].eid,
 		name: '学科竞赛指导',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[1].children.filter(r => r.name === '期刊论文')[0].eid,
+		resultTypeId: rt1Children.filter(r => r.name === '期刊论文')[0].eid,
 		name: '期刊论文',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[1].children.filter(r => r.name === '学术论文')[0].eid,
+		resultTypeId: rt1Children.filter(r => r.name === '学术论文')[0].eid,
 		name: '学术论文',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[1].children.filter(r => r.name === '专著')[0].eid,
+		resultTypeId: rt1Children.filter(r => r.name === '专著')[0].eid,
 		name: '专著（科研网）',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[1].children.filter(r => r.name === '专著')[0].eid,
+		resultTypeId: rt1Children.filter(r => r.name === '专著')[0].eid,
     name: '专著',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[2].children.filter(r => r.name === 'D1类公共服务')[0].eid,
+		resultTypeId: rt2Children.filter(r => r.name === 'D1类公共服务')[0].eid,
 		name: 'D1类公共服务',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[2].children.filter(r => r.name === 'D2类公共服务')[0].eid,
+		resultTypeId: rt2Children.filter(r => r.name === 'D2类公共服务')[0].eid,
 		name: 'D2类公共服务',
 		inputWay: '部门录入',
 	},
 	{
 		eid: random.increment(),
-		resultTypeId: rootResultTypes[2].children.filter(r => r.name === 'D3类公共服务')[0].eid,
+		resultTypeId: rt2Children.filter(r => r.name === 'D3类公共服务')[0].eid,
 		name: 'D3类公共服务',
 		inputWay: '部门录入',
 	},
@@ -465,7 +475,8 @@ const metadata: Metadata[] = (
 )();
 
 export default  {
-	resultTypes: rootResultTypes,
+	resultTypes: resultTypeList,
+	resultTypesTree: rootResultTypes,
 	resultTables: tables,
 	rColumns: columns,
 	resultTableData: tableData,

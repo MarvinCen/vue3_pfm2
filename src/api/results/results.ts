@@ -1,11 +1,15 @@
 import axios from 'axios';
-import {Pager, ReqPagerParams} from '@/types/global';
+import {Pager, Query, ReqPagerParams} from '@/types/global';
 import { ResultTable, ResultType } from '@/types/results';
 
 export function findResultTypes(params: ReqPagerParams) {
-  return axios.get('/results/resultType/', {
+  return axios.get('/results/resultTypes', {
     params,
   });
+}
+
+export function findResultTypes2(query: Query) {
+  return axios.post('/results/resultTypes', query);
 }
 
 export function findResultTablesBy(resultTypeId: number) {
@@ -31,8 +35,12 @@ export function updateResultType(resultType: ResultType) {
   return axios.put('results/resultType', resultType);
 }
 
-export function createResultTable(resultTables: ResultTable[]) {
+export function createResultTable(resultTypeId: number, resultTables: ResultTable[]) {
   return axios.post('results/resultTable', resultTables);
+}
+
+export function createResultTables(resultTables: ResultTable[]) {
+  return axios.post('results/resultTable/list', resultTables);
 }
 
 export function findResultTableColumns(resultTableId: number) {

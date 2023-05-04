@@ -1,9 +1,12 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setup-mock';
-import {PostData, GetParams, Pager} from '@/types/global';
-import {Metadata, RColumn, ResultType} from '@/types/results';
+import {PostData, GetParams, Pager, Query} from '@/types/global';
+import {Metadata, RColumn, ResultTable, ResultType} from '@/types/results';
 import qs from 'query-string';
 import data from './database'
+import orgData from '@/views/basic-data/organization/database'
+import MockUtil from '@/utils/mock'
+import commonUtil from '@/utils/common'
 
 const { Random } = Mock;
 const random = Mock.Random;
@@ -93,11 +96,16 @@ function resultTableData(): any[] {
 setupMock({
   setup() {
     Mock.mock(
-      new RegExp('/results/resultType/'),
+      new RegExp('/results/resultTypes'),
       'get',
       (options: GetParams) => {
         const params = qs.parseUrl(options.url).query;
+        console.log(params);
         let resultTypes = data.resultTypes;
+        resultTypes.forEach(rt => {
+          rt.children = undefined
+        })
+        resultTypes = commonUtil.treeify(resultTypes);
         return {
           code: 20000,
           data: {
@@ -112,13 +120,55 @@ setupMock({
         };
       }
     );
-    Mock.mock(new RegExp('results/resultType'), 'post', (data: PostData) => {
-      return {
-        code: 20000,
-        data: {},
-        message: '',
-      };
-    });
+    Mock.mock(
+      new RegExp('/results/resultTypes'),
+      'post',
+      (options: PostData) => {
+        const query = JSON.parse(options.body) as Query;
+        const ls = data.resultTypes;
+        const res = MockUtil.query(ls, query) as ResultType[];
+
+        console.log(data.resultTables)
+        if (query.withs?.includes('resultTables')) {
+          res.forEach(rt => {
+            rt.resultTables = data.resultTables.filter(table => {
+              return table.resultTypeId === rt.eid;
+            })
+          })
+        }
+        console.log()
+
+        return {
+          code: 20000,
+          data: {
+            list: res,
+            pager: query.pager,
+          }
+        };
+      }
+    );
+    Mock.mock(
+      new RegExp('results/resultType'),
+      'post',
+      (options: PostData) => {
+        const resultType: ResultType = JSON.parse(options.body);
+        const department = orgData.departments.filter(d => d.eid === resultType.departmentId)[0];
+        resultType.departmentName = department.name;
+        resultType.department = department;
+        resultType.eid = random.increment();
+
+        const rts = data.resultTypes;
+        const parentId = resultType.parentId;
+        data.resultTypes.push(resultType)
+        return {
+          code: 20000,
+          data: {
+            eid: resultType.eid
+          },
+          message: '',
+        };
+      }
+    );
     Mock.mock(new RegExp('results/resultType'), 'put', () => {
       return {
         code: 20000,
@@ -132,6 +182,30 @@ setupMock({
         data: {},
         message: '',
       };
+    });
+    Mock.mock(
+      new RegExp('results/resultTable/list'),
+      'post',
+      (options: PostData) => {
+        console.log('enter mock:  ')
+        const rts = JSON.parse(options.body).resultTables as ResultTable[];
+        rts.forEach(rt => {
+          rt.columns = rt.columns || [];
+          const metadata: RColumn = {
+            name: 'metadata',
+          }
+          rt.columns.push(metadata);
+          data.metadata.push(metadata);
+          data.rColumns.push(...rt.columns);
+        })
+        console.log(rts)
+        data.resultTables.push(...rts);
+        console.log(data.resultTables)
+        return {
+          code: 20000,
+          data: {},
+          message: '',
+        };
     });
     Mock.mock(new RegExp('/results/resultTables'), (options: GetParams) => {
       const { resultTypeId } = qs.parseUrl(options.url).query;

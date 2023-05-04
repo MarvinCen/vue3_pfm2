@@ -44,6 +44,18 @@ export interface Pager {
   conditions?: any;
 }
 
+export interface Query {
+  conditions?: Condition[];
+  pager?: Pager;
+  withs?: string[];
+}
+
+export interface Condition {
+  prop: string;
+  type: 'eq' | 'lLike' | 'rLike' | 'in';
+  value: string | number | any[];
+}
+
 export type TimeRanger = [string, string];
 
 export interface GeneralChart {

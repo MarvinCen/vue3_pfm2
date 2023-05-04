@@ -5,14 +5,15 @@ interface FieldNames {
 	id: string;
 	parentId: string;
 	children: string;
+	isLeaf: string;
 }
 
 const doTreeify = (data: any[], root: any, parentId: number, fieldNames: FieldNames) => {
 	for (let i = 0; i < data.length; i++) {
 		if (data[i][fieldNames.parentId] === parentId) {
-			if (root[fieldNames.children])
-				root[fieldNames.children] = [];
-			else root[fieldNames.children].push(data[i]);
+			root[fieldNames.children] = root[fieldNames.children] || [];
+			root[fieldNames.children].push(data[i]);
+			root[fieldNames.isLeaf] = false;
 		}
 	}
 
@@ -32,7 +33,12 @@ export default {
         id: 'eid',
         parentId: 'parentId',
         children: 'children',
+				isLeaf: 'isLeaf',
       };
+		}
+
+		for (let i = 0; i < data.length; i++) {
+			data[i][fieldNames.children] = undefined;
 		}
 
 		const res = [];

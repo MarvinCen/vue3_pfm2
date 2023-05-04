@@ -31,6 +31,63 @@ export interface ComponentType {
   params?: any;
 }
 
+export const componentTypeOptions = [
+  {
+    label: '文本框',
+    value: '文本框'
+  },
+  {
+    label: '选择器',
+    value: '选择器'
+  },
+  {
+    label: '时间选择器',
+    value: '时间选择器'
+  },
+  {
+    label: '单选框',
+    value: '单选框'
+  },
+  {
+    label: '多选框',
+    value: '多选框'
+  },
+  {
+    label: '文本域',
+    value: '文本域'
+  },
+]
+export const dataTypeOptions = [
+  {
+    label: '文本',
+    value: '文本',
+  },
+  {
+    label: '整数',
+    value: '整数',
+  },
+  {
+    label: '小数',
+    value: '小数',
+  },
+  {
+    label: '日期时间',
+    value: '日期时间',
+  },
+  {
+    label: '日期',
+    value: '日期',
+  },
+  {
+    label: '时间',
+    value: '时间',
+  },
+  {
+    label: '年份',
+    value: '年份',
+  },
+]
+
 export interface RColumn {
   eid?: number;
   resultTableId?: number;

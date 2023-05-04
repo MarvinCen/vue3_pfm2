@@ -17,6 +17,7 @@ export default {
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],
+        keepAlive: true
       },
     },
     {
