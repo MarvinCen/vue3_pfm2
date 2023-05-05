@@ -18,7 +18,6 @@ const fetchPageList = async (
   apiMethod(reqPagerParams)
     .then((res) => {
       response = res as Response;
-      console.log(response)
       yourPayload.tableData.list = response.data.list;
       if (yourPayload.pager) {
         yourPayload.pager.current = response.data.pager.current;

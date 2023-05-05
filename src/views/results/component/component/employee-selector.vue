@@ -225,7 +225,6 @@ const onChangeJobNumber = (record: Participant) => {
 }
 
 const setMetadataFromTable = () => {
-	console.log(666)
 	let participantsStr = '';
 	let participantIds: number[] = [];
 	let participantNames: string[] = [];

@@ -71,7 +71,6 @@ export default defineComponent({
 			if (firstIn.value) {
 				createEvaluationPlan(evaluationPlan.value).then((res) => {
 					planId.value = res.data.planId;
-					console.log(res.data.planId)
 					Message.success('提交成功');
 					firstIn.value = false;
 					changeStep('next', {});

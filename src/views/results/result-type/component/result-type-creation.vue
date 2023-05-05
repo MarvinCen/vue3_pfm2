@@ -138,7 +138,7 @@
 import { ref, onMounted, reactive } from 'vue';
 import useLoading from '@/hooks/loading';
 import {
-	createResultTable, createResultTables,
+	createResultTables,
 	createResultType,
 	findResultTypes,
 	updateResultType,
@@ -232,6 +232,7 @@ export default {
 				Message.warning('保存成果类型失败');
 				setLoading(false);
       } else {
+				resultType.value.isLeaf = true;
         if (stepVersion.prevStep >= 1) {
 					updateResultType(resultType.value).then(() => {
 						Message.success('更新成果类型成功');
@@ -255,7 +256,7 @@ export default {
 			resultTables.value.forEach(rt => {
 				rt.resultTypeId = resultType.value.eid;
 			})
-			console.log('enter table creation')
+
 			createResultTables(resultTables.value).then(() => {
 				const msg = (resultTables.value && resultTables.value.length === 0) ?
 						'创建成功' : '创建成功！快去录入数据叭~';

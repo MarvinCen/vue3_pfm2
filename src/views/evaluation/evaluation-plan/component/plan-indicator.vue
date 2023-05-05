@@ -257,13 +257,13 @@ onMounted(() => {
 	if (props.usage !== 'creation') {
 		findIndicatorsBy(props.plan.eid).then(res => {
 			const indicators = res.data.list;
-			console.log(indicators)
+
 			data.value = utils.treeify(indicators, {
 				id: 'eid',
 				parentId: 'parentId',
-				children: 'children'
+				children: 'children',
+				isLeaf: 'isLeaf'
 			}) as Indicator[];
-			console.log(data.value)
 		})
 	}
 })

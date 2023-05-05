@@ -231,7 +231,6 @@
 									</a-tag>
 									<a-tag
 											v-else-if="record.metadata.status === '草稿'"
-											color="default"
 											size="small"
 									>
 										{{ record.metadata.status }}
@@ -280,7 +279,7 @@
 
 <script lang="ts">
 import {onActivated, onMounted, reactive, ref, watch} from 'vue';
-import {PaginationProps, TableColumnData, TableRowSelection, TreeNodeData} from '@arco-design/web-vue';
+import {Message, PaginationProps, TableColumnData, TableRowSelection, TreeNodeData} from '@arco-design/web-vue';
 import { BasePaginationSetting, Response } from '@/types/global';
 import {
 	findResultTableDataById,
@@ -360,19 +359,18 @@ export default {
     onMounted(() => {
       findResultTypes2({ withs: ['resultTables'] }).then(res => {
 				const rTypes = res.data.list;
-				console.log(rTypes)
 				resultTypeTree.list = util.treeify(rTypes);
 			})
     });
 		onActivated(() => {
 			findResultTypes2({ withs: ['resultTables'] }).then(res => {
 				const rTypes = res.data.list;
-				console.log(rTypes)
 				resultTypeTree.list = util.treeify(rTypes);
 			})
 
 			findResultTableDataById(activeTableId.value as number, pager).then((r3) => {
 				const { list, pager: page } = (r3 as Response).data;
+
 				pager.total = page.total;
 				pager.current = page.current;
 				tableData.list = list;
@@ -408,13 +406,15 @@ export default {
 
 			// 如果点击叶子节点，查询成果表及成果表数据
 			resultTables.value = resultType.resultTables;
-			if (!resultTables.value) {
+			if (!resultTables.value || resultTables.value.length === 0) {
+				Message.warning('该成果类型无成果表，可于成果类型编辑页面进行创建')
 				return;
 			}
 
 			// 获取table的columns
 			const rt = resultTables.value[0];
 			activeTableId.value = rt.eid;
+			activeTable.value = rt;
 			columns.value.splice(0);
 			const newColumns = [];
 			let rtColumns = rt.columns;
@@ -488,9 +488,7 @@ export default {
 
 		const selectedTableDataIds = ref([]);
 		const selectTableData = () => {
-			setTimeout(() => {
-				console.log(selectedTableDataIds.value)
-			}, 500)
+
 		}
 
 

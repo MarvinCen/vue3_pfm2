@@ -103,7 +103,7 @@ setupMock({
 
         const indicator: Indicator = body.indicator;
         indicator.eid = Mock.Random.increment();
-        console.log(indicator)
+
         data.indicators.push(indicator);
         return {
           code: 20000,

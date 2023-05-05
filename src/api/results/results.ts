@@ -35,10 +35,6 @@ export function updateResultType(resultType: ResultType) {
   return axios.put('results/resultType', resultType);
 }
 
-export function createResultTable(resultTypeId: number, resultTables: ResultTable[]) {
-  return axios.post('results/resultTable', resultTables);
-}
-
 export function createResultTables(resultTables: ResultTable[]) {
   return axios.post('results/resultTable/list', resultTables);
 }
@@ -60,8 +56,9 @@ export function findResultTableDataById(eid: number, pager: Pager) {
   });
 }
 
-export function createResultData(resultData: any) {
+export function createResultData(tableId: number, resultData: any) {
   return axios.post('results/cellData', {
+    tableId,
     resultData
   });
 }

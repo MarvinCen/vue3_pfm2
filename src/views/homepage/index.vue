@@ -149,7 +149,7 @@ export default {
       visible1,
       visible2,
       onDownLoad() {
-        console.log('download');
+
       },
     };
   },

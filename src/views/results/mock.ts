@@ -100,7 +100,7 @@ setupMock({
       'get',
       (options: GetParams) => {
         const params = qs.parseUrl(options.url).query;
-        console.log(params);
+
         let resultTypes = data.resultTypes;
         resultTypes.forEach(rt => {
           rt.children = undefined
@@ -128,7 +128,6 @@ setupMock({
         const ls = data.resultTypes;
         const res = MockUtil.query(ls, query) as ResultType[];
 
-        console.log(data.resultTables)
         if (query.withs?.includes('resultTables')) {
           res.forEach(rt => {
             rt.resultTables = data.resultTables.filter(table => {
@@ -136,7 +135,6 @@ setupMock({
             })
           })
         }
-        console.log()
 
         return {
           code: 20000,
@@ -176,31 +174,19 @@ setupMock({
         message: '',
       };
     });
-    Mock.mock(new RegExp('results/resultTable'), 'post', (data: PostData) => {
-      return {
-        code: 20000,
-        data: {},
-        message: '',
-      };
-    });
     Mock.mock(
       new RegExp('results/resultTable/list'),
       'post',
       (options: PostData) => {
-        console.log('enter mock:  ')
-        const rts = JSON.parse(options.body).resultTables as ResultTable[];
+        const rts = JSON.parse(options.body) as ResultTable[];
         rts.forEach(rt => {
+          rt.eid = random.increment();
           rt.columns = rt.columns || [];
-          const metadata: RColumn = {
-            name: 'metadata',
-          }
-          rt.columns.push(metadata);
-          data.metadata.push(metadata);
+          rt.columns.forEach(col => col.resultTableId = rt.eid);
           data.rColumns.push(...rt.columns);
         })
-        console.log(rts)
+
         data.resultTables.push(...rts);
-        console.log(data.resultTables)
         return {
           code: 20000,
           data: {},
@@ -250,11 +236,14 @@ setupMock({
         const pager = JSON.parse(params.pager as string);
         const eid = Number(params.eid);
 
-        const ls = data.resultTableData.slice();
+        let ls = data.resultTableData['t' + eid]?.slice();
+        ls = ls || [];
         ls.forEach(item => {
           item.metadata = data.metadata.filter((md: any) => item.metadataId === md.eid)[0];
         })
-        console.log(data.metadata)
+        ls = MockUtil.query(ls, {
+          pager,
+        })
 
         return {
           code: 20000,
@@ -264,7 +253,7 @@ setupMock({
             pager: {
               current: pager.current,
               pageSize: pager.pageSize,
-              total: data.resultTableData.length,
+              total: ls.length,
             }
           },
           message: undefined,
@@ -275,15 +264,17 @@ setupMock({
       new RegExp('results/cellData'),
       'post',
       (options: PostData) => {
-        const body = JSON.parse(options.body);
+        const body: any = JSON.parse(options.body);
         const resultData = body.resultData;
+        const tableId = body.tableId;
         const metadata = resultData.metadata as Metadata;
         metadata.eid = random.increment();
 
         data.metadata.push(metadata);
         resultData.metadataId = metadata.eid;
-        data.resultTableData.push(resultData);
-
+        data.resultTableData['t' + tableId] =
+          data.resultTableData['t' + tableId] || [];
+        data.resultTableData['t' + tableId].push(resultData);
         return {
           code: 20000,
           data: {},

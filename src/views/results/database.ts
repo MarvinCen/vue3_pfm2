@@ -368,7 +368,7 @@ const desc = [
 const tableData: any[] = [
 	{
 		'工号': random.pick(['T','N']) + random.integer(1111, 9999),
-		'姓名': random.cname(),
+		'姓名': orgData.employees[1].name,
 		'承担单位': '土木工程学院',
 		'系部科室': random.pick(['岩土工程系','建筑环境与设备工程系', '校领导']),
 		'业绩分类': '其他专著',
@@ -380,7 +380,7 @@ const tableData: any[] = [
 	},
 	{
 		'工号': random.pick(['T','N', '']) + random.integer(1111, 9999),
-		'姓名': random.cname(),
+		'姓名': orgData.employees[1].name,
 		'承担单位': '土木工程学院',
 		'系部科室': random.pick(['岩土工程系','建筑环境与设备工程系', '校领导']),
 		'业绩分类': '其他专著',
@@ -392,7 +392,7 @@ const tableData: any[] = [
 	},
 	{
 		'工号': random.pick(['T','N', '']) + random.integer(1111, 9999),
-		'姓名': '陈建功',
+		'姓名': orgData.employees[1].name,
 		'承担单位': '土木工程学院',
 		'系部科室': random.pick(['岩土工程系','建筑环境与设备工程系', '校领导']),
 		'业绩分类': '其他专著',
@@ -404,7 +404,7 @@ const tableData: any[] = [
 	},
 	{
 		'工号': random.pick(['T','N', '']) + random.integer(1111, 9999),
-		'姓名': random.cname(),
+		'姓名': orgData.employees[1].name,
 		'承担单位': '土木工程学院',
 		'系部科室': random.pick(['岩土工程系','建筑环境与设备工程系', '校领导']),
 		'业绩分类': '其他专著',
@@ -416,7 +416,7 @@ const tableData: any[] = [
 	},
 	{
 		'工号': random.pick(['T','N', '']) + random.integer(1111, 9999),
-		'姓名': random.cname(),
+		'姓名': orgData.employees[1].name,
 		'承担单位': '土木工程学院',
 		'系部科室': random.pick(['岩土工程系','建筑环境与设备工程系', '校领导']),
 		'业绩分类': '其他专著',
@@ -428,7 +428,7 @@ const tableData: any[] = [
 	},
 	{
 		'工号': random.pick(['T','N', '']) + random.integer(1111, 9999),
-		'姓名': random.cname(),
+		'姓名': orgData.employees[1].name,
 		'承担单位': '土木工程学院',
 		'系部科室': random.pick(['岩土工程系','建筑环境与设备工程系', '校领导']),
 		'业绩分类': '其他专著',
@@ -440,7 +440,7 @@ const tableData: any[] = [
 	},
 	{
 		'工号': random.pick(['T','N', '']) + random.integer(1111, 9999),
-		'姓名': random.cname(),
+		'姓名': orgData.employees[1].name,
 		'承担单位': '土木工程学院',
 		'系部科室': random.pick(['岩土工程系','建筑环境与设备工程系', '校领导']),
 		'业绩分类': '其他专著',
@@ -452,8 +452,6 @@ const tableData: any[] = [
 	},
 ]
 tableData.forEach(data => { data.eid = random.increment()})
-
-
 const metadata: Metadata[] = (
 	function () {
 		const res: Metadata[] = [];
@@ -464,6 +462,8 @@ const metadata: Metadata[] = (
 				updateDatetime: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'),
 				importerId: 9999,
 				importerName: '管理员',
+				directorId: orgData.employees[1].eid,
+				directorName: orgData.employees[1].name,
 				status: '通过'
 			}
 			res.push(metadata);
@@ -473,11 +473,14 @@ const metadata: Metadata[] = (
 	}
 )();
 
+const resultTableData: Record<string, any[]> = {}
+resultTableData['t' + columns[0].resultTableId] = tableData;
+
 export default  {
 	resultTypes: resultTypeList,
 	resultTypesTree: rootResultTypes,
 	resultTables: tables,
 	rColumns: columns,
-	resultTableData: tableData,
+	resultTableData: resultTableData,
 	metadata,
 }

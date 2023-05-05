@@ -102,7 +102,6 @@ const filteredColumns: RColumn[] = columns.filter(c => {
 
 let record: Record<string, any> = {};
 if (props.record) record = JSON.parse(props.record);
-console.log(record)
 record.metadata = {}
 
 let editable: boolean = false;
@@ -159,9 +158,10 @@ const saveFor = (usage: string) => {
 		record[jobNumberCol.value.name as string] = metadata.directorJobNumber;
 	}
 
-	console.log(record)
 	record.metadata = resolveConvertingCircularStructureToJSON(record.metadata);
-	createResultData(record).then(() => {
+	const tableId = columns[0].resultTableId;
+
+	createResultData(tableId as number, record).then(() => {
 		Message.success('保存成功');
 		router.push('inputResult')
 	})
