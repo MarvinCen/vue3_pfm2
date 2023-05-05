@@ -468,7 +468,6 @@ const metadata: Metadata[] = (
 			}
 			res.push(metadata);
 			tableData[i].metadataId = metadata.eid;
-			tableData[i].metadata = metadata;
 		}
 		return res;
 	}

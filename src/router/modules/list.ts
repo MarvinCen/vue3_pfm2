@@ -6,6 +6,7 @@ export default {
     locale: 'menu.list',
     requiresAuth: true,
     icon: 'icon-list',
+    hideInMenu: true,
   },
   children: [
     {
@@ -16,6 +17,7 @@ export default {
         locale: 'menu.list.searchTable',
         requiresAuth: true,
         roles: ['*'],
+        hideInMenu: true,
       },
     },
     {
@@ -26,6 +28,7 @@ export default {
         locale: 'menu.list.cardList',
         requiresAuth: true,
         roles: ['*'],
+        hideInMenu: true,
       },
     },
   ],

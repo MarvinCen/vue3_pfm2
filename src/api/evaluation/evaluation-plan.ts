@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Mock from 'mockjs';
-import {ReqPagerParams} from "@/types/global";
+import {Query, ReqPagerParams} from "@/types/global";
 import { EvaluationPlan, Indicator } from '@/types/evaluation';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -12,6 +12,10 @@ export function findEvaluationPlans(reqPagerParams: ReqPagerParams) {
       reqPagerParams,
     },
   });
+}
+
+export function findEvaluationPlans2(query: Query) {
+  return axios.post('/evaluation/evaluationPlans', query);
 }
 
 export function findEmployeeByPlanFilter(positions: string[], professionalTitle: string[]) {

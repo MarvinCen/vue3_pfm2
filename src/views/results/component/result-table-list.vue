@@ -371,6 +371,12 @@ export default {
 				resultTypeTree.list = util.treeify(rTypes);
 			})
 
+			findResultTableDataById(activeTableId.value as number, pager).then((r3) => {
+				const { list, pager: page } = (r3 as Response).data;
+				pager.total = page.total;
+				pager.current = page.current;
+				tableData.list = list;
+			});
     })
 
     const selectedResultType = ref([]); // actually only one selected in the array

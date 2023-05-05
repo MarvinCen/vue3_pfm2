@@ -6,6 +6,7 @@ export default {
     locale: 'menu.profile',
     requiresAuth: true,
     icon: 'icon-file',
+    hideInMenu: true,
   },
   children: [
     {
@@ -16,6 +17,7 @@ export default {
         locale: 'menu.profile.basic',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
   ],

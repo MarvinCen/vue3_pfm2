@@ -54,12 +54,49 @@
 					查看详情
 				</a-button>
 				<a-button
+					v-if="evaluationProject.status === projectStatus.unStarted"
 					size="mini"
-          type="outline"
+					type="outline"
 					status="normal"
-					@click="$router.push('evaluationProjectDetail')"
+					@click="() => {evaluationProject.status = projectStatus.input}"
 				>
-					过程控制
+					启动
+				</a-button>
+				<a-button
+					v-else-if="evaluationProject.status === projectStatus.input"
+					size="mini"
+					type="outline"
+					status="normal"
+					@click="() => {evaluationProject.status = projectStatus.resultDistribution}"
+				>
+					开放分配
+				</a-button>
+				<a-button
+					v-else-if="evaluationProject.status === projectStatus.resultDistribution"
+					size="mini"
+					type="outline"
+					status="normal"
+					@click="() => {evaluationProject.status = projectStatus.pfmAnnouncement}"
+				>
+					开放公示
+				</a-button>
+				<a-button
+					v-else-if="evaluationProject.status === projectStatus.pfmAnnouncement"
+					size="mini"
+					type="outline"
+					status="normal"
+					@click="() => {evaluationProject.status = projectStatus.pfmDistribution}"
+				>
+					开放分配
+				</a-button>
+				<a-button
+					v-else-if="evaluationProject.status === projectStatus.pfmDistribution"
+					size="mini"
+					type="outline"
+					status="normal"
+					@click="() => {evaluationProject.status = projectStatus.finished}"
+				>
+					结束考核
 				</a-button>
       </a-space>
     </template>

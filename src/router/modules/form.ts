@@ -6,6 +6,7 @@ export default {
     locale: 'menu.form',
     icon: 'icon-settings',
     requiresAuth: true,
+    hideInMenu: true,
   },
   children: [
     {
@@ -16,6 +17,7 @@ export default {
         locale: 'menu.form.step',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
     {
@@ -26,6 +28,7 @@ export default {
         locale: 'menu.form.group',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
   ],

@@ -205,7 +205,7 @@ const onSelectDirector = (eid: number) => {
 	metadata.value.directorId = eid;
 	metadata.value.directorName = employee.name;
 	metadata.value.directorJobNumber = employee.jobNumber;
-	emit('update:metadata', metadata)
+	emit('update:metadata', metadata.value)
 }
 
 const onChangeType = (record: Participant) => {
@@ -249,6 +249,7 @@ const setMetadataFromTable = () => {
 	metadata.value.participants = participantsStr;
 	metadata.value.participantIds = participantIds;
 	metadata.value.participantNames = participantNames;
+	emit('update:metadata', metadata.value)
 }
 
 </script>

@@ -11,13 +11,22 @@
             <a-col :span="24">
               <a-tabs :default-active-tab="1" type="rounded">
                 <a-tab-pane key="1" title="全部">
-                  <project-card :evaluation-projects="evaluationProjects" />
+                  <project-card
+											:loading="loading"
+											:evaluation-projects="evaluationProjects"
+									/>
                 </a-tab-pane>
                 <a-tab-pane key="2" title="正在进行">
-									<project-card :evaluation-projects="unFinishedProjects" />
+									<project-card
+											:loading="loading"
+											:evaluation-projects="unFinishedProjects"
+									/>
                 </a-tab-pane>
                 <a-tab-pane key="3" title="已结束">
-									<project-card :evaluation-projects="finishedProjects" />
+									<project-card
+											:loading="loading"
+											:evaluation-projects="finishedProjects"
+									/>
                 </a-tab-pane>
               </a-tabs>
             </a-col>
@@ -189,12 +198,10 @@ const unFinishedProjects = computed(() => {
 
 
 
-
-
 const newProject = ref<EvaluationProject>({});
 const modalVisible = ref(false);
 const handleSubmit = () => {
-	newProject.value.status = projectStatus.input;
+	newProject.value.status = projectStatus.unStarted;
 	createEvaluationProject(newProject.value).then(() => {
 		refreshProjects();
 		modalVisible.value = false;

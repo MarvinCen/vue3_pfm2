@@ -4,99 +4,30 @@
       :items="['成果管理', '成果类型']"
       :internationalization="false"
     />
-    <a-card class="general-card" :title="$t('menu.list.searchTable')">
-      <a-row>
-        <a-col :flex="1">
-          <a-form
-            :model="formModel"
-            :label-col-props="{ span: 6 }"
-            :wrapper-col-props="{ span: 18 }"
-            label-align="left"
-          >
-            <a-row :gutter="16">
-              <a-col :span="12">
-                <a-form-item
-                  field="name"
-                  :label="$t('results.resultType.column.title.name')"
-                >
-                  <a-input
-                    v-model="formModel.name"
-                    :placeholder="
-                      $t('results.resultType.column.placeholder.name')
-                    "
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item
-                  field="departmentName"
-                  :label="$t('results.resultType.column.title.departmentName')"
-                >
-                  <a-input
-                    v-model="formModel.departmentName"
-                    :placeholder="
-                      $t('results.resultType.column.placeholder.departmentName')
-                    "
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item
-                  field="status"
-                  :label="$t('results.resultType.column.title.status')"
-                >
-                  <a-input
-                    v-model="formModel.status"
-                    :placeholder="
-                      $t('results.resultType.column.placeholder.status')
-                    "
-                  />
-                </a-form-item>
-              </a-col>
-            </a-row>
-          </a-form>
-        </a-col>
-        <a-divider style="height: 84px" direction="vertical" />
-        <a-col :flex="'86px'" style="text-align: right">
-          <a-space direction="vertical" :size="18">
-            <a-button type="primary" @click="search()">
-              <template #icon>
-                <icon-search />
-              </template>
-              {{ $t('searchTable.form.search') }}
-            </a-button>
-            <a-button @click="reset()">
-              <template #icon>
-                <icon-refresh />
-              </template>
-              {{ $t('searchTable.form.reset') }}
-            </a-button>
-          </a-space>
-        </a-col>
-      </a-row>
-      <a-divider style="margin-top: 0" />
+    <a-card style="padding-top: 10px">
       <a-row style="margin-bottom: 16px">
         <a-col :span="16">
           <a-space>
-            <a-button
-              type="primary"
-              @click="$router.push('resultTypeCreation')"
-            >
-              <template #icon>
-                <icon-plus />
-              </template>
-              {{ $t('searchTable.operation.create') }}
-            </a-button>
-            <a-button>
-              <template #icon>
-                <icon-download />
-              </template>
-              {{ $t('searchTable.operation.download') }}
-            </a-button>
+            <multi-search :columns="columns" />
           </a-space>
         </a-col>
         <a-col :span="8" style="text-align: right">
           <a-space>
+						<a-button
+							type="primary"
+							@click="$router.push('resultTypeCreation')"
+						>
+							<template #icon>
+								<icon-plus />
+							</template>
+							{{ $t('searchTable.operation.create') }}
+						</a-button>
+						<a-button>
+							<template #icon>
+								<icon-download />
+							</template>
+							{{ $t('searchTable.operation.download') }}
+						</a-button>
             <a-button type="primary" status="danger">
               <template #icon>
                 <icon-delete />
@@ -117,13 +48,25 @@
         @page-change="pageChange"
         @page-size-change="pageSizeChange"
       >
-        <template #operation="{}">
+        <template #status="{ record }">
+          <a-tag :color="record.status === 'enable' ? 'green' : 'orangered'">
+            {{ record.status === 'enable' ? '已启用' : '已禁用' }}
+          </a-tag>
+        </template>
+        <template #operation="{record}">
           <div style="width: fit-content; margin: 0 auto">
-            <a-button status="success">{{
+						<a-button
+              size="small"
+              :status="record.status === 'enable' ? 'warning' : 'success'"
+            >
+              {{ record.status === 'enable' ? '禁用' : '启用' }}
+            </a-button>
+						<a-divider direction="vertical" />
+            <a-button size="small" status="normal">{{
               $t('global.operation.button.edit')
             }}</a-button>
             <a-divider direction="vertical" />
-            <a-button status="danger">{{
+            <a-button size="small" status="danger">{{
               $t('global.operation.button.delete')
             }}</a-button>
           </div>
@@ -145,6 +88,7 @@ import {
 } from '@arco-design/web-vue';
 import { TableData } from '@arco-design/web-vue/es/table/interface.d';
 import fetchPageList from '@/utils/request';
+import MultiSearch from "@/components/table/multi-search.vue";
 
 const initFormModel = () => {
   return {
@@ -155,6 +99,7 @@ const initFormModel = () => {
 };
 
 export default {
+	components: {MultiSearch},
   setup() {
     const expandedKeys = ref([]);
     const { t } = useI18n();
@@ -199,11 +144,13 @@ export default {
         ellipsis: true,
         tooltip: true,
         align: 'center',
+        slotName: 'status'
       },
       {
         title: t('global.column.operation'),
         slotName: 'operation',
         align: 'center',
+        width: 270
       },
     ];
     const tableData = reactive({

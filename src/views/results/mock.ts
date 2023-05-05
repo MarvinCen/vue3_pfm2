@@ -249,11 +249,18 @@ setupMock({
         const params = qs.parseUrl(options.url).query;
         const pager = JSON.parse(params.pager as string);
         const eid = Number(params.eid);
+
+        const ls = data.resultTableData.slice();
+        ls.forEach(item => {
+          item.metadata = data.metadata.filter((md: any) => item.metadataId === md.eid)[0];
+        })
+        console.log(data.metadata)
+
         return {
           code: 20000,
           data: {
             eid,
-            list: data.resultTableData.reverse(),
+            list: ls.reverse(),
             pager: {
               current: pager.current,
               pageSize: pager.pageSize,
@@ -274,7 +281,7 @@ setupMock({
         metadata.eid = random.increment();
 
         data.metadata.push(metadata);
-        resultData.metadata = metadata.eid;
+        resultData.metadataId = metadata.eid;
         data.resultTableData.push(resultData);
 
         return {

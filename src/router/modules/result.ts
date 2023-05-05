@@ -6,6 +6,7 @@ export default {
     locale: 'menu.result',
     icon: 'icon-check-circle',
     requiresAuth: true,
+    hideInMenu: true,
   },
   children: [
     {
@@ -16,6 +17,7 @@ export default {
         locale: 'menu.result.success',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
     {
@@ -26,6 +28,7 @@ export default {
         locale: 'menu.result.error',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
   ],

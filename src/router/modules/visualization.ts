@@ -6,6 +6,7 @@ export default {
     locale: 'menu.visualization',
     requiresAuth: true,
     icon: 'icon-apps',
+    hideInMenu: true,
   },
   children: [
     {
@@ -16,6 +17,7 @@ export default {
         locale: 'menu.visualization.dataAnalysis',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
     {
@@ -27,6 +29,7 @@ export default {
         locale: 'menu.visualization.multiDimensionDataAnalysis',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
   ],

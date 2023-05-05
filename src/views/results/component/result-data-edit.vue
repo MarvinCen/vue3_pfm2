@@ -119,7 +119,6 @@ const pageType = () => {
 
 
 
-
 const resolveConvertingCircularStructureToJSON = (metadata: Metadata) =>{
 	const copy: Metadata = {
 		createDatetime: metadata.createDatetime,
@@ -159,7 +158,6 @@ const saveFor = (usage: string) => {
 	if (jobNumberCol.value) {
 		record[jobNumberCol.value.name as string] = metadata.directorJobNumber;
 	}
-
 
 	console.log(record)
 	record.metadata = resolveConvertingCircularStructureToJSON(record.metadata);

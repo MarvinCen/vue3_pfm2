@@ -6,6 +6,7 @@ export default {
     locale: 'menu.exception',
     requiresAuth: true,
     icon: 'icon-exclamation-circle',
+    hideInMenu: true,
   },
   children: [
     {
@@ -16,6 +17,7 @@ export default {
         locale: 'menu.exception.403',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
     {
@@ -26,6 +28,7 @@ export default {
         locale: 'menu.exception.404',
         requiresAuth: true,
         roles: ['*'],
+        hideInMenu: true,
       },
     },
     {
@@ -36,6 +39,7 @@ export default {
         locale: 'menu.exception.500',
         requiresAuth: true,
         roles: ['*'],
+        hideInMenu: true,
       },
     },
   ],

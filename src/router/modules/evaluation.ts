@@ -50,7 +50,7 @@ export default {
       path: 'evaluationProjectDetail',
       name: 'evaluationProjectDetail',
       component: () =>
-        import('@/views/evaluation/evaluation-project/component/project-detail.vue'),
+        import('@/views/evaluation/evaluation-project/project-detail.vue'),
       meta: {
         locale: 'menu.evaluation.evaluationProjectCreation',
         requiresAuth: true,
@@ -64,6 +64,19 @@ export default {
       name: 'evaluationPlanEdit',
       component: () =>
         import('@/views/evaluation/evaluation-plan/evaluation-plan-edit.vue'),
+      meta: {
+        locale: 'menu.evaluation.evaluationPlanEdit',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+    {
+      path: 'pfmCalculation',
+      name: 'pfmCalculation',
+      component: () =>
+        import('@/views/evaluation/evaluation-project/plan-of-project.vue'),
       meta: {
         locale: 'menu.evaluation.evaluationPlanEdit',
         requiresAuth: true,
