@@ -7,7 +7,7 @@ export default {
     requiresAuth: true,
     icon: 'icon-dashboard',
     roles: ['*'],
-    hideInMenu: true,
+    // hideInMenu: true,
   },
   children: [
     {
@@ -20,7 +20,7 @@ export default {
         icon: 'icon-dashboard',
         roles: ['*'],
         hidden: true,
-        hideInMenu: true,
+        // hideInMenu: true,
       },
     },
   ],

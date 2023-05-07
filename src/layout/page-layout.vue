@@ -24,7 +24,7 @@
                   :style="{ margin: 0, fontSize: '18px', color: '#fff' }"
                   :heading="5"
                 >
-                  vue-admin-arco
+                  高校绩效考核系统
                 </a-typography-title>
               </a-space>
             </div>

@@ -1,186 +1,68 @@
 <template>
-  <a-divider orientation="left">快速入口</a-divider>
-  <div style="display: flex; justify-content: space-around">
-    <a-image
-      src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp"
-      title="录入成果"
-      description="Present by Arco Design"
-      width="260"
-      style="vertical-align: top"
-      :preview-visible="visible1"
-      @preview-visible-change="
-        () => {
-          visible1 = false;
-        }
-      "
+  <div class="container">
+    <breadcrumb :items="['首页']" :internationalization="false" />
+    <a-grid
+      :cols="6"
+			:colGap="16"
+			:rowGap="16"
     >
-      <template #extra>
-        <div class="actions">
-          <span
-            class="action"
-            @click="
-              () => {
-                visible1 = true;
-              }
-            "
-            ><icon-eye
-          /></span>
-          <span class="action" @click="onDownLoad"><icon-download /></span>
-          <a-tooltip content="A user’s avatar">
-            <span class="action"><icon-export /></span>
-          </a-tooltip>
-        </div>
-      </template>
-    </a-image>
+      <a-grid-item :span="2" class="grid-item">
+				<fast-in />
+      </a-grid-item>
 
-    <a-image
-      src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp"
-      title="审核成果"
-      description="Present by Arco Design"
-      width="260"
-      style="vertical-align: top"
-      :preview-visible="visible1"
-      @preview-visible-change="
-        () => {
-          visible1 = false;
-        }
-      "
-    >
-      <template #extra>
-        <div class="actions">
-          <span
-            class="action"
-            @click="
-              () => {
-                visible1 = true;
-              }
-            "
-            ><icon-eye
-          /></span>
-          <span class="action" @click="onDownLoad"><icon-download /></span>
-          <a-tooltip content="A user’s avatar">
-            <span class="action"><icon-export /></span>
-          </a-tooltip>
-        </div>
-      </template>
-    </a-image>
+			<a-grid-item :span="2" class="grid-item">
+        <carousel />
+			</a-grid-item>
 
-    <a-image
-      src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp"
-      title="我的成果"
-      width="260"
-      style="vertical-align: top"
-      :preview-visible="visible1"
-      @preview-visible-change="
-        () => {
-          visible1 = false;
-        }
-      "
-    >
-      <template #extra>
-        <div class="actions">
-          <span
-            class="action"
-            @click="
-              () => {
-                visible1 = true;
-              }
-            "
-            ><icon-eye
-          /></span>
-          <span class="action" @click="onDownLoad"><icon-download /></span>
-          <a-tooltip content="A user’s avatar">
-            <span class="action"><icon-export /></span>
-          </a-tooltip>
-        </div>
-      </template>
-    </a-image>
+			<a-grid-item :span="2" class="grid-item">
+         <pfm-info />
+			</a-grid-item>
 
-    <a-image
-      src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp"
-      title="绩效考核"
-      description="Present by Arco Design"
-      width="260"
-      style="vertical-align: top"
-      :preview-visible="visible1"
-      @preview-visible-change="
-        () => {
-          visible1 = false;
-        }
-      "
-    >
-      <template #extra>
-        <div class="actions">
-          <span
-            class="action"
-            @click="
-              () => {
-                visible1 = true;
-              }
-            "
-            ><icon-eye
-          /></span>
-          <span class="action" @click="onDownLoad"><icon-download /></span>
-          <a-tooltip content="A user’s avatar">
-            <span class="action"><icon-export /></span>
-          </a-tooltip>
-        </div>
-      </template>
-    </a-image>
+      <a-grid-item class="document">
+				<document />
+      </a-grid-item>
+
+      <a-grid-item :span="5" class="eva-process">
+        <eva-steps />
+      </a-grid-item>
+    </a-grid>
   </div>
 </template>
 
-<script lang="ts">
-import { ref } from 'vue';
-import { IconEye, IconDownload } from '@arco-design/web-vue/es/icon';
+<script setup lang="ts">
 
-export default {
-  name: 'Index',
-
-  components: {
-    IconEye,
-    IconDownload,
-  },
-  setup() {
-    const visible1 = ref(false);
-    const visible2 = ref(false);
-
-    return {
-      visible1,
-      visible2,
-      onDownLoad() {
-
-      },
-    };
-  },
-};
+import FastIn from "@/views/homepage/component/fast-in.vue";
+import Document from "@/views/homepage/component/document.vue";
+import EvaSteps from "@/views/homepage/component/eva-steps.vue";
+import PfmInfo from "@/views/homepage/component/pfm-info.vue";
+import Carousel from "@/views/dashboard/workplace/components/carousel.vue";
 </script>
 
-<style scoped>
-.actions {
-  display: flex;
-  align-items: center;
-}
-.action {
-  padding: 5px 4px;
-  font-size: 14px;
-  margin-left: 12px;
-  border-radius: 2px;
-  line-height: 1;
-  cursor: pointer;
-}
-.action:first-child {
-  margin-left: 0;
+<style scoped lang="less">
+.container {
+  padding: 0 20px 20px 20px;
 }
 
-.action:hover {
-  background: rgba(0, 0, 0, 0.5);
+.grid-item,
+.document,
+.eva-process {
+
 }
-.actions-outer {
-  .action {
-    &:hover {
-      color: #ffffff;
-    }
-  }
+
+.grid-item {
+  box-sizing: border-box;
+  height: 300px;
+  background-color: white;
+}
+
+.grid-item-scrollbar {
+  height: 300px;
+  overflow: auto;
+}
+
+.document,
+.eva-process {
+  height: 240px;
+  background-color: white;
 }
 </style>

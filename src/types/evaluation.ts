@@ -56,6 +56,7 @@ export const projectStatus = {
     '未启动',   // 点击创建时
     '数据录入', // 点击启动时
     '成果分配', // 开放分配时
+    '绩效计算', // 点击计算时
     '绩效公示', // 开放公示时
     '绩效分配', // 开放分配时
     '已结束',  // 点击结束时
@@ -63,6 +64,7 @@ export const projectStatus = {
   unStarted: '未启动',
   input: '数据录入',
   resultDistribution: '成果分配',
+  pfmCalculation: '绩效计算',
   pfmAnnouncement: '绩效公示',
   pfmDistribution: '绩效分配',
   finished: '已结束'
