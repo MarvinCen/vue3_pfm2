@@ -94,7 +94,7 @@ export default defineComponent({
           await userStore.login(values);
           const { redirect, ...othersQuery } = router.currentRoute.value.query;
           router.push({
-            name: (redirect as string) || 'workplace',
+            name: 'homepage',
             query: {
               ...othersQuery,
             },

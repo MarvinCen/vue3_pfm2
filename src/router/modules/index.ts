@@ -25,13 +25,14 @@ export default [
   Profile,
   Result,
   Exception,
-  User,
+
   /** simple end */
 
   /** pfm */
   Homepage,
-  Results,
   BasicData,
+  Results,
   Evaluation,
+  User,
   /** pfm end */
 ];

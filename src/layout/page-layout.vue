@@ -14,7 +14,7 @@
           @collapse="setCollapsed"
         >
           <div class="menu-wrapper">
-            <div class="left-side">
+            <div class="left-side" @click="$router.push('/homepage')">
               <a-space>
                 <img
                   alt="logo"
@@ -215,5 +215,9 @@ export default defineComponent({
       }
     }
   }
+}
+
+.left-side:hover {
+  cursor: pointer !important;
 }
 </style>

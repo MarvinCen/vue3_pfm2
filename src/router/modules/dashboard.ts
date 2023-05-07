@@ -6,6 +6,7 @@ export default {
     locale: 'menu.dashboard',
     requiresAuth: true,
     icon: 'icon-dashboard',
+    hideInMenu: true,
   },
   children: [
     {
@@ -16,6 +17,7 @@ export default {
         locale: 'menu.dashboard.workplace',
         requiresAuth: true,
         roles: ['*'],
+        hideInMenu: true,
       },
     },
     /** simple */
@@ -27,6 +29,7 @@ export default {
         locale: 'menu.dashboard.monitor',
         requiresAuth: true,
         roles: ['admin'],
+        hideInMenu: true,
       },
     },
     /** simple end */
