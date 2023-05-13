@@ -21,8 +21,10 @@
 				@page-size-change="pageSizeChange"
 				style="margin-top: 10px"
 		>
-			<template #needToEva>
-				<a-radio />
+			<template #needToEva="{record}">
+				<a-switch
+					v-model="record.needToCalc"
+				/>
 			</template>
 			<template #operation="{ record }">
 				<a-button
@@ -39,10 +41,11 @@
 
 <script setup lang="ts">
 import {PaginationProps, TableColumnData} from "@arco-design/web-vue";
-import {reactive, ref} from "vue";
-import {EvaEmployee} from "@/types/evaluation";
-import {BasePaginationSetting} from "@/types/global";
+import {onMounted, reactive, ref} from "vue";
+import {EvaEmployee, EvaluationPlan, EvaluationProject} from "@/types/evaluation";
+import {BasePaginationSetting, Condition} from "@/types/global";
 import MultiSearch from "@/components/table/multi-search.vue";
+import {findEvaEmployees} from "@/api/evaluation/evaluation-project";
 
 const props = defineProps({
   project: {
@@ -54,8 +57,8 @@ const props = defineProps({
     type: Object
   }
 })
-const project = props.project;
-const plan = props.plan;
+const project = props.project as EvaluationProject;
+const plan = props.plan as EvaluationPlan;
 
 
 // table相关变量
@@ -124,6 +127,25 @@ const pageChange = (page?: number) => {
 
 };
 
+onMounted(() => {
+	const conditions: Condition[] = [
+		{
+			prop: 'planId',
+			type: 'eq',
+			value: plan.eid as number,
+		},
+		{
+			prop: 'projectId',
+			type: 'eq',
+			value: project.eid as number
+		}
+	]
+	findEvaEmployees({ conditions, pager }).then(res => {
+		evaEmployees.value = res.data.list;
+		pager.total = res.data.pager.total;
+		pager.current = res.data.pager.current;
+	})
+})
 
 
 const search = (conditions: any) => {

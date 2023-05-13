@@ -1,5 +1,6 @@
 import Mock from "mockjs";
 import {Department, Employee} from "@/types/basic-data";
+import positionData from '../position/database'
 
 const random = Mock.Random;
 
@@ -52,18 +53,24 @@ const data = Mock.mock({
 			'email': '@email',
 			'linkTel': '@phone',
 			'sex': '@pick("男", "女")',
-			'hireType': '@pick("普通", "年薪")',
-			'psum': '',
-			'postSequenceLevel': '@pick("二级", "四级")',
+			'hireType': '@pick("普通", "年薪")'
 		},
 	],
 });
+employees.push(...data.list);
+
+const positions = positionData.positions.slice();
+let idx = 0;
+employees.forEach(ep => {
+	ep.positionId = positions[idx].eid;
+	idx = (idx + 1) % positions.length;
+})
 employees.push({
 	eid: 9999,
 	name: '管理员',
 	remark: '管理员'
 })
-employees.push(...data.list);
+
 
 
 export default {

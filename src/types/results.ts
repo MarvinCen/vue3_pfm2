@@ -123,7 +123,7 @@ export interface Metadata {
   participantNames?: string[];
   participants?: string;
   status?: '草稿' | '待审核' | '驳回' | '通过';
-  pfmResultsIds?: number[];
+  pfmResultIds?: number[];
 }
 
 

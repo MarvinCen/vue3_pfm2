@@ -1,10 +1,11 @@
 import setupMock from '@/utils/setup-mock';
 import Mock from 'mockjs';
 import qs from 'query-string';
-import {DeleteParams, GetParams, PostData, PutParams, ReqPagerParams} from '@/types/global';
+import {DeleteParams, GetParams, PostData, PutParams, Query, ReqPagerParams} from '@/types/global';
 import {EvaluationPlan, Indicator} from "@/types/evaluation";
 import data from '../database'
 import moment from "moment";
+import mockUtil from "@/utils/mock-util";
 
 setupMock({
   setup() {
@@ -26,6 +27,21 @@ setupMock({
           },
           message: undefined,
         };
+      }
+    );
+    Mock.mock(
+      new RegExp('/evaluation/evaluationPlans'),
+      'post',
+      (options: PostData) => {
+        const query = JSON.parse(options.body) as Query;
+        const res = mockUtil.query(data.plans.slice(), query) as EvaluationPlan[];
+
+        return {
+          code: 20000,
+          data: {
+            list: res
+          }
+        }
       }
     );
     Mock.mock(

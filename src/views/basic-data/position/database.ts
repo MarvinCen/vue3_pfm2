@@ -3,7 +3,7 @@ import {Position} from "@/types/basic-data";
 
 const random = Mock.Random;
 
-const positions = [];
+const positions: Position[] = [];
 positions.push(...[
 	{
 		'eid': random.increment(),

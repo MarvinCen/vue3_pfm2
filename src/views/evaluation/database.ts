@@ -1,7 +1,10 @@
 import Mock from "mockjs";
 import orgData from "@/views/basic-data/organization/database"
-import {EvaluationPlan, EvaluationProject, Indicator} from "@/types/evaluation";
+import {EvaEmployee, EvaluationPlan, EvaluationProject, Indicator} from "@/types/evaluation";
 import moment from "moment";
+import {Employee, Position} from "@/types/basic-data";
+import {findEmployees2} from "@/api/basic-data/organization";
+import mockUtil from "@/utils/mock-util";
 
 const plans: EvaluationPlan[] = Mock.mock({
 	'list|6': [
@@ -9,9 +12,9 @@ const plans: EvaluationPlan[] = Mock.mock({
 			'eid|+1': 20000,
 			'organizationId': orgData.organizationId,
 			'name|+1': 2017,
-			'positions': '教师，' + '@pick(["实验员", "工程师", "研究员"])',
+			'positions': '教师,' + '@pick(["实验员", "工程师", "研究员"])',
 			'professionalTitles':
-				'教授，' + '@pick(["高级工程师", "助理研究员", "讲师"])',
+				'教授,' + '@pick(["高级工程师", "助理研究员", "讲师"])',
 			'indicatorRoot': undefined,
 			'customData': undefined,
 			'remark': '@csentence',
@@ -51,8 +54,52 @@ for (let i = 0, year = 2017,
 	project.evaluationPlanIds.push(plans[i].eid as number)
 }
 
+const evaEmployees: EvaEmployee[] = [];
+function createEvaEmployees() {
+	const plan = plans[plans.length - 1];
+
+	const positions = plan.positions as string[];
+	const pTitles = plan.professionalTitles as string[];
+
+	let employees: Employee[] = [];
+	findEmployees2({
+		conditions: [
+			{
+				prop: 'position.name',
+				type: 'in',
+				value: positions,
+			},
+			{
+				prop: 'position.professionalTitle',
+				type: 'in',
+				value: pTitles,
+			}
+		],
+		withs: ['position']
+	}).then(res => {
+		employees = res.data.data.list
+		const evaEmployeeList: EvaEmployee[] = []
+		for (let employee of employees) {
+			const evaEmployee: EvaEmployee = {};
+			mockUtil.setBaseEntityAttrs(evaEmployee);
+			evaEmployee.name = employee.name;
+			evaEmployee.hireType = employee.hireType;
+			evaEmployee.jobNumber = employee.jobNumber;
+			evaEmployee.needToCalc = true;
+			evaEmployee.position = (employee.position as Position).name;
+			evaEmployee.positionLevel = (employee.position as Position).positionLevel;
+			evaEmployee.planId = plan.eid;
+			evaEmployee.projectId = projects[projects.length - 1].eid;
+			evaEmployeeList.push(evaEmployee);
+		}
+		evaEmployees.push(...evaEmployeeList);
+	})
+}
+createEvaEmployees();
+
 export default {
   plans,
 	indicators,
 	projects,
+	evaEmployees,
 };

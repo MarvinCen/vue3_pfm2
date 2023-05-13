@@ -48,6 +48,7 @@ export interface Query {
   conditions?: Condition[];
   pager?: Pager;
   withs?: string[];
+  props?: string[];
 }
 
 export interface Condition {

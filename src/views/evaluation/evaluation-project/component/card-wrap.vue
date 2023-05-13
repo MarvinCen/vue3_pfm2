@@ -49,7 +49,7 @@
 				<a-button
           size="mini"
 					status="normal"
-					@click="$router.push('evaluationProjectDetail')"
+					@click="toProjectDetail"
 				>
 					查看详情
 				</a-button>
@@ -69,10 +69,19 @@
 					status="normal"
 					@click="() => {evaluationProject.status = projectStatus.resultDistribution}"
 				>
-					开放分配
+					开放成果分配
 				</a-button>
 				<a-button
-					v-else-if="evaluationProject.status === projectStatus.resultDistribution"
+						v-else-if="evaluationProject.status === projectStatus.resultDistribution"
+						size="mini"
+						type="outline"
+						status="normal"
+						disabled
+				>
+					去计算绩效
+				</a-button>
+				<a-button
+					v-else-if="evaluationProject.status === projectStatus.pfmCalculation"
 					size="mini"
 					type="outline"
 					status="normal"
@@ -103,10 +112,11 @@
   </a-card>
 </template>
 
-<script setup>
-import {projectStatus} from "@/types/evaluation";
+<script setup lang="ts">
+import {EvaluationProject, projectStatus} from "@/types/evaluation";
+import {useRouter} from "vue-router";
 
-defineProps({
+const props = defineProps({
   loading: {
     type: Boolean,
     default: false,
@@ -128,6 +138,17 @@ defineProps({
     },
   },
 });
+const project: EvaluationProject = props.evaluationProject;
+
+const router = useRouter()
+const toProjectDetail = () => {
+	router.push({
+		path: 'evaluationProjectDetail',
+		query: {
+			project: JSON.stringify(project),
+		}
+	})
+}
 </script>
 
 <style scoped lang="less">

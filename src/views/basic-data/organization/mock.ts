@@ -1,11 +1,14 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setup-mock';
-import { GetParams, ReqPagerParams } from '@/types/global';
+import {GetParams, PostData, Query, ReqPagerParams} from '@/types/global';
 import qs from 'query-string';
-import { Department } from '@/types/basic-data';
+import {Department, Employee} from '@/types/basic-data';
 import data from './database';
 const { departments, employees } = data;
 const { Random } = Mock;
+import mockUtil from '@/utils/mock-util'
+import positionData from '@/views/basic-data/position/database'
+
 
 setupMock({
   setup() {
@@ -49,5 +52,35 @@ setupMock({
         };
       }
     );
+    Mock.mock(
+      new RegExp('/common/organization/employees'),
+      'post',
+      (options: PostData) => {
+        const query = JSON.parse(options.body) as Query;
+
+        let employees: Employee[] = data.employees.slice();
+        if (query.withs) {
+          const withs = query.withs;
+          for (let wth of withs) {
+            if (wth === 'position') {
+              const positions = positionData.positions.slice();
+              employees.forEach( ep => {
+                ep.position = positions.filter(p => p.eid === ep.positionId)[0];
+              })
+            }
+          }
+        }
+
+        employees = mockUtil.query(employees, query) as Employee[];
+
+        return {
+          code: 20000,
+          data: {
+            list: employees,
+            pager: query.pager
+          }
+        }
+      }
+    )
   },
 });

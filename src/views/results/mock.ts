@@ -5,7 +5,7 @@ import {Metadata, RColumn, ResultTable, ResultType} from '@/types/results';
 import qs from 'query-string';
 import data from './database'
 import orgData from '@/views/basic-data/organization/database'
-import MockUtil from '@/utils/mock'
+import MockUtil from '@/utils/mock-util'
 import commonUtil from '@/utils/common'
 
 const { Random } = Mock;

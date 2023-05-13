@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Mock from 'mockjs';
-import { ReqPagerParams } from '@/types/global';
+import {Query, ReqPagerParams} from '@/types/global';
 
 // eslint-disable-next-line import/prefer-default-export
 export function findDepartments(reqPagerParams: ReqPagerParams) {
@@ -18,4 +18,8 @@ export function findEmployees(reqPagerParams: ReqPagerParams) {
       reqPagerParams,
     },
   });
+}
+
+export function findEmployees2(query: Query) {
+  return axios.post('/common/organization/employees', query)
 }

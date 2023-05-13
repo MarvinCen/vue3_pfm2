@@ -23,8 +23,8 @@ export interface Employee {
   linkTel?: string;
   sex?: string;
   hireType?: string;
-  psum?: string;
-  postSequenceLevel?: string;
+  positionId?: number;
+  position?: Position;
 }
 
 export interface Position {

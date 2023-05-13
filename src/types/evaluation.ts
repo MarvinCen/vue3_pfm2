@@ -78,4 +78,6 @@ export interface EvaEmployee extends BaseEntity {
   positionLevel?: string;
   hireType?: string;
   needToCalc?: boolean;
+  planId?: number;
+  projectId?: number;
 }
