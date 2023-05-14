@@ -1,6 +1,6 @@
 import Mock from "mockjs";
 import {Department, Employee} from "@/types/basic-data";
-import positionData from '../position/database'
+import positionData from '../basic-data/position/database'
 
 const random = Mock.Random;
 

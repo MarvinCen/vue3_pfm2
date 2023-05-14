@@ -1,5 +1,5 @@
 import Mock from "mockjs";
-import orgData from "@/views/basic-data/organization/database"
+import orgData from "@/views/organization/database"
 import {EvaEmployee, EvaluationPlan, EvaluationProject, Indicator} from "@/types/evaluation";
 import moment from "moment";
 import {Employee, Position} from "@/types/basic-data";

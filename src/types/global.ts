@@ -97,6 +97,7 @@ export const BasePaginationSetting = {
 
 export interface BaseEntity {
   eid?: number;
+  name?: string;
   createDatetime?: string | Date;
   updateDatetime?: string | Date;
   code?: string;

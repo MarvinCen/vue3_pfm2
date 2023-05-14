@@ -79,6 +79,10 @@ const inputSearchPlaceholder = () => {
   }
 	else return '请先选择要搜索的字段';
 }
+
+defineExpose({
+  search,
+})
 </script>
 
 <style scoped lang="less">

@@ -4,7 +4,7 @@ import {GetParams, PostData, Query} from '@/types/global';
 import qs from 'query-string';
 import {Employee, Position} from "@/types/basic-data";
 import data from '../database';
-import orgData from '@/views/basic-data/organization/database'
+import orgData from '@/views/organization/database'
 import {EvaEmployee, EvaluationProject} from "@/types/evaluation";
 import {findEmployees2} from "@/api/basic-data/organization";
 import mock from "@/utils/mock-util";

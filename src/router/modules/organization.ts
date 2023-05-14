@@ -1,8 +1,8 @@
 export default {
-  path: 'basicData',
-  name: 'basicData',
+  path: 'organization',
+  name: 'organization',
   meta: {
-    locale: 'menu.basicData',
+    locale: 'menu.organization',
     requiresAuth: true,
     icon: 'icon-dashboard',
     roles: ['*'],
@@ -11,9 +11,9 @@ export default {
     {
       path: 'department',
       name: 'department',
-      component: () => import('@/views/basic-data/organization/department.vue'),
+      component: () => import('@/views/organization/department.vue'),
       meta: {
-        locale: 'menu.basicData.department',
+        locale: 'menu.organization.department',
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],
@@ -22,9 +22,9 @@ export default {
     {
       path: 'employee',
       name: 'employee',
-      component: () => import('@/views/basic-data/organization/employee.vue'),
+      component: () => import('@/views/organization/employee.vue'),
       meta: {
-        locale: 'menu.basicData.employee',
+        locale: 'menu.organization.employee',
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],
@@ -35,7 +35,7 @@ export default {
       name: 'position',
       component: () => import('@/views/basic-data/position/index.vue'),
       meta: {
-        locale: 'menu.basicData.position',
+        locale: 'menu.organization.position',
         requiresAuth: true,
         icon: 'icon-dashboard',
         roles: ['*'],

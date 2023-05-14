@@ -1,6 +1,6 @@
 import {ResultTable, RColumn, ResultType, Metadata} from "@/types/results";
 import Mock from "mockjs";
-import orgData from '@/views/basic-data/organization/database';
+import orgData from '@/views/organization/database';
 import {TreeFieldNames} from "@arco-design/web-vue";
 import moment from "moment";
 const random = Mock.Random;

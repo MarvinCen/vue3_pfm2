@@ -1,7 +1,8 @@
 /** pfm */
 import Homepage from '@/router/modules/homepage';
 import Results from '@/router/modules/results';
-import BasicData from '@/router/modules/basic-data';
+import Organization from '@/router/modules/organization';
+import Permissions from '@/router/modules/permission'
 import Evaluation from '@/router/modules/evaluation';
 /** pfm end */
 
@@ -30,7 +31,8 @@ export default [
 
   /** pfm */
   Homepage,
-  BasicData,
+  Organization,
+  Permissions,
   Results,
   Evaluation,
   User,
