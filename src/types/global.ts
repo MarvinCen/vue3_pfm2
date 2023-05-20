@@ -41,7 +41,6 @@ export interface Pager {
   current?: number;
   pageSize?: number;
   total?: number;
-  conditions?: any;
 }
 
 export interface Query {

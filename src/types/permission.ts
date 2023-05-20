@@ -18,7 +18,6 @@ export interface Role extends BaseEntity {
 }
 
 export interface Permission extends BaseEntity {
-	organizationId: number;
 	menuId: number;
 	menuName: string;
 	urls: string[];
@@ -35,7 +34,7 @@ export interface Menu extends BaseEntity {
 	routeParams?: any;
 	componentPath?: string;
 	order?: number;
-	outLink?: string;
+	outLink?: boolean;
 	hidden?: boolean;
 	keepAlive?: boolean;
 	status?: '启用' | '禁用';

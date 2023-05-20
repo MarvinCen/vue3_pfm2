@@ -5,7 +5,7 @@ import {Query} from "@/types/global";
 class MenuApi {
 
 	async findMenus(query: Query) {
-		// return axios.post('/common/permission/menu/list', query)
+		return axios.post('/common/permission/menu/list', query)
 	}
 
 	async createMenu(menu: Menu) {

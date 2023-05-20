@@ -22,7 +22,7 @@ class RoleApi {
 	}
 
 	distributePermissions(roleId:number, permissionIds: number[]) {
-		return axios.post('/common/permission/role', {
+		return axios.post('/common/permission/role/distributePermissions', {
 			roleId,
 			permissionIds
 		})

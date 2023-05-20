@@ -4,6 +4,7 @@ import Results from '@/router/modules/results';
 import Organization from '@/router/modules/organization';
 import Permissions from '@/router/modules/permission'
 import Evaluation from '@/router/modules/evaluation';
+import Rule from '@/router/modules/rule';
 /** pfm end */
 
 import Dashboard from './dashboard';
@@ -35,6 +36,7 @@ export default [
   Permissions,
   Results,
   Evaluation,
+  Rule,
   User,
   /** pfm end */
 ];

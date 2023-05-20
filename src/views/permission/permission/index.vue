@@ -8,10 +8,10 @@
 		<a-card>
 			<a-row :gutter="16">
 				<a-col :span="6">
-					<menu-table :menu-id="menuId as number" />
+					<menu-table v-model:menu-id="menuId as number" />
 				</a-col>
 				<a-col :span="18">
-					<permission-table :menu-id="menuId as number" />
+					<permission-table v-model:menu-id="menuId as number" />
 				</a-col>
 			</a-row>
 		</a-card>

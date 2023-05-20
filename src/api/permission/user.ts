@@ -5,23 +5,23 @@ import {Query} from "@/types/global";
 
 class UserApi {
 
-	async findUsers(query: Query) {
+	findUsers(query: Query) {
 		return axios.post('/permission/user/list', query)
 	}
 
-	async createUser(user: User) {
+	createUser(user: User) {
 		return axios.post('/permission/user', user);
 	}
 
-	async updateUser(user: User) {
+	updateUser(user: User) {
 		return axios.put('/permission/user', user);
 	}
 
-	async resetPassword() {
-		return axios.post('/permission/user/resetPassword');
+	resetPassword(eid: number) {
+		return axios.post('/permission/user/resetPassword', eid);
 	}
 
-	async deleteUser(eid: number) {
+	deleteUser(eid: number) {
 		return axios.delete(`/permission/user/${eid}`)
 	}
 }

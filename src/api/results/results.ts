@@ -9,7 +9,7 @@ export function findResultTypes(params: ReqPagerParams) {
 }
 
 export function findResultTypes2(query: Query) {
-  return axios.post('/results/resultTypes', query);
+  return axios.post('/results/resultTypes/list', query);
 }
 
 export function findResultTablesBy(resultTypeId: number) {
@@ -18,6 +18,10 @@ export function findResultTablesBy(resultTypeId: number) {
       resultTypeId,
     },
   });
+}
+
+export function findResultTables(query: Query) {
+  return axios.post('/results/resultTables/list', query);
 }
 
 export function findResultDataListBy(resultTableId: number) {
@@ -36,15 +40,11 @@ export function updateResultType(resultType: ResultType) {
 }
 
 export function createResultTables(resultTables: ResultTable[]) {
-  return axios.post('results/resultTable/list', resultTables);
+  return axios.post('results/resultTable/batch', resultTables);
 }
 
 export function findResultTableColumns(resultTableId: number) {
-  return axios.get('results/resultTable/columns', {
-    params: {
-      resultTableId,
-    },
-  });
+  return axios.get(`results/resultTable/columns/${resultTableId}`);
 }
 
 export function findResultTableDataById(eid: number, pager: Pager) {

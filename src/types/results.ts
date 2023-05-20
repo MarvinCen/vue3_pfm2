@@ -22,13 +22,18 @@ export interface ResultTable extends BaseEntity {
   eid?: number;
   resultTypeId?: number;
   name?: string;
-  inputWay?: string;
+  inputWay?: '部门录入' | '个人录入';
   columns?: RColumn[];
 }
 
 export interface ComponentType {
   type: string;
   params?: any;
+}
+
+export interface Component {
+  columnId?: number;
+  type?: string;
 }
 
 export const componentTypeOptions = [
@@ -92,7 +97,9 @@ export interface RColumn {
   eid?: number;
   resultTableId?: number;
   name?: string;
-  componentType?: ComponentType;
+  componentType?: string;
+  componentSetting?: any;
+  component?: Component;
   dataType?: string;
   unique?: boolean;
   nullable?: boolean;
@@ -103,10 +110,12 @@ export const designateAsOptions = {
   directorName: '负责人姓名',
   participant: '参与人',
   jobNumber: '工号',
+  workload: '工作量',
   all: [
     '负责人姓名',
     '参与人',
-    '工号'
+    '工号',
+    '工作量'
   ],
 }
 

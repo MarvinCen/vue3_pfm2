@@ -27,6 +27,7 @@ import '@/views/organization/mock';
 import '@/views/basic-data/position/mock';
 import '@/views/evaluation/evaluation-project/mock';
 import '@/views/evaluation/evaluation-plan/mock';
+import '@/views/rule/mock'
 /** pfm end */
 
 Mock.setup({
