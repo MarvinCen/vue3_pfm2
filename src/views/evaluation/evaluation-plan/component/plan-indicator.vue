@@ -1,7 +1,7 @@
 <template>
   <a-card
 			class="general-card"
-			style="margin-top: 20px"
+			style="margin-bottom: 80px"
 			:title="usage === 'creation'? '' : '考核指标'"
 	>
     <div style="padding: 20px 0 10px 0">
