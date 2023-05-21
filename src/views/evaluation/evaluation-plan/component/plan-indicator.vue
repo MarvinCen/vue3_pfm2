@@ -4,8 +4,9 @@
 			style="margin-bottom: 80px"
 			:title="usage === 'creation'? '' : '考核指标'"
 	>
-    <div style="padding: 20px 0 10px 0">
-			<a-row :gutter="[24, 50]">
+		<div v-if="usage === 'creation'" style="width: 100%; height: 20px" />
+    <div style="padding: 0 0 10px 0">
+			<a-row :gutter="24">
 				<a-col :span="10">
 					<multi-search :columns="columns" />
 				</a-col>
@@ -64,7 +65,7 @@
 									<a-col :span="12">
 										<a-form-item field="name" label="单位分值">
 											<a-input-number
-													v-model="newIndicator.score"
+													v-model="newIndicator.unitScore"
 													placeholder="请输入单位分值"
 											/>
 										</a-form-item>
@@ -102,7 +103,7 @@
 									<a-col :span="12">
 										<a-form-item field="name" label="成果类型">
 											<a-tree-select
-													v-model="newIndicator.resultMatchers"
+													v-model="newIndicator.matcher"
 													placeholder="请输入成果类型"
 													:data="resultTypeOptions"
 													:field-names="{

@@ -12,5 +12,5 @@ export interface RuleVersion {
 	ruleId?: number;
 	value?: string;
 	script?: string;
-	active?: boolean;
+	activated?: boolean;
 }

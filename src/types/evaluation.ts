@@ -1,11 +1,30 @@
 import {BaseEntity} from "@/types/global";
+import {Rule} from "@/types/rule";
 
 export interface Result {
-
+  eid?: number;
+  rowId?: number;
+  row?: any;
+  projectId?: number;
+  planId?: number;
+  tableId?: number;
+  workload?: number;
+  indicatorId?: number;
+  indicatorName?: string;
+  tip?: string;
 }
 
-export interface ResultMatcher {
+export interface Matcher {
+  indicatorId?: number;
+  tableId?: number;
+  tableName?: string;
+  filters?: Filter[];
+}
 
+export interface Filter {
+  columnId?: number;
+  operator?: '等于' | '包含'
+  value?: string;
 }
 
 export interface Indicator extends BaseEntity {
@@ -16,13 +35,15 @@ export interface Indicator extends BaseEntity {
   isLeaf?: boolean;
   code?: string;
   score?: number;
+  unitScore?: number;
   unit?: string;
   ratio?: number;
   limitScore?: number;
   limitItem?: number;
   children?: Indicator[];
-  resultMatchers?: ResultMatcher[];
+  matcher?: Matcher;
   results?: Result[];
+  tableId?: number;
 }
 
 export interface EvaluationPlan extends BaseEntity {
@@ -33,7 +54,10 @@ export interface EvaluationPlan extends BaseEntity {
   professionalTitles?: string[];
   indicatorRoot?: Indicator;
   customData?: string;
+  dataGrabRuleId?: number;
+  dataGrabRule?: Rule;
   remark?: string;
+  grabResultData?: Function;
 }
 
 export interface EvaluationProject extends BaseEntity {
@@ -49,6 +73,8 @@ export interface EvaluationProject extends BaseEntity {
   status?: string;
   evaluationPlans?: EvaluationPlan[];
   evaluationPlanIds?: number[];
+  dataGrabRuleId?: number;
+  dataGrabRule?: Rule;
 }
 
 export const projectStatus = {

@@ -10,17 +10,23 @@
 								:project="project"
 						/>
 					</a-tab-pane>
-					<a-tab-pane key="2" title="绩效考核">
+					<a-tab-pane key="2" title="成果抓取">
+						<result-data-grab
+								:project="project"
+								:plan="plan"
+						/>
+					</a-tab-pane>
+					<a-tab-pane key="3" title="绩效考核">
 						<pfm-evaluation
 							:plan="plan"
 							:project="project" />
 					</a-tab-pane>
-					<a-tab-pane key="3" title="薪资计算">
+					<a-tab-pane key="4" title="薪资计算">
 						<pfm-evaluation
 								:plan="plan"
 								:project="project" />
 					</a-tab-pane>
-					<a-tab-pane key="4" title="绩效报告">
+					<a-tab-pane key="5" title="绩效报告">
 						<a-row style="margin-top: 16px">
 							<a-col :flex="1" class="panel" style="margin-right: 16px">
 								<PopularContent />
@@ -59,6 +65,7 @@ import DataPanel from "@/views/dashboard/workplace/components/data-panel.vue";
 import CateforiesPercent from "@/views/dashboard/workplace/components/categories-percent.vue";
 import {useRoute} from "vue-router";
 import {EvaluationPlan, EvaluationProject} from "@/types/evaluation";
+import ResultDataGrab from "@/views/evaluation/results/result-data-grab.vue";
 
 const route = useRoute();
 const project = JSON.parse(route.query.project as string) as EvaluationProject;

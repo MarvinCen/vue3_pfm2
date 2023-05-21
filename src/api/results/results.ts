@@ -21,7 +21,7 @@ export function findResultTablesBy(resultTypeId: number) {
 }
 
 export function findResultTables(query: Query) {
-  return axios.post('/results/resultTables/list', query);
+  return axios.post('/results/resultTable/list', query);
 }
 
 export function findResultDataListBy(resultTableId: number) {
@@ -47,10 +47,10 @@ export function findResultTableColumns(resultTableId: number) {
   return axios.get(`results/resultTable/columns/${resultTableId}`);
 }
 
-export function findResultTableDataById(eid: number, pager: Pager) {
+export function findResultTableDataById(tableId: number, pager: Pager) {
   return axios.get('results/cellData/list', {
     params: {
-      eid,
+      tableId,
       pager,
     },
   });

@@ -12,10 +12,11 @@ setupMock({
 			'post',
 			(options: PostData) => {
 				const query: Query = JSON.parse(options.body);
+				const list = MockUtil.query(data.rules, query);
 				return {
 					code: 20000,
 					data: {
-						list: data.rules
+						list,
 					}
 				}
 			}

@@ -21,24 +21,30 @@
 		:scrollbar="data && data.length > 0"
 		@row-click="handleRowClick"
 	>
+		<template #status="{ record }">
+			<a-tag v-if="record.activated" color="green">启用中</a-tag>
+			<a-tag v-else color="red">已禁用</a-tag>
+
+		</template>
+
 		<template #operation="{ record }">
 			<a-space>
 				<a-button
-					size="small"
+						size="mini"
 					type="text"
 					status="warning"
 				>
-					{{ record.status === '启用' ? '禁用' : '启用' }}
+					{{ record.activated ? '禁用' : '启用' }}
 				</a-button>
 				<a-button
-					size="small"
+					size="mini"
 					type="text"
 					status="normal"
 				>
 					编辑
 				</a-button>
 				<a-button
-					size="small"
+						size="mini"
 					type="text"
 					status="danger"
 				>
@@ -107,19 +113,18 @@ const columns: TableColumnData[] = [
 		width: 80,
 	},
 	{
-		dataIndex: 'active',
+		dataIndex: 'activated',
 		title: '状态',
 		ellipsis: true,
 		tooltip: true,
 		align: 'center',
 		width: 80,
+		slotName: 'status'
 	},
 	{
 		title: '操作',
-		ellipsis: true,
-		tooltip: true,
 		align: 'center',
-		width: 120,
+		width: 140,
 		fixed: 'right',
 		slotName: 'operation'
 	}

@@ -28,8 +28,9 @@ import '@/views/basic-data/position/mock';
 import '@/views/evaluation/evaluation-project/mock';
 import '@/views/evaluation/evaluation-plan/mock';
 import '@/views/rule/mock'
+import '@/views/evaluation/results/mock'
 /** pfm end */
 
 Mock.setup({
-  timeout: '0-300',
+  timeout: '200-500',
 });

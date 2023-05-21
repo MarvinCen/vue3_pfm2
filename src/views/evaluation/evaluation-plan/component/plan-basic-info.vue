@@ -1,83 +1,89 @@
 <template>
-  <a-card
-    class="general-card"
-    title="表单"
-  >
-    <a-form
-      ref="formRef"
-      :model="formData"
-      :label-col-props="{span: 3}"
-      label-align="left"
-      auto-label-width
-    >
-      <a-row :gutter="25">
-        <a-col :span="8">
-          <a-form-item field="name" label="名称：">
-            <a-input
-              v-model="formData.name"
-              placeholder="请输入方案名称"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item field="positions" label="岗位：">
-            <a-select
-              v-model="formData.positions"
-              multiple
-              allow-clear
-              style="width: 300px; flex-grow: 2"
-              :scrollbar="true"
-              @change="onSelectPositions"
-            >
-							<a-option
-                v-for="position of positionOptions"
-                :key="position.eid"
-                :value="position.name"
-              >
-								{{ position.name }}
-							</a-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item field="professionalTitles" label="职称：">
-            <a-select
-							v-model="formData.professionalTitles"
-              multiple
-              allow-clear
-              :scrollbar="true"
-              @change="onSelectProTitles"
-            >
-							<a-option
-								v-for="position of proTitleOptions"
-								:key="position.eid"
-								:value="position.professionalTitle"
+  <div style="margin-bottom: 20px">
+		<a-card
+			class="general-card"
+			title="表单"
+		>
+			<a-form
+				ref="formRef"
+				:model="formData"
+				:label-col-props="{span: 3}"
+				label-align="left"
+				auto-label-width
+			>
+				<a-row :gutter="25">
+					<a-col :span="8">
+						<a-form-item field="name" label="名称：">
+							<a-input
+								v-model="formData.name"
+								placeholder="请输入方案名称"
+							/>
+						</a-form-item>
+					</a-col>
+					<a-col :span="8">
+						<a-form-item field="positions" label="岗位：">
+							<a-select
+								v-model="formData.positions"
+								multiple
+								allow-clear
+								style="width: 300px; flex-grow: 2"
+								:scrollbar="true"
+								@change="onSelectPositions"
 							>
-								{{ position.professionalTitle }}
-							</a-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="25">
-				<a-col :span="24">
-					<a-form-item field="remark" label="备注：">
-						<a-textarea
-							v-model="formData.remark"
-							placeholder="请输入备注"
-						/>
-					</a-form-item>
-				</a-col>
-      </a-row>
-    </a-form>
-  </a-card>
-  <a-card class="general-card" title="自定义数据" style="margin: 20px 0 40px">
-    <a-textarea
-      v-model:model-value="formData.customData"
-      placeholder="Please enter something"
-      allow-clear
-    />
-  </a-card>
+								<a-option
+									v-for="position of positionOptions"
+									:key="position.eid"
+									:value="position.name"
+								>
+									{{ position.name }}
+								</a-option>
+							</a-select>
+						</a-form-item>
+					</a-col>
+					<a-col :span="8">
+						<a-form-item field="professionalTitles" label="职称：">
+							<a-select
+								v-model="formData.professionalTitles"
+								multiple
+								allow-clear
+								:scrollbar="true"
+								@change="onSelectProTitles"
+							>
+								<a-option
+									v-for="position of proTitleOptions"
+									:key="position.eid"
+									:value="position.professionalTitle"
+								>
+									{{ position.professionalTitle }}
+								</a-option>
+							</a-select>
+						</a-form-item>
+					</a-col>
+				</a-row>
+				<a-row :gutter="25">
+					<a-col :span="24">
+						<a-form-item field="remark" label="备注：">
+							<a-textarea
+								v-model="formData.remark"
+								placeholder="请输入备注"
+							/>
+						</a-form-item>
+					</a-col>
+				</a-row>
+			</a-form>
+		</a-card>
+
+		<a-card class="general-card" title="自定义数据" style="margin: 20px 0 20px">
+			<a-textarea
+				v-model:model-value="formData.customData"
+				placeholder="Please enter something"
+				allow-clear
+			/>
+		</a-card>
+  </div>
+
+	<div style="margin-bottom: 20px; height: 20px"></div>
+
   <div v-if="usage === 'creation'" class="actions">
     <a-space>
 			<a-button status="normal" @click="$router.push('evaluationPlan')"> 取消 </a-button>
@@ -173,7 +179,6 @@ export default defineComponent({
           }) === idx;
 				})
 			});
-
 		})
 
     return {
@@ -194,6 +199,7 @@ export default defineComponent({
 .general-card {
   border: none;
   border-radius: 4px;
+  box-sizing: border-box;
 
   & > .arco-card-header {
     height: auto;

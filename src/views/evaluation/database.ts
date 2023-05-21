@@ -1,6 +1,6 @@
 import Mock from "mockjs";
 import orgData from "@/views/organization/database"
-import {EvaEmployee, EvaluationPlan, EvaluationProject, Indicator} from "@/types/evaluation";
+import {EvaEmployee, EvaluationPlan, EvaluationProject, Indicator, Result} from "@/types/evaluation";
 import moment from "moment";
 import {Employee, Position} from "@/types/basic-data";
 import {findEmployees2} from "@/api/basic-data/organization";
@@ -97,9 +97,13 @@ function createEvaEmployees() {
 }
 createEvaEmployees();
 
+
+const results: Result[] = [];
+
 export default {
   plans,
 	indicators,
 	projects,
 	evaEmployees,
+	results,
 };

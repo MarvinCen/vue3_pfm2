@@ -31,16 +31,18 @@
 		<template #operation>
 			<a-space>
 				<a-button
-					size="small"
+					size="mini"
 					type="text"
 					status="normal"
+					@click.stop="() => {}"
 				>
 					编辑
 				</a-button>
 				<a-button
-						size="small"
-						type="text"
-						status="danger"
+					size="mini"
+					type="text"
+					status="danger"
+					@click.stop="() => {}"
 				>
 					删除
 				</a-button>

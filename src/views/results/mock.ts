@@ -175,7 +175,7 @@ setupMock({
       };
     });
     Mock.mock(
-      new RegExp('results/resultTable/list'),
+      new RegExp('results/resultTable/batch'),
       'post',
       (options: PostData) => {
         const rts = JSON.parse(options.body) as ResultTable[];
@@ -193,7 +193,7 @@ setupMock({
           message: '',
         };
     });
-    Mock.mock(new RegExp('/results/resultTables'), (options: GetParams) => {
+    Mock.mock(new RegExp('/results/resultTables'), 'get', (options: GetParams) => {
       const { resultTypeId } = qs.parseUrl(options.url).query;
       const data = Mock.mock({
         'list|2-3': [
@@ -212,6 +212,20 @@ setupMock({
         message: '',
       };
     });
+    Mock.mock(
+      new RegExp('/results/resultTable/list'),
+      'post',
+      (options:PostData) => {
+        const query = JSON.parse(options.body) as Query;
+        const list = MockUtil.query(data.resultTables, query);
+        return {
+          code: 20000,
+          data: {
+            list
+          }
+        }
+      }
+    );
     Mock.mock(
       new RegExp('results/resultTable/columns'),
       'get',
@@ -234,9 +248,9 @@ setupMock({
       (options: GetParams) => {
         const params = qs.parseUrl(options.url).query;
         const pager = JSON.parse(params.pager as string);
-        const eid = Number(params.eid);
+        const tableId = Number(params.eid);
 
-        let ls = data.resultTableData['t' + eid]?.slice();
+        let ls = data.resultTableData['t' + tableId]?.slice();
         ls = ls || [];
         ls.forEach(item => {
           item.metadata = data.metadata.filter((md: any) => item.metadataId === md.eid)[0];
@@ -248,7 +262,7 @@ setupMock({
         return {
           code: 20000,
           data: {
-            eid,
+            tableId,
             list: ls.reverse(),
             pager: {
               current: pager.current,
@@ -282,5 +296,29 @@ setupMock({
         }
       }
     );
+
+    Mock.mock(
+      new RegExp('results/resultData/list'),
+      'post',
+      (options: PostData) => {
+        interface ResultDataDto {
+          query: Query;
+          tableId: number;
+        }
+        const dto = JSON.parse(options.body) as ResultDataDto;
+        const query = dto.query;
+        const tableId = dto.tableId;
+
+        const rows = data.resultTableData['t' + tableId].slice();
+        const list = MockUtil.query(rows, query);
+        return {
+          code: 20000,
+          data: {
+            list,
+            pager: query.pager
+          }
+        }
+      }
+    )
   },
 });

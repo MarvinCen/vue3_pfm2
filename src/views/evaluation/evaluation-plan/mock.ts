@@ -15,14 +15,14 @@ setupMock({
       (options: GetParams) => {
         // @ts-ignore
         const params = qs.parseUrl(options.url).query as unknown as ReqPagerParams;
-        const list: EvaluationPlan[] = data.plans;
-        list.reverse();
+        const list: EvaluationPlan[] = data.plans.slice();
+
         params.pager = params.pager ? params.pager : { current: 1, pageSize: 10 };
         params.pager.total = list.length;
         return {
           code: 20000,
           data: {
-            list: list,
+            list: list.reverse(),
             pager: params.pager,
           },
           message: undefined,

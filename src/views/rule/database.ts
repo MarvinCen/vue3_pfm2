@@ -6,7 +6,7 @@ const rules: Rule[] = [
 	{
 		eid: Mock.Random.increment(),
 		name: '时间抓取',
-		remark: '根据成果的录入时间抓取',
+		remark: '抓取录入时间在考核项目开始时间与结束时间之间的成果数据',
 		organizationId: -1,
 		organizationName: '公共',
 		category: '成果数据抓取',
@@ -37,31 +37,31 @@ const ruleVersions: RuleVersion[] = [
 		ruleId: rules[0].eid,
 		value: '1.0',
 		script: '',
-		active: false,
+		activated: false,
 	},
 	{
 		ruleId: rules[0].eid,
 		value: '1.4',
 		script: '',
-		active: false,
+		activated: false,
 	},
 	{
 		ruleId: rules[0].eid,
 		value: '2.0',
 		script: '',
-		active: true,
+		activated: true,
 	},
 	{
 		ruleId: rules[1].eid,
 		value: '1.0',
 		script: '',
-		active: true,
+		activated: true,
 	},
 	{
 		ruleId: rules[2].eid,
 		value: '1.0',
 		script: '',
-		active: true,
+		activated: true,
 	}
 ]
 
