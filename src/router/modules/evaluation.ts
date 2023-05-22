@@ -85,5 +85,17 @@ export default {
         hideInMenu: true,
       },
     },
+    {
+      path: 'resultDistribution',
+      name: 'resultDistribution',
+      component: () =>
+        import('@/views/evaluation/results/distribution.vue'),
+      meta: {
+        locale: 'menu.evaluation.resultDistribution',
+        requiresAuth: true,
+        icon: 'icon-dashboard',
+        roles: ['*'],
+      },
+    },
   ],
 };

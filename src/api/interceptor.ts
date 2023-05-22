@@ -24,17 +24,17 @@ axios.interceptors.response.use(
     const res = response.data;
     console.log(res)
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    if (res.code < 20000 && res.code >= 30000) {
       if (res.code >= 30000 && res.code < 40000) { // Mistake
         Message.warning({
           content: res.message || 'Warning',
-          duration: 5 * 1000,
+          duration: 8 * 1000,
         });
       }
       else { // Error
         Message.error({
           content: res.message || 'Error',
-          duration: 5 * 1000,
+          duration: 8 * 1000,
         });
       }
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
@@ -56,6 +56,12 @@ axios.interceptors.response.use(
         });
       }
       return Promise.reject(new Error(res.message || 'Error'));
+    }
+    else if (res.code === 20500) {
+      Message.warning({
+        content: res.message || 'Warning',
+        duration: 8 * 1000,
+      });
     }
     return res;
   },

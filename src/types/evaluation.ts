@@ -1,10 +1,25 @@
 import {BaseEntity} from "@/types/global";
 import {Rule} from "@/types/rule";
 
+export interface Distribution {
+  resultId?: number;
+  projectId?: number;
+  planId?: number;
+  tableId?: number;
+  evaEmployeeId?: number;
+  evaEmployeeName?: string;
+  tag?: string;
+  totalScore?: number;
+  ratio?: number;
+  done?: boolean;
+}
+
 export interface Result {
   eid?: number;
   rowId?: number;
   row?: any;
+  evaEmployeeId?: number;  //nullable. 创建成果时，根据元信息的directorId设置，如果为空，则直接设置evaEmployeeName
+  evaEmployeeName?: string;
   projectId?: number;
   planId?: number;
   tableId?: number;
@@ -12,6 +27,9 @@ export interface Result {
   indicatorId?: number;
   indicatorName?: string;
   tip?: string;
+  distributions?: Distribution[];
+  tag?: string;
+  distributed?: boolean;
 }
 
 export interface Matcher {
@@ -97,7 +115,11 @@ export const projectStatus = {
 }
 
 
+
+// 考核人员最初在考核项目创建时创建；生成成果时
 export interface EvaEmployee extends BaseEntity {
+  employeeId?: number;  // //nullable
+  tag?: string;
   name?: string;
   jobNumber?: string;
   position?: string;
